@@ -7,7 +7,7 @@
 //
 
 #import "YPFlickrCommunicator.h"
-#import "ObjectiveFlickr.h"
+#import <ObjectiveFlickr.h>
 #import "Config.h"
 
 @interface YPFlickrCommunicator () {
