@@ -8,6 +8,7 @@
 
 #import "YPMainViewController.h"
 #import "YPMainViewButton.h"
+#import <PureLayout/PureLayout.h>
 
 @interface YPMainViewController ()
 
@@ -61,12 +62,13 @@
   
   /* Uncomment this code to see the custom mainViewButton in effect.
   UIImage *buttonImage = [UIImage imageNamed:@"TestButtonImage"];
-  YPMainViewButton *button = [[YPMainViewButton alloc] initWithFrame:CGRectMake(100, 100, 57, 57)];
+  YPMainViewButton *button = [YPMainViewButton newAutoLayoutView];
   button.icon = buttonImage;
   button.underText = @"Yale";
   [self.view addSubview:button];
+  [button autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:100];
+  [button autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:100];
    */
-  
 }
 
 - (void)didReceiveMemoryWarning

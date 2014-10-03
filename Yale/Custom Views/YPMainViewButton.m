@@ -41,6 +41,14 @@
   return self;
 }
 
+- (instancetype)initForAutoLayout
+{
+  if (self = [super initForAutoLayout]) {
+    [self _commonInit];
+  }
+  return self;
+}
+
 - (void)_commonInit
 {
   self.iconView       = [UIImageView newAutoLayoutView];
@@ -126,6 +134,13 @@
 {
   [super setHighlighted:highlighted];
 #warning TODO(hengchu): set proper highlighting here.
+}
+
+#pragma mark - View properties
+
+- (BOOL)isOpaque
+{
+  return NO;
 }
 
 @end
