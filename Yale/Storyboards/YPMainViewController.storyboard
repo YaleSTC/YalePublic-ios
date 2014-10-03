@@ -2,8 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Main View Controller-->
@@ -24,20 +22,20 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="9H9-fi-4ab" firstAttribute="leading" secondItem="ylD-uj-hfI" secondAttribute="leadingMargin" constant="-16" id="SBV-g6-SS9"/>
+                            <constraint firstItem="9H9-fi-4ab" firstAttribute="leading" secondItem="ylD-uj-hfI" secondAttribute="leading" id="SBV-g6-SS9"/>
                             <constraint firstItem="zz9-Di-KbV" firstAttribute="top" secondItem="9H9-fi-4ab" secondAttribute="bottom" id="XUa-pl-U7f"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="9H9-fi-4ab" secondAttribute="trailing" constant="-16" id="jv9-VA-kVg"/>
-                            <constraint firstItem="9H9-fi-4ab" firstAttribute="top" secondItem="F0M-dc-jgJ" secondAttribute="bottom" constant="-64" id="pnD-gf-wTa"/>
+                            <constraint firstAttribute="trailing" secondItem="9H9-fi-4ab" secondAttribute="trailing" id="jv9-VA-kVg"/>
+                            <constraint firstItem="9H9-fi-4ab" firstAttribute="top" secondItem="F0M-dc-jgJ" secondAttribute="bottom" id="pnD-gf-wTa"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="9H9-fi-4ab"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="XUa-pl-U7f"/>
                                 <exclude reference="SBV-g6-SS9"/>
                                 <exclude reference="jv9-VA-kVg"/>
                                 <exclude reference="pnD-gf-wTa"/>
+                                <exclude reference="XUa-pl-U7f"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -45,10 +43,10 @@
                                 <include reference="9H9-fi-4ab"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="XUa-pl-U7f"/>
                                 <include reference="SBV-g6-SS9"/>
                                 <include reference="jv9-VA-kVg"/>
                                 <include reference="pnD-gf-wTa"/>
+                                <include reference="XUa-pl-U7f"/>
                             </mask>
                         </variation>
                     </view>

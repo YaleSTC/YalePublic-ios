@@ -78,6 +78,10 @@
   self.underTextLabel.font      = FONT;
   self.underTextLabel.textColor = [UIColor whiteColor];
   
+  [self.underTextLabel removeConstraints:self.underTextLabel.constraints];
+  
+  [self _resizeUnderTextLabel];
+  
   [self setNeedsUpdateConstraints];
 }
 
@@ -87,6 +91,16 @@
 {
   return YES;
 }
+
+- (void)_resizeUnderTextLabel
+{
+  CGSize size = [self _textLabelSize];
+  size.height = ceil(size.height);
+  size.width  = ceil(size.width);
+  [self.underTextLabel autoSetDimensionsToSize:size];
+  [self.underTextLabel autoAlignAxis:ALAxisVertical toSameAxisOfView:self];
+}
+
 
 - (CGSize)_textLabelSize
 {
@@ -110,11 +124,7 @@
                           withOffset:IMAGE_TEXT_MARGIN];
     
     
-    CGSize size = [self _textLabelSize];
-    size.height = ceil(size.height);
-    size.width  = ceil(size.width);
-    [self.underTextLabel autoSetDimensionsToSize:size];
-    [self.underTextLabel autoAlignAxis:ALAxisVertical toSameAxisOfView:self];
+    [self _resizeUnderTextLabel];
     
     _hasSetupConstraint = YES;
   }
@@ -133,7 +143,7 @@
 - (void)setHighlighted:(BOOL)highlighted
 {
   [super setHighlighted:highlighted];
-#warning TODO(hengchu): set proper highlighting here.
+  self.alpha = (highlighted) ? 0.5 : 1;
 }
 
 #pragma mark - View properties
