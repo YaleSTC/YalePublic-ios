@@ -1,0 +1,77 @@
+//
+//  YPMainViewController.m
+//  Yale
+//
+//  Created by Hengchu Zhang on 10/2/14.
+//  Copyright (c) 2014 Hengchu Zhang. All rights reserved.
+//
+
+#import "YPMainViewController.h"
+
+@interface YPMainViewController ()
+
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
+@property (nonatomic, strong) UIBarButtonItem *infoButton;
+
+@end
+
+@implementation YPMainViewController
+
+#pragma mark - View Setup
+
+- (void)setupNavigationBar
+{
+  UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
+  self.infoButton = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
+  self.navigationItem.rightBarButtonItem = self.infoButton;
+  self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
+  self.navigationController.navigationBar.translucent = YES;
+  self.title = @"Home";
+}
+
+- (void)setupBackgroundImage
+{
+  CGFloat screenHeight = [[UIScreen mainScreen] bounds].size.height;
+  
+  UIImage *backgroundImage;
+  
+  if (screenHeight == 568) {
+    backgroundImage = [UIImage imageNamed:@"background5"];
+  } else if (screenHeight == 667) {
+    backgroundImage = [UIImage imageNamed:@"background6"];
+  } else if (screenHeight) {
+    backgroundImage = [UIImage imageNamed:@"background6+"];
+  } else {
+    backgroundImage = [UIImage imageNamed:@"background5"];
+  }
+  
+  self.backgroundImageView.image = backgroundImage;
+}
+
+#pragma mark - View life cycles
+
+- (void)viewDidLoad
+{
+  [super viewDidLoad];
+  
+  [self setupNavigationBar];
+  [self setupBackgroundImage];
+}
+
+- (void)didReceiveMemoryWarning
+{
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
+}
+
+/*
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
+
+@end

@@ -7,6 +7,8 @@
 //
 
 #import "YPAppDelegate.h"
+#import "YPTheme.h"
+#import <FLEX/FLEXManager.h>
 
 @interface YPAppDelegate ()
 
@@ -18,6 +20,22 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   // Override point for customization after application launch.
+  
+  self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+  [self.window makeKeyAndVisible];
+  
+  UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPMainViewController"
+                                                       bundle:[NSBundle mainBundle]];
+  UINavigationController *rootVC = [storyboard instantiateViewControllerWithIdentifier:@"MainVC Root"];
+  self.window.rootViewController = rootVC;
+  
+  [[UINavigationBar appearance] setBarTintColor:[YPTheme navigationBarColor]];
+  [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+  
+#ifdef DEBUG
+  [[FLEXManager sharedManager] showExplorer];
+#endif
+  
   return YES;
 }
 
