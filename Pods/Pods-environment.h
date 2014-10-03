@@ -18,3 +18,9 @@
 #define COCOAPODS_VERSION_MINOR_PureLayout 1
 #define COCOAPODS_VERSION_PATCH_PureLayout 0
 
+// objectiveflickr
+#define COCOAPODS_POD_AVAILABLE_objectiveflickr
+#define COCOAPODS_VERSION_MAJOR_objectiveflickr 2
+#define COCOAPODS_VERSION_MINOR_objectiveflickr 0
+#define COCOAPODS_VERSION_PATCH_objectiveflickr 4
+
