@@ -7,6 +7,7 @@
 //
 
 #import "YPMainViewController.h"
+#import "YPMainViewButton.h"
 
 @interface YPMainViewController ()
 
@@ -46,6 +47,7 @@
   }
   
   self.backgroundImageView.image = backgroundImage;
+  self.backgroundImageView.layer.zPosition -= 1;
 }
 
 #pragma mark - View life cycles
@@ -56,6 +58,15 @@
   
   [self setupNavigationBar];
   [self setupBackgroundImage];
+  
+  /* Uncomment this code to see the custom mainViewButton in effect.
+  UIImage *buttonImage = [UIImage imageNamed:@"TestButtonImage"];
+  YPMainViewButton *button = [[YPMainViewButton alloc] initWithFrame:CGRectMake(100, 100, 57, 57)];
+  button.icon = buttonImage;
+  button.underText = @"Yale";
+  [self.view addSubview:button];
+   */
+  
 }
 
 - (void)didReceiveMemoryWarning

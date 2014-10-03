@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface YPMainViewButton : UIButton
+@interface YPMainViewButton : UIControl
+
+/**
+ *  The text that appears under the icon.
+ */
+@property (nonatomic, strong) NSString *underText;
+
+/**
+ *  The icon of the button.
+ */
+@property (nonatomic, strong) UIImage *icon;
 
 @end
