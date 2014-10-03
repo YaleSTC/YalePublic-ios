@@ -67,6 +67,8 @@
                                                  collectionViewLayout:flowLayout];
   [self.buttonCollectionView registerClass:[YPMainViewButtonCollectionViewCell class]
                 forCellWithReuseIdentifier:COLLECTIONVIEW_REUSE_IDENTIFIER];
+  self.buttonCollectionView.opaque = NO;
+  self.buttonCollectionView.backgroundColor = [UIColor clearColor];
   
   self.buttonCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
   
