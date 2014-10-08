@@ -62,10 +62,10 @@
             </objects>
             <point key="canvasLocation" x="3558" y="772"/>
         </scene>
-        <!--View Controller-->
+        <!--News Embedded View Controller-->
         <scene sceneID="2dT-GN-gzu">
             <objects>
-                <viewController id="1A2-wN-oWE" sceneMemberID="viewController">
+                <viewController id="1A2-wN-oWE" customClass="YPNewsEmbeddedViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="YDT-du-5OJ"/>
                         <viewControllerLayoutGuide type="bottom" id="Npn-NI-iVp"/>
