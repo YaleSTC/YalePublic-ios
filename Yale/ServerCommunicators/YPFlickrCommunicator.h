@@ -13,5 +13,6 @@
 @interface YPFlickrCommunicator : NSObject 
 
 -(void)getSets:(void (^)(NSDictionary *))completionBlock;
+-(void)getPhotosForSet:(NSString *)photoSetId completionBlock:(void (^)(NSDictionary *))completionBlock;
 
 @end

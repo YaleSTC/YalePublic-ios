@@ -10,6 +10,7 @@
 #import "YPFlickrCommunicator.h"
 #import "YPStandardCell.h"
 #import "YPPhotoDetailViewController.h"
+#import "Config.h"
 
 @interface YPPhotoViewController () {
   NSArray *_photoSets;
@@ -21,6 +22,7 @@
 
 -(void)viewDidLoad
 {
+  self.navigationItem.title = NAVIGATION_BAR_TITLE_PHOTOS;
   [self displaySets];
 }
 
@@ -28,6 +30,7 @@
 {
   YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
   [flickr getSets:^(NSDictionary *response) {
+    //NSLog(@"%@", response);
     
     _photoSets = response[@"photosets"][@"photoset"];
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -67,9 +70,12 @@
 {
   if ([segue.identifier isEqualToString:@"PhotoSetDetail"])
   {
-//    YPPhotoDetailViewController* vc = segue.destinationViewController;
-//    NSIndexPath *row = [self.photoSetTableView indexPathForSelectedRow];
-#warning TODO(Charly) finish this method
+    YPPhotoDetailViewController *detailViewController = segue.destinationViewController;
+    NSIndexPath *indexPath = [self.photoSetTableView indexPathForSelectedRow];
+    
+    // Have to provide album title and photoSetId
+    detailViewController.albumTitle = _photoSets[indexPath.row][@"title"][@"_content"];
+    detailViewController.photoSetId = _photoSets[indexPath.row][@"id"];
   }
 }
 

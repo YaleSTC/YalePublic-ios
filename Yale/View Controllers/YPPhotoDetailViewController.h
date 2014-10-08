@@ -10,4 +10,7 @@
 
 @interface YPPhotoDetailViewController : UIViewController
 
+@property (strong, nonatomic) NSString *albumTitle;
+@property (strong, nonatomic) NSString *photoSetId;
+
 @end

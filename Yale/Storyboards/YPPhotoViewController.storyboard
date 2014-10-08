@@ -49,7 +49,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="title" destination="7uH-13-wgI" id="0bI-IZ-4Gf"/>
-                                            <segue destination="KxM-ye-M1a" kind="showDetail" identifier="PhotoSetDetail" id="1Yk-PB-YKa"/>
+                                            <segue destination="KxM-ye-M1a" kind="show" identifier="PhotoSetDetail" id="1Yk-PB-YKa"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -82,10 +82,10 @@
             </objects>
             <point key="canvasLocation" x="-111" y="246.75"/>
         </scene>
-        <!--View Controller-->
+        <!--Photo Detail View Controller-->
         <scene sceneID="zdS-ST-TzX">
             <objects>
-                <viewController id="KxM-ye-M1a" sceneMemberID="viewController">
+                <viewController id="KxM-ye-M1a" customClass="YPPhotoDetailViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nqo-HQ-a2B"/>
                         <viewControllerLayoutGuide type="bottom" id="B9W-E6-92u"/>
