@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-@interface YPFlickrCommunicator : NSObject
+
+
+@interface YPFlickrCommunicator : NSObject 
+
+-(void)getSets:(void (^)(NSDictionary *))completionBlock;
 
 @end

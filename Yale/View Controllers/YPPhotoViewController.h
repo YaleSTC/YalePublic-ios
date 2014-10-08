@@ -6,8 +6,12 @@
 //  Copyright (c) 2014 Hengchu Zhang. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@interface YPPhotoViewController : NSObject
+
+@interface YPPhotoViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UITableView *photoSetTableView;
+
 
 @end

@@ -7,7 +7,71 @@
 //
 
 #import "YPPhotoViewController.h"
+#import "YPFlickrCommunicator.h"
+#import "YPStandardCell.h"
+#import "YPPhotoDetailViewController.h"
+
+@interface YPPhotoViewController () {
+  NSArray *_photoSets;
+}
+@end
+
 
 @implementation YPPhotoViewController
+
+-(void)viewDidLoad
+{
+  [self displaySets];
+}
+
+-(void)displaySets
+{
+  YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
+  [flickr getSets:^(NSDictionary *response) {
+    
+    _photoSets = response[@"photosets"][@"photoset"];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self.photoSetTableView reloadData];
+    });
+  }
+  ];
+}
+
+
+#pragma table view delegate methods
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  YPStandardCell *cell = [self.photoSetTableView dequeueReusableCellWithIdentifier:@"PhotoListCell" forIndexPath:indexPath];
+  
+  NSDictionary *set = _photoSets[indexPath.row];
+  
+  [cell.title setText:set[@"title"][@"_content"]];
+  
+  return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  [self performSegueWithIdentifier:@"PhotoSetDetail" sender:self];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+  return _photoSets.count;
+}
+
+#pragma segue
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+  if ([segue.identifier isEqualToString:@"PhotoSetDetail"])
+  {
+    YPPhotoDetailViewController* vc = segue.destinationViewController;
+    NSIndexPath *row = [self.photoSetTableView indexPathForSelectedRow];
+#warning THIS IS WHERE YOU LEFT CHARLY
+  }
+}
+
 
 @end

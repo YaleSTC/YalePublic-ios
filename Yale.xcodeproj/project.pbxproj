@@ -19,6 +19,9 @@
 		DC72D6F84DC8499796A7F96A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D18846582394F449BE058FB /* libPods.a */; };
 		EAB6861319DF2FDF0006C06F /* YPFlickrCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB6861219DF2FDF0006C06F /* YPFlickrCommunicator.m */; };
 		EAB6861619DF34690006C06F /* YPPhotoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAB6861519DF34690006C06F /* YPPhotoViewController.storyboard */; };
+		EAB6861919DF3CB00006C06F /* YPPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB6861819DF3CB00006C06F /* YPPhotoViewController.m */; };
+		EAB6861C19E09B830006C06F /* YPStandardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB6861B19E09B830006C06F /* YPStandardCell.m */; };
+		EAB6861F19E118830006C06F /* YPPhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB6861E19E118830006C06F /* YPPhotoDetailViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +58,12 @@
 		EAB6861219DF2FDF0006C06F /* YPFlickrCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPFlickrCommunicator.m; path = ServerCommunicators/YPFlickrCommunicator.m; sourceTree = "<group>"; };
 		EAB6861419DF30F80006C06F /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		EAB6861519DF34690006C06F /* YPPhotoViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = YPPhotoViewController.storyboard; path = Storyboards/YPPhotoViewController.storyboard; sourceTree = "<group>"; };
+		EAB6861719DF3CB00006C06F /* YPPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPPhotoViewController.h; path = "View Controllers/YPPhotoViewController.h"; sourceTree = "<group>"; };
+		EAB6861819DF3CB00006C06F /* YPPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPPhotoViewController.m; path = "View Controllers/YPPhotoViewController.m"; sourceTree = "<group>"; };
+		EAB6861A19E09B830006C06F /* YPStandardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPStandardCell.h; path = "Custom Views/YPStandardCell.h"; sourceTree = "<group>"; };
+		EAB6861B19E09B830006C06F /* YPStandardCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPStandardCell.m; path = "Custom Views/YPStandardCell.m"; sourceTree = "<group>"; };
+		EAB6861D19E118830006C06F /* YPPhotoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPPhotoDetailViewController.h; path = "View Controllers/YPPhotoDetailViewController.h"; sourceTree = "<group>"; };
+		EAB6861E19E118830006C06F /* YPPhotoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPPhotoDetailViewController.m; path = "View Controllers/YPPhotoDetailViewController.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,8 +124,11 @@
 				EAB6861519DF34690006C06F /* YPPhotoViewController.storyboard */,
 				9B18DA6D19DE254400CB900C /* YPMainViewButton.h */,
 				9B18DA6E19DE254400CB900C /* YPMainViewButton.m */,
+				EAB6861A19E09B830006C06F /* YPStandardCell.h */,
+				EAB6861B19E09B830006C06F /* YPStandardCell.m */,
 				9B18DA6719DE17E500CB900C /* YPMainViewController.h */,
 				9B18DA6819DE17E500CB900C /* YPMainViewController.m */,
+				EAB6862019E1189B0006C06F /* Photo */,
 				9B18DA6A19DE1A6700CB900C /* YPTheme.h */,
 				9B18DA6B19DE1A6700CB900C /* YPTheme.m */,
 				9B8BE2A419DE153D00CFE39A /* Images.xcassets */,
@@ -159,6 +171,17 @@
 				EAB6861219DF2FDF0006C06F /* YPFlickrCommunicator.m */,
 			);
 			name = ServerCommunicators;
+			sourceTree = "<group>";
+		};
+		EAB6862019E1189B0006C06F /* Photo */ = {
+			isa = PBXGroup;
+			children = (
+				EAB6861719DF3CB00006C06F /* YPPhotoViewController.h */,
+				EAB6861819DF3CB00006C06F /* YPPhotoViewController.m */,
+				EAB6861D19E118830006C06F /* YPPhotoDetailViewController.h */,
+				EAB6861E19E118830006C06F /* YPPhotoDetailViewController.m */,
+			);
+			name = Photo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -299,8 +322,11 @@
 			files = (
 				9B18DA6C19DE1A6700CB900C /* YPTheme.m in Sources */,
 				9B18DA6419DE161200CB900C /* YPAppDelegate.m in Sources */,
+				EAB6861919DF3CB00006C06F /* YPPhotoViewController.m in Sources */,
+				EAB6861F19E118830006C06F /* YPPhotoDetailViewController.m in Sources */,
 				9B18DA6919DE17E500CB900C /* YPMainViewController.m in Sources */,
 				9B8BE29A19DE153D00CFE39A /* main.m in Sources */,
+				EAB6861C19E09B830006C06F /* YPStandardCell.m in Sources */,
 				EAB6861319DF2FDF0006C06F /* YPFlickrCommunicator.m in Sources */,
 				9B18DA6F19DE254400CB900C /* YPMainViewButton.m in Sources */,
 			);

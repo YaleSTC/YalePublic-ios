@@ -27,7 +27,18 @@
   UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPMainViewController"
                                                        bundle:[NSBundle mainBundle]];
   UINavigationController *rootVC = [storyboard instantiateViewControllerWithIdentifier:@"MainVC Root"];
+    
   self.window.rootViewController = rootVC;
+
+    /* testing only */
+    
+  UIStoryboard *photoStoryboard = [UIStoryboard storyboardWithName:@"YPPhotoViewController"
+                                                              bundle:[NSBundle mainBundle]];
+  UINavigationController *photoVC = [photoStoryboard instantiateViewControllerWithIdentifier:@"PhotoVC Root"];
+    
+  [rootVC pushViewController:photoVC animated:NO];
+    
+  /* end testing only */
   
   [[UINavigationBar appearance] setBarTintColor:[YPTheme navigationBarColor]];
   [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
