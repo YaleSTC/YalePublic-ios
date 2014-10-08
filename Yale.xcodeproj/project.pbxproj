@@ -172,13 +172,13 @@
 		AB0071DB19E4C92A00ABF52D /* News */ = {
 			isa = PBXGroup;
 			children = (
+				AB0071DC19E4D14B00ABF52D /* YPNewsViewController.storyboard */,
 				AB0071D219E4C8F000ABF52D /* YPNewsTopicsTableViewController.h */,
 				AB0071D319E4C8F000ABF52D /* YPNewsTopicsTableViewController.m */,
 				AB0071D519E4C90300ABF52D /* YPNewsArticlesTableViewController.h */,
 				AB0071D619E4C90300ABF52D /* YPNewsArticlesTableViewController.m */,
 				AB0071D819E4C92300ABF52D /* YPNewsEmbeddedViewController.h */,
 				AB0071D919E4C92300ABF52D /* YPNewsEmbeddedViewController.m */,
-				AB0071DC19E4D14B00ABF52D /* YPNewsViewController.storyboard */,
 			);
 			name = News;
 			sourceTree = "<group>";

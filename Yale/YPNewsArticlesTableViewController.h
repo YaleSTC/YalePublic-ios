@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface YPNewsArticlesTableViewController : UITableViewController
-
+@property (nonatomic, strong) NSString *url;
 @end

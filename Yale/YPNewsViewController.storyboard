@@ -19,7 +19,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="OTf-ST-oaa" kind="show" id="XL8-xi-l4i"/>
+                                    <segue destination="OTf-ST-oaa" kind="show" identifier="showArticleList" id="XL8-xi-l4i"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -42,13 +42,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="bw4-cx-A3T">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="articleCell" id="bw4-cx-A3T">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bw4-cx-A3T" id="JXh-1u-AhV">
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="1A2-wN-oWE" kind="show" id="jQB-s1-mdZ"/>
+                                    <segue destination="1A2-wN-oWE" kind="show" identifier="showArticle" id="jQB-s1-mdZ"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

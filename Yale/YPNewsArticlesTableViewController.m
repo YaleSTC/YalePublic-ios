@@ -7,51 +7,69 @@
 //
 
 #import "YPNewsArticlesTableViewController.h"
+#import "AFNetworking.h"
 
 @interface YPNewsArticlesTableViewController ()
-
+@property (nonatomic, strong) NSArray *articlesArray;
 @end
 
 @implementation YPNewsArticlesTableViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
   [super viewDidLoad];
   
-  // Uncomment the following line to preserve selection between presentations.
-  // self.clearsSelectionOnViewWillAppear = NO;
-  
-  // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-  // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void)didReceiveMemoryWarning {
-  [super didReceiveMemoryWarning];
-  // Dispose of any resources that can be recreated.
+- (void)viewWillAppear:(BOOL)animated
+{
+  [self getArticles];
 }
+
+
+- (void)getArticles
+{
+  AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+  [manager GET:self.url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSData *responseData = operation.responseData;
+    NSError *error = nil;
+    NSDictionary *articlesObject = [NSJSONSerialization
+                                    JSONObjectWithData:responseData
+                                    options:NSJSONReadingMutableContainers
+                                    error:&error];
+    
+    self.articlesArray = articlesObject[@"news"];
+    [self.tableView reloadData];
+    
+  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    NSLog(@"Error: %@", error);
+  }];
+  
+  
+}
+
+
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
-  // Return the number of sections.
-  return 0;
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+  return [self.articlesArray count];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
-  // Return the number of rows in the section.
-  return 0;
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"articleCell" forIndexPath:indexPath];
+  NSDictionary *articleNode = self.articlesArray[indexPath.row][@"node"];
+  
+  cell.textLabel.numberOfLines = 0;
+  cell.textLabel.text = articleNode[@"title"];
+  return cell;
 }
 
-/*
- - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
- UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
- 
- // Configure the cell...
- 
- return cell;
- }
- */
 
 /*
  // Override to support conditional editing of the table view.
