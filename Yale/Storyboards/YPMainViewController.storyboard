@@ -32,10 +32,10 @@
                                 <exclude reference="9H9-fi-4ab"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="XUa-pl-U7f"/>
                                 <exclude reference="SBV-g6-SS9"/>
                                 <exclude reference="jv9-VA-kVg"/>
                                 <exclude reference="pnD-gf-wTa"/>
-                                <exclude reference="XUa-pl-U7f"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -43,10 +43,10 @@
                                 <include reference="9H9-fi-4ab"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="XUa-pl-U7f"/>
                                 <include reference="SBV-g6-SS9"/>
                                 <include reference="jv9-VA-kVg"/>
                                 <include reference="pnD-gf-wTa"/>
-                                <include reference="XUa-pl-U7f"/>
                             </mask>
                         </variation>
                     </view>

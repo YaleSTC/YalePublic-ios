@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface YPStandardCell : UITableViewCell
+
+#warning TODO(Charly) move the IBOutlet out of the storyboard.
 @property (weak, nonatomic) IBOutlet UILabel *title;
 
 @end

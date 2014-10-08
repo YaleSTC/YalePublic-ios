@@ -10,5 +10,7 @@
 #import "YPMainViewButton.h"
 
 @interface YPMainViewButtonCollectionViewCell : UICollectionViewCell
+
 @property (nonatomic, strong) YPMainViewButton *button;
+
 @end
