@@ -31,7 +31,7 @@
 {
   YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
   [flickr getSets:^(NSDictionary *response) {
-    //NSLog(@"%@", response);
+    NSLog(@"%@", response);
     
     _photoSets = response[@"photosets"][@"photoset"];
     dispatch_async(dispatch_get_main_queue(), ^{
