@@ -8,6 +8,7 @@
 
 #import "YPMainViewController.h"
 #import "YPMainViewButtonCollectionViewCell.h"
+#import "YPNewsTopicsTableViewController.h"
 #import <PureLayout/PureLayout.h>
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
@@ -129,8 +130,10 @@
                                                                                        forIndexPath:indexPath];
   cell.button.icon = [UIImage imageNamed:@"TestButtonImage"];
   cell.button.underText = self.buttonUnderTexts[indexPath.row];
+  [cell.button addTarget:self action:@selector(pushViewController:) forControlEvents:UIControlEventTouchUpInside];
   return cell;
 }
+
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
@@ -157,6 +160,20 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
+}
+
+#pragma mark Connect with other VCs
+
+- (void)pushViewController:(YPMainViewButton *)button
+{
+  NSString *underText = button.underText;
+  if ([underText isEqualToString:@"News"]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPNewsViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *newsVC = [storyboard instantiateViewControllerWithIdentifier:@"NewsVC"];
+    [self.navigationController pushViewController:newsVC animated:YES];
+  }
+  
 }
 
 
