@@ -54,15 +54,15 @@
 #define COCOAPODS_VERSION_MINOR_FLEX 1
 #define COCOAPODS_VERSION_PATCH_FLEX 1
 
+// FlickrKit
+#define COCOAPODS_POD_AVAILABLE_FlickrKit
+#define COCOAPODS_VERSION_MAJOR_FlickrKit 1
+#define COCOAPODS_VERSION_MINOR_FlickrKit 0
+#define COCOAPODS_VERSION_PATCH_FlickrKit 4
+
 // PureLayout
 #define COCOAPODS_POD_AVAILABLE_PureLayout
 #define COCOAPODS_VERSION_MAJOR_PureLayout 1
 #define COCOAPODS_VERSION_MINOR_PureLayout 1
 #define COCOAPODS_VERSION_PATCH_PureLayout 0
-
-// objectiveflickr
-#define COCOAPODS_POD_AVAILABLE_objectiveflickr
-#define COCOAPODS_VERSION_MAJOR_objectiveflickr 2
-#define COCOAPODS_VERSION_MINOR_objectiveflickr 0
-#define COCOAPODS_VERSION_PATCH_objectiveflickr 4
 
