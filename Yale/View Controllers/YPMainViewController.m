@@ -134,17 +134,7 @@
   return cell;
 }
 
-- (void)pushViewController:(YPMainViewButton *)button
-{
-  NSString *underText = button.underText;
-  if ([underText isEqualToString:@"News"]) {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPNewsViewController"
-                                                         bundle:[NSBundle mainBundle]];
-    UINavigationController *newsVC = [storyboard instantiateViewControllerWithIdentifier:@"NewsVC"];
-    [self.navigationController pushViewController:newsVC animated:YES];
-  }
-  
-}
+
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -170,6 +160,20 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
+}
+
+#pragma mark Connect with other VCs
+
+- (void)pushViewController:(YPMainViewButton *)button
+{
+  NSString *underText = button.underText;
+  if ([underText isEqualToString:@"News"]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPNewsViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *newsVC = [storyboard instantiateViewControllerWithIdentifier:@"NewsVC"];
+    [self.navigationController pushViewController:newsVC animated:YES];
+  }
+  
 }
 
 
