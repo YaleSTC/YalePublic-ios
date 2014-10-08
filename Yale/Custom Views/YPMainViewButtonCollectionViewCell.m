@@ -50,6 +50,7 @@
 - (void)updateConstraints
 {
   if (!_hasUpdatedConstraints) {
+#warning TODO(Charly) The height is not constrained. This would create warning at runtime.
     [self.button autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
     [self.button autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
     _hasUpdatedConstraints = YES;
