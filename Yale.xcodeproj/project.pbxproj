@@ -16,6 +16,7 @@
 		9B8BE2A519DE153D00CFE39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B8BE2A419DE153D00CFE39A /* Images.xcassets */; };
 		9B8BE2A819DE153D00CFE39A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B8BE2A619DE153D00CFE39A /* LaunchScreen.xib */; };
 		9B8BE2B419DE153D00CFE39A /* YaleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B8BE2B319DE153D00CFE39A /* YaleTests.m */; };
+		9BCB4AD419DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCB4AD319DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m */; };
 		DC72D6F84DC8499796A7F96A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D18846582394F449BE058FB /* libPods.a */; };
 		EAB6861319DF2FDF0006C06F /* YPFlickrCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB6861219DF2FDF0006C06F /* YPFlickrCommunicator.m */; };
 		EAB6861619DF34690006C06F /* YPPhotoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAB6861519DF34690006C06F /* YPPhotoViewController.storyboard */; };
@@ -54,6 +55,8 @@
 		9B8BE2AD19DE153D00CFE39A /* YaleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YaleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B8BE2B219DE153D00CFE39A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B8BE2B319DE153D00CFE39A /* YaleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YaleTests.m; sourceTree = "<group>"; };
+		9BCB4AD219DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPMainViewButtonCollectionViewCell.h; path = "Custom Views/YPMainViewButtonCollectionViewCell.h"; sourceTree = "<group>"; };
+		9BCB4AD319DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPMainViewButtonCollectionViewCell.m; path = "Custom Views/YPMainViewButtonCollectionViewCell.m"; sourceTree = "<group>"; };
 		EAB6861119DF2FDF0006C06F /* YPFlickrCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPFlickrCommunicator.h; path = ServerCommunicators/YPFlickrCommunicator.h; sourceTree = "<group>"; };
 		EAB6861219DF2FDF0006C06F /* YPFlickrCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPFlickrCommunicator.m; path = ServerCommunicators/YPFlickrCommunicator.m; sourceTree = "<group>"; };
 		EAB6861419DF30F80006C06F /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
@@ -129,6 +132,8 @@
 				9B18DA6719DE17E500CB900C /* YPMainViewController.h */,
 				9B18DA6819DE17E500CB900C /* YPMainViewController.m */,
 				EAB6862019E1189B0006C06F /* Photo */,
+				9BCB4AD219DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.h */,
+				9BCB4AD319DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m */,
 				9B18DA6A19DE1A6700CB900C /* YPTheme.h */,
 				9B18DA6B19DE1A6700CB900C /* YPTheme.m */,
 				9B8BE2A419DE153D00CFE39A /* Images.xcassets */,
@@ -324,6 +329,7 @@
 				9B18DA6419DE161200CB900C /* YPAppDelegate.m in Sources */,
 				EAB6861919DF3CB00006C06F /* YPPhotoViewController.m in Sources */,
 				EAB6861F19E118830006C06F /* YPPhotoDetailViewController.m in Sources */,
+				9BCB4AD419DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m in Sources */,
 				9B18DA6919DE17E500CB900C /* YPMainViewController.m in Sources */,
 				9B8BE29A19DE153D00CFE39A /* main.m in Sources */,
 				EAB6861C19E09B830006C06F /* YPStandardCell.m in Sources */,
