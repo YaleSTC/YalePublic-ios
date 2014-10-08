@@ -67,9 +67,9 @@
 {
   if ([segue.identifier isEqualToString:@"PhotoSetDetail"])
   {
-    YPPhotoDetailViewController* vc = segue.destinationViewController;
-    NSIndexPath *row = [self.photoSetTableView indexPathForSelectedRow];
-#warning THIS IS WHERE YOU LEFT CHARLY
+//    YPPhotoDetailViewController* vc = segue.destinationViewController;
+//    NSIndexPath *row = [self.photoSetTableView indexPathForSelectedRow];
+#warning TODO(Charly) finish this method
   }
 }
 
