@@ -20,6 +20,9 @@
                     </label>
                 </subviews>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="title" destination="8uG-9P-3Vq" id="Dko-D5-RPZ"/>
+            </connections>
             <point key="canvasLocation" x="156" y="29"/>
         </tableViewCell>
     </objects>

@@ -23,6 +23,7 @@
 -(void)viewDidLoad
 {
   self.navigationItem.title = NAVIGATION_BAR_TITLE_PHOTOS;
+  [self.photoSetTableView registerNib:[UINib nibWithNibName:@"YPStandardCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"PhotoListCell"];
   [self displaySets];
 }
 
@@ -54,9 +55,18 @@
   return cell;
 }
 
--(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  [self performSegueWithIdentifier:@"PhotoSetDetail" sender:self];
+  
+  UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPPhotoViewController"
+                                                       bundle:[NSBundle mainBundle]];
+  YPPhotoDetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"PhotoDetailVC"];
+  
+  // Have to provide album title and photoSetId
+  detailViewController.albumTitle = _photoSets[indexPath.row][@"title"][@"_content"];
+  detailViewController.photoSetId = _photoSets[indexPath.row][@"id"];
+  
+  [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -64,20 +74,7 @@
   return _photoSets.count;
 }
 
-#pragma segue
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-  if ([segue.identifier isEqualToString:@"PhotoSetDetail"])
-  {
-    YPPhotoDetailViewController *detailViewController = segue.destinationViewController;
-    NSIndexPath *indexPath = [self.photoSetTableView indexPathForSelectedRow];
-    
-    // Have to provide album title and photoSetId
-    detailViewController.albumTitle = _photoSets[indexPath.row][@"title"][@"_content"];
-    detailViewController.photoSetId = _photoSets[indexPath.row][@"id"];
-  }
-}
 
 
 @end
