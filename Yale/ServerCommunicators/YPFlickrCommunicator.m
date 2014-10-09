@@ -7,19 +7,58 @@
 //
 
 #import "YPFlickrCommunicator.h"
-#import <ObjectiveFlickr.h>
+#import <FlickrKit.h>
 #import "Config.h"
 
 @interface YPFlickrCommunicator () {
-    OFFlickrAPIContext *_context;
+
 }
 @end
 
 @implementation YPFlickrCommunicator
 
--(instancetype)init {
-    _context = [[OFFlickrAPIContext alloc] initWithAPIKey:FLICKR_API_KEY sharedSecret:FLICKR_API_KEY];
-    return self;
+-(instancetype)init
+{
+  [[FlickrKit sharedFlickrKit] initializeWithAPIKey:FLICKR_API_KEY sharedSecret:FLICKR_SHARED_SECRET];
+  return self;
 }
+
+-(void)getSets:(void (^)(NSDictionary *))completionBlock
+{
+  [[FlickrKit sharedFlickrKit] call:@"flickr.photosets.getList"
+                               args:@{@"user_id": FLICKR_YALE_NSID}
+                        maxCacheAge:FKDUMaxAgeOneHour
+                         completion:^(NSDictionary *response, NSError *error) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if (response) {
+        //success handler
+        completionBlock(response);
+      } else {
+        // error handler
+       #warning error handler needed
+      }
+    });
+  }];
+}
+
+-(void)getPhotosForSet:(NSString *)photoSetId completionBlock:(void (^)(NSDictionary *))completionBlock
+{
+  [[FlickrKit sharedFlickrKit] call:@"flickr.photosets.getPhotos"
+                               args:@{@"photoset_id": photoSetId}
+                        maxCacheAge:FKDUMaxAgeOneHour
+                         completion:^(NSDictionary *response, NSError *error) {
+                           dispatch_async(dispatch_get_main_queue(), ^{
+                             if (response) {
+                               //success handler
+                               completionBlock(response);
+                             } else {
+                               // error handler
+                              #warning error handler needed
+                             }
+                           });
+                         }];
+}
+
+
 
 @end
