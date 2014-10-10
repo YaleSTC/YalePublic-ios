@@ -24,7 +24,7 @@
 
 - (void) setUpTitle
 {
-  UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 400, 20)];
+  UILabel *navLabel = [[UILabel alloc] initWithFrame:self.navigationController.navigationBar.frame];
   navLabel.backgroundColor = [UIColor clearColor];
   navLabel.textColor = [UIColor whiteColor];
   navLabel.font = [UIFont boldSystemFontOfSize:17.0];
@@ -33,9 +33,8 @@
   navLabel.numberOfLines = 1;
   navLabel.clipsToBounds = YES;
   [self.navigationItem.titleView addSubview:navLabel];
-  NSLog(@"%@", self.title);
 }
-
+\
 #pragma mark Set Up Web View
 
 - (void)setUpWebView
@@ -43,7 +42,8 @@
   NSURL *url = [NSURL URLWithString:self.url];
   NSURLRequest *request = [NSURLRequest requestWithURL:url];
   
-  WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];;
+  WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+  webView.allowsBackForwardNavigationGestures = YES;
   [webView loadRequest:request];
   [self.view addSubview:webView];
 }
