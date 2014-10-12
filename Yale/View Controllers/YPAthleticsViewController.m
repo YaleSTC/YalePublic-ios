@@ -11,20 +11,29 @@
 #import "Config.h"
 
 @interface YPAthleticsViewController ()
-//@property (strong, nonatomic) WKWebView *athleticsWebView;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *back;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *cancel;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *refresh;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *forward;
+@property (strong, nonatomic) WKWebView *athleticsWebView;
+
 @end
 
 @implementation YPAthleticsViewController
 
 - (void)addAthleticsWebview {
-  WKWebView *athleticsWebView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+  self.athleticsWebView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+  
   NSString *url= ATHLETICS_URL;
   NSURL *nsurl = [NSURL URLWithString:url];
   NSURLRequest *req = [NSURLRequest requestWithURL:nsurl];
-  [athleticsWebView loadRequest:req];
-  athleticsWebView.allowsBackForwardNavigationGestures = YES;
-  [self.view addSubview:athleticsWebView];
+  [self.athleticsWebView loadRequest:req];
+  self.athleticsWebView.allowsBackForwardNavigationGestures = YES;
+  [self.view addSubview:self.athleticsWebView];
+  self.athleticsWebView.navigationDelegate = self;
+  
 }
+
 
 - (void)viewDidLoad {
   
@@ -32,12 +41,45 @@
   [self addAthleticsWebview];
 }
 
+-(void) updateButtons{
+  self.back.enabled = self.athleticsWebView.canGoBack;
+  self.forward.enabled = self.athleticsWebView.canGoForward;
+  self.cancel.enabled = self.athleticsWebView.loading;
+}
+
+- (void)webView:(WKWebView *)webView
+didCommitNavigation:(WKNavigation *)navigation
+{
+  [self updateButtons];
+}
+
+-(void) webView:(WKWebView *)webView
+didStartProvisionalNavigation: (WKNavigation *)navigation {
+  [self updateButtons];
+}
+
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)touchBack:(UIBarButtonItem *)sender {
+  [self.athleticsWebView goBack];
+}
 
+
+- (IBAction)touchCancel:(id)sender {
+  [self.athleticsWebView stopLoading];
+  
+}
+
+- (IBAction)touchRefresh:(id)sender {
+  [self.athleticsWebView reload];
+}
+
+- (IBAction)touchForward:(id)sender {
+  [self.athleticsWebView goForward];
+}
 
 /*
  #pragma mark - Navigation
