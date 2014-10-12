@@ -102,7 +102,7 @@
                             <outlet property="delegate" destination="KxM-ye-M1a" id="o0w-A1-Rgx"/>
                         </connections>
                     </collectionView>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <connections>
                         <outlet property="photoCollectionView" destination="L0V-76-osQ" id="B5w-BO-fxm"/>
                     </connections>
