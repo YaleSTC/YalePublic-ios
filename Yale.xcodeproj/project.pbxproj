@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1386372C19EADD220021AE38 /* YPAthleticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1386372B19EADD220021AE38 /* YPAthleticsViewController.m */; };
+		1386372E19EADD5C0021AE38 /* YPAthleticsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1386372D19EADD5C0021AE38 /* YPAthleticsViewController.storyboard */; };
 		9B18DA6419DE161200CB900C /* YPAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B18DA6319DE161200CB900C /* YPAppDelegate.m */; };
 		9B18DA6619DE173D00CB900C /* YPMainViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B18DA6519DE173D00CB900C /* YPMainViewController.storyboard */; };
 		9B18DA6919DE17E500CB900C /* YPMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B18DA6819DE17E500CB900C /* YPMainViewController.m */; };
@@ -40,6 +42,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1386372A19EADD220021AE38 /* YPAthleticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPAthleticsViewController.h; path = "View Controllers/YPAthleticsViewController.h"; sourceTree = "<group>"; };
+		1386372B19EADD220021AE38 /* YPAthleticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPAthleticsViewController.m; path = "View Controllers/YPAthleticsViewController.m"; sourceTree = "<group>"; };
+		1386372D19EADD5C0021AE38 /* YPAthleticsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPAthleticsViewController.storyboard; sourceTree = "<group>"; };
 		1D18846582394F449BE058FB /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D74949ED8AE46D3A96EA85B /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		9B18DA6219DE161200CB900C /* YPAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPAppDelegate.h; sourceTree = "<group>"; };
@@ -99,6 +104,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1386372919EADD120021AE38 /* Athletics */ = {
+			isa = PBXGroup;
+			children = (
+				1386372A19EADD220021AE38 /* YPAthleticsViewController.h */,
+				1386372B19EADD220021AE38 /* YPAthleticsViewController.m */,
+			);
+			name = Athletics;
+			sourceTree = "<group>";
+		};
 		2395C5850E374676A9D38AFB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +133,7 @@
 		9B2249FD19E4C9760064C188 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1386372919EADD120021AE38 /* Athletics */,
 				9B2249FC19E4C96E0064C188 /* MainView */,
 				EAB6862019E1189B0006C06F /* Photo */,
 			);
@@ -143,6 +158,7 @@
 			children = (
 				9B18DA6519DE173D00CB900C /* YPMainViewController.storyboard */,
 				EAB6861519DF34690006C06F /* YPPhotoViewController.storyboard */,
+				1386372D19EADD5C0021AE38 /* YPAthleticsViewController.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -180,7 +196,6 @@
 			isa = PBXGroup;
 			children = (
 				EAB6861419DF30F80006C06F /* Config.h */,
-				EAB6861019DF2F890006C06F /* ServerCommunicators */,
 				AB0071DB19E4C92A00ABF52D /* News */,
 				9B18DA6219DE161200CB900C /* YPAppDelegate.h */,
 				9B18DA6319DE161200CB900C /* YPAppDelegate.m */,
@@ -342,6 +357,7 @@
 				9B8BE2A519DE153D00CFE39A /* Images.xcassets in Resources */,
 				EAB6861619DF34690006C06F /* YPPhotoViewController.storyboard in Resources */,
 				9B18DA6619DE173D00CB900C /* YPMainViewController.storyboard in Resources */,
+				1386372E19EADD5C0021AE38 /* YPAthleticsViewController.storyboard in Resources */,
 				AB0071DD19E4D14B00ABF52D /* YPNewsViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -404,6 +420,7 @@
 				AB0071DA19E4C92300ABF52D /* YPNewsEmbeddedViewController.m in Sources */,
 				9B8BE29A19DE153D00CFE39A /* main.m in Sources */,
 				EAB6861C19E09B830006C06F /* YPStandardCell.m in Sources */,
+				1386372C19EADD220021AE38 /* YPAthleticsViewController.m in Sources */,
 				EAB6861319DF2FDF0006C06F /* YPFlickrCommunicator.m in Sources */,
 				9B18DA6F19DE254400CB900C /* YPMainViewButton.m in Sources */,
 			);

@@ -13,5 +13,6 @@
 #define FLICKR_API_KEY @"8a85c5bc78e4a6ec599d5e117de5df2d"
 #define FLICKR_SHARED_SECRET @"64f3cbace1179ee5"
 #define FLICKR_YALE_NSID @"12208415@N08" //UserID for the official Yale account, Flickrs calls the UserID NSID
+#define ATHLETICS_URL @"http://www.yalebulldogs.com"
 
 #endif
