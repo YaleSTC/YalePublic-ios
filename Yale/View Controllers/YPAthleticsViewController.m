@@ -11,15 +11,21 @@
 #import "Config.h"
 
 @interface YPAthleticsViewController ()
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *back;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *cancel;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *refresh;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *forward;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *backButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *forwardButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *reloadButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *openSafariButton;
+@property (strong, nonatomic) NSURL *athleticsURL;
+
 @property (strong, nonatomic) WKWebView *athleticsWebView;
 
 @end
 
 @implementation YPAthleticsViewController
+
+//- (void) setAthleticsURL:(NSURL *)athleticsURL {
+//  _athleticsURL = [NSURL URLWithString:ATHLETICS]
+//}
 
 - (void)addAthleticsWebview {
   self.athleticsWebView = [[WKWebView alloc] initWithFrame:self.view.bounds];
@@ -42,9 +48,11 @@
 }
 
 -(void) updateButtons{
-  self.back.enabled = self.athleticsWebView.canGoBack;
-  self.forward.enabled = self.athleticsWebView.canGoForward;
-  self.cancel.enabled = self.athleticsWebView.loading;
+  self.backButton.enabled = self.athleticsWebView.canGoBack;
+  self.forwardButton.enabled = self.athleticsWebView.canGoForward;
+  if (self.athleticsWebView.loading) {
+    
+  }
 }
 
 - (void)webView:(WKWebView *)webView
@@ -68,18 +76,19 @@ didStartProvisionalNavigation: (WKNavigation *)navigation {
 }
 
 
-- (IBAction)touchCancel:(id)sender {
-  [self.athleticsWebView stopLoading];
-  
+- (IBAction)touchForward:(UIBarButtonItem *)sender {
+    [self.athleticsWebView goForward];
 }
 
-- (IBAction)touchRefresh:(id)sender {
+
+- (IBAction)touchReload:(UIBarButtonItem *)sender {
   [self.athleticsWebView reload];
 }
 
-- (IBAction)touchForward:(id)sender {
-  [self.athleticsWebView goForward];
-}
+//- (IBAction)touchOpenSafari:(id)sender {
+//  
+//}
+
 
 /*
  #pragma mark - Navigation

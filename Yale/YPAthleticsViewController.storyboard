@@ -27,21 +27,21 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="MSq-kq-s4x"/>
-                                    <barButtonItem systemItem="stop" id="fto-le-0wb">
+                                    <barButtonItem systemItem="fastForward" id="fto-le-0wb">
                                         <connections>
-                                            <action selector="touchCancel:" destination="D3D-ic-bDK" id="6Qa-8a-XNx"/>
+                                            <action selector="touchForward:" destination="D3D-ic-bDK" id="Rih-Qq-yXY"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="7Nb-tK-jBj"/>
                                     <barButtonItem systemItem="refresh" id="YQk-h4-YZ3">
                                         <connections>
-                                            <action selector="touchRefresh:" destination="D3D-ic-bDK" id="po6-CA-gUv"/>
+                                            <action selector="touchReload:" destination="D3D-ic-bDK" id="ZDD-SL-eGO"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="Vah-be-ESe"/>
-                                    <barButtonItem systemItem="fastForward" id="XCh-W1-Cnf">
+                                    <barButtonItem systemItem="action" id="XCh-W1-Cnf">
                                         <connections>
-                                            <action selector="touchForward:" destination="D3D-ic-bDK" id="pRV-Uh-ZrB"/>
+                                            <action selector="touchOpenSafari:" destination="D3D-ic-bDK" id="hhf-LG-ntV"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -76,9 +76,13 @@
                     </view>
                     <connections>
                         <outlet property="back" destination="TSF-Ym-1c4" id="Kfd-8f-wXc"/>
+                        <outlet property="backButton" destination="TSF-Ym-1c4" id="cMM-C4-osH"/>
                         <outlet property="cancel" destination="fto-le-0wb" id="Aoq-Se-gRo"/>
                         <outlet property="forward" destination="XCh-W1-Cnf" id="4cd-JH-dd7"/>
+                        <outlet property="forwardButton" destination="fto-le-0wb" id="sA1-8i-1uo"/>
+                        <outlet property="openSafariButton" destination="XCh-W1-Cnf" id="3of-zR-Ige"/>
                         <outlet property="refresh" destination="YQk-h4-YZ3" id="oeR-qi-aam"/>
+                        <outlet property="reloadButton" destination="YQk-h4-YZ3" id="48a-mf-DWn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c9f-P1-Wds" userLabel="First Responder" sceneMemberID="firstResponder"/>
