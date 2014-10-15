@@ -30,14 +30,10 @@
 
 -(void)loadPhotos {
   _photoSet = [NSMutableArray array];
-  //[_photoSet addObject:@"test"];
   
   YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
   [flickr getPhotosForSet:self.photoSetId completionBlock:^(NSDictionary *response) {
     
-
-      //Load actual image files here
-      //NSLog(@"%@", response);
     
       // Get a list of URLs
       NSMutableArray *photoURLs = [NSMutableArray array];
@@ -77,33 +73,20 @@
   
 
   cell.photoImageView.image = _photoSet[indexPath.row];
-  
-  // Add TapGestureRecognizer
-  [cell.photoImageView setUserInteractionEnabled:YES];
-  UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                        action:@selector(photoImageViewTap:)];
-  [tap setNumberOfTouchesRequired:1];
-  [tap setNumberOfTapsRequired:1];
-  [cell.photoImageView addGestureRecognizer:tap];
-  
   return cell;
 }
 
--(void)photoImageViewTap:(UITapGestureRecognizer*)gesture {
-    NSLog(@"tap");
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
   
-  CGPoint pointInCollectionView = [gesture locationInView:self.collectionView];
-  NSIndexPath *selectedIndexPath = [self.collectionView indexPathForItemAtPoint:pointInCollectionView];
-  YPPhotoCollectionViewCell *selectedCell = (YPPhotoCollectionViewCell *) [self.photoCollectionView cellForItemAtIndexPath:selectedIndexPath];
+  YPPhotoCollectionViewCell *selectedCell = (YPPhotoCollectionViewCell *) [self.photoCollectionView cellForItemAtIndexPath:indexPath];
   
-  thumbnailImageView = selectedCell.photoImageView; // or whatever cell element holds your image that you want to zoom
-  
+  thumbnailImageView = selectedCell.photoImageView;
   fullscreenImageView = [[UIImageView alloc] init];
   [fullscreenImageView setContentMode:UIViewContentModeScaleAspectFit];
   
   fullscreenImageView.image = [thumbnailImageView image];
   CGRect tempPoint = CGRectMake(thumbnailImageView.center.x, thumbnailImageView.center.y, 0, 0);
-  CGRect startingPoint = [self.view convertRect:tempPoint fromView:[self.collectionView cellForItemAtIndexPath:selectedIndexPath]];
+  CGRect startingPoint = [self.view convertRect:tempPoint fromView:[self.collectionView cellForItemAtIndexPath:indexPath]];
   [fullscreenImageView setFrame:startingPoint];
   [fullscreenImageView setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.8f]];
   [self.view addSubview:fullscreenImageView];
@@ -123,6 +106,8 @@
 
 }
 
+
+
 - (void)fullScreenImageViewTapped:(UIGestureRecognizer *)gestureRecognizer {
   
   CGRect point=[self.view convertRect:thumbnailImageView.bounds fromView:thumbnailImageView];
@@ -131,9 +116,12 @@
   [UIView animateWithDuration:0.5
                    animations:^{
                      [(UIImageView *)gestureRecognizer.view setFrame:point];
-                   }];
-  [self performSelector:@selector(animationDone:) withObject:[gestureRecognizer view] afterDelay:0.4];
-  
+                   }
+                   completion:^(BOOL finished){
+                     [self animationDone:gestureRecognizer.view];
+                   }
+   
+   ];  
 }
 
 -(void)animationDone:(UIView  *)view
