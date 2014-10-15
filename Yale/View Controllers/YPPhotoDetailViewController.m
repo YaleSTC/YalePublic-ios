@@ -29,7 +29,7 @@
 }
 
 -(void)loadPhotos {
-  _photoSet = [[NSMutableArray alloc] init];
+  _photoSet = [NSMutableArray array];
   //[_photoSet addObject:@"test"];
   
   YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
