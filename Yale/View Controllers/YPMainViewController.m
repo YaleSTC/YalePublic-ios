@@ -9,6 +9,7 @@
 #import "YPMainViewController.h"
 #import "YPMainViewButtonCollectionViewCell.h"
 #import "YPNewsTopicsTableViewController.h"
+#import "YPVideosPlaylistTableViewController.h"
 #import <PureLayout/PureLayout.h>
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
@@ -173,7 +174,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
     UINavigationController *newsVC = [storyboard instantiateViewControllerWithIdentifier:@"NewsVC"];
     [self.navigationController pushViewController:newsVC animated:YES];
   }
-  
+  if ([underText isEqualToString:@"Videos"]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPVideosViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *videosVC = [storyboard instantiateViewControllerWithIdentifier:@"VideosVC"];
+    [self.navigationController pushViewController:videosVC animated:YES];
+  }
 }
 
 
