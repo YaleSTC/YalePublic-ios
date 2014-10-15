@@ -23,8 +23,13 @@
 {
   [super viewDidLoad];
   self.title = @"Videos";
-  [self loadPlaylists];
   
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+  [self loadPlaylists];
+  [self.tableView setSeparatorInset:UIEdgeInsetsZero];
 }
 
 - (void)loadPlaylists
@@ -41,7 +46,6 @@
     
     self.playlistArray = playlistsObject[@"items"];
     [self.tableView reloadData];
-    
   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
     NSLog(@"Error: %@", error);
   }];
@@ -60,6 +64,7 @@
 {
   UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"playlistCell"];
   NSDictionary *snippet = self.playlistArray[indexPath.row][@"snippet"];
+  cell.textLabel.numberOfLines = 2;
   cell.textLabel.text = snippet[@"title"];
   return cell;
 }

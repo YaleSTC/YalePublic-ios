@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface YPVideoTableViewCell : UITableViewCell
-@property (strong, nonatomic) IBOutlet UIView *imageContainer;
+@property (strong, nonatomic) IBOutlet UIImageView *imageContainer;
+
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *subtitleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *uploadTimeLabel;

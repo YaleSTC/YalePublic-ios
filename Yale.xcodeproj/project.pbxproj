@@ -262,10 +262,10 @@
 			children = (
 				ABD3212519EB059F009D9281 /* YPVideoEmbeddedViewViewController.h */,
 				ABD3212619EB059F009D9281 /* YPVideoEmbeddedViewViewController.m */,
-				ABD3212219EB056F009D9281 /* YPVideoListTableViewController.h */,
-				ABD3212319EB056F009D9281 /* YPVideoListTableViewController.m */,
 				ABD3211B19EAF341009D9281 /* YPVideosPlaylistTableViewController.h */,
 				ABD3211C19EAF341009D9281 /* YPVideosPlaylistTableViewController.m */,
+				ABD3212219EB056F009D9281 /* YPVideoListTableViewController.h */,
+				ABD3212319EB056F009D9281 /* YPVideoListTableViewController.m */,
 				ABD3212819EB0B48009D9281 /* YPVideoTableViewCell.h */,
 				ABD3212919EB0B48009D9281 /* YPVideoTableViewCell.m */,
 				ABD3212A19EB0B48009D9281 /* YPVideoTableViewCell.xib */,

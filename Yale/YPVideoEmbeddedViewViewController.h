@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface YPVideoEmbeddedViewViewController : UIViewController
-
+@property (nonatomic, strong) NSString *videoId;
 @end
