@@ -15,6 +15,8 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *forward;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *refresh;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *openSafari;
+@property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
+
 
 @property (strong, nonatomic) WKWebView *athleticsWebView;
 
@@ -42,7 +44,7 @@
 
 
 - (void)viewDidLoad {
-  
+  self.title = ATHLETICS_TITLE;
   [super viewDidLoad];
   [self addAthleticsWebview];
 }
@@ -51,19 +53,55 @@
   self.back.enabled = self.athleticsWebView.canGoBack;
   self.forward.enabled = self.athleticsWebView.canGoForward;
   if (self.athleticsWebView.loading) {
-    
+    [self showStopButton];
+  }
+  else {
+    [self showRefreshButton];
   }
 }
+
+-(void) showStopButton{
+  NSMutableArray *toolBarItems = [NSMutableArray arrayWithArray:[self.toolbar items]];
+  toolBarItems[4] = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:self action:@selector(refresh)];
+  [self.toolbar setItems:toolBarItems animated:NO];
+}
+
+-(void) showRefreshButton{
+  NSMutableArray *toolBarItems = [NSMutableArray arrayWithArray:[self.toolbar items]];
+  toolBarItems[4] = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(touchRefresh:)];
+  [self.toolbar setItems:toolBarItems animated:NO];
+}
+
+-(void) showLoading{
+  self.title = @"Loading";
+  UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc]
+                            initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
+  [spinner startAnimating];
+  spinner.hidden = NO;
+  UIBarButtonItem* spinButton = [[UIBarButtonItem alloc] initWithCustomView:spinner];
+  self.navigationItem.rightBarButtonItem = spinButton;
+  
+}
+
 
 - (void)webView:(WKWebView *)webView
 didCommitNavigation:(WKNavigation *)navigation
 {
   [self updateButtons];
+  [self showLoading];
 }
 
 -(void) webView:(WKWebView *)webView
 didStartProvisionalNavigation: (WKNavigation *)navigation {
   [self updateButtons];
+  [self showLoading];
+}
+
+-(void) webView:(WKWebView *)webView
+didFinishNavigation: (WKNavigation *)navigation {
+  [self updateButtons];
+  self.title = ATHLETICS_TITLE;
+  self.navigationItem.rightBarButtonItem = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -82,7 +120,14 @@ didStartProvisionalNavigation: (WKNavigation *)navigation {
 
 
 - (IBAction)touchRefresh:(id)sender {
-  [self.athleticsWebView reload];
+  if (self.athleticsWebView.loading) {
+    [self.athleticsWebView stopLoading];
+    [self showRefreshButton];
+  }
+  else{
+    [self.athleticsWebView reload];
+    [self showStopButton];
+  }
 }
 
 - (IBAction)openSafari:(UIBarButtonItem *)sender {

@@ -74,11 +74,13 @@
                             </mask>
                         </variation>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <connections>
                         <outlet property="back" destination="TSF-Ym-1c4" id="Kfd-8f-wXc"/>
                         <outlet property="forward" destination="gxM-rr-bDQ" id="MC4-E2-HN0"/>
                         <outlet property="openSafari" destination="cYa-qb-6Yd" id="e6V-ym-qwj"/>
                         <outlet property="refresh" destination="YQk-h4-YZ3" id="oeR-qi-aam"/>
+                        <outlet property="toolbar" destination="uCH-MX-afs" id="N6H-ND-eGk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c9f-P1-Wds" userLabel="First Responder" sceneMemberID="firstResponder"/>
