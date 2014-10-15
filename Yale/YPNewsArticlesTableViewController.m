@@ -79,8 +79,7 @@
   cell.titleLabel.numberOfLines = 2;
   
   cell.snippetLabel.text = [[articleNode[@"description"] stringByDecodingHTMLEntities] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-  cell.snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail
-  ;
+  cell.snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
   cell.snippetLabel.numberOfLines = 1;
   
   NSString *dateString = [articleNode[@"date"] substringFromIndex:5];
