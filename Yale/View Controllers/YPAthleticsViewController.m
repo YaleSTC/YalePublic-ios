@@ -12,14 +12,20 @@
 
 @interface YPAthleticsViewController ()
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *back;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *cancel;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *refresh;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *forward;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *refresh;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *openSafari;
+
 @property (strong, nonatomic) WKWebView *athleticsWebView;
 
 @end
 
 @implementation YPAthleticsViewController
+
+- (NSURL*)athleticsURL {
+  NSString *url= ATHLETICS_URL;
+  return [NSURL URLWithString:url];
+}
 
 - (void)addAthleticsWebview {
   self.athleticsWebView = [[WKWebView alloc] initWithFrame:self.view.bounds];
@@ -44,7 +50,9 @@
 -(void) updateButtons{
   self.back.enabled = self.athleticsWebView.canGoBack;
   self.forward.enabled = self.athleticsWebView.canGoForward;
-  self.cancel.enabled = self.athleticsWebView.loading;
+  if (self.athleticsWebView.loading) {
+    
+  }
 }
 
 - (void)webView:(WKWebView *)webView
@@ -68,18 +76,19 @@ didStartProvisionalNavigation: (WKNavigation *)navigation {
 }
 
 
-- (IBAction)touchCancel:(id)sender {
-  [self.athleticsWebView stopLoading];
-  
+- (IBAction)touchForward:(UIBarButtonItem *)sender {
+  [self.athleticsWebView goForward];
 }
+
 
 - (IBAction)touchRefresh:(id)sender {
   [self.athleticsWebView reload];
 }
 
-- (IBAction)touchForward:(id)sender {
-  [self.athleticsWebView goForward];
+- (IBAction)openSafari:(UIBarButtonItem *)sender {
+   [[UIApplication sharedApplication] openURL:self.athleticsURL];
 }
+
 
 /*
  #pragma mark - Navigation
