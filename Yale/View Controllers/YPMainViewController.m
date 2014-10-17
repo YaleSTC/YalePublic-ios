@@ -60,7 +60,8 @@
 - (void)setupButtonCollectionView
 {
   UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-  flowLayout.minimumInteritemSpacing = 20;
+  // 57 is the button width, 20 is the left margin to edge of screen
+  flowLayout.minimumInteritemSpacing = ([UIScreen mainScreen].bounds.size.width - 57*3 - 20*2) / 2;
   flowLayout.minimumLineSpacing      = 20;
   
   self.automaticallyAdjustsScrollViewInsets = NO;
