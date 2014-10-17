@@ -25,6 +25,7 @@
 
 -(void)getSets:(void (^)(NSDictionary *))completionBlock
 {
+  NSLog(@"testetst");
   [[FlickrKit sharedFlickrKit] call:@"flickr.photosets.getList"
                                args:@{@"user_id": FLICKR_YALE_NSID}
                         maxCacheAge:FKDUMaxAgeOneHour
@@ -32,9 +33,12 @@
     dispatch_async(dispatch_get_main_queue(), ^{
       if (response) {
         //success handler
+        NSLog(@"success handler");
         completionBlock(response);
       } else {
         // error handler
+        NSLog(@"%@", error);
+
        #warning error handler needed
       }
     });
@@ -59,6 +63,22 @@
                          }];
 }
 
+-(NSURL *)urlForImageFromDictionary:(NSDictionary *)photoDictionary
+{
+  return [[FlickrKit sharedFlickrKit] photoURLForSize:FKPhotoSizeSmall240 fromPhotoDictionary:photoDictionary];
+}
+
+-(void)downloadImageForURL:(NSURL *)url completionBlock:(void (^)(UIImage *))completionBlock
+{
+  //Return UIImage for URL
+		NSURLRequest *request = [NSURLRequest requestWithURL:url];
+		[NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+      
+      UIImage *image = [[UIImage alloc] initWithData:data];
+      completionBlock(image);
+      
+    }];
+}
 
 
 @end
