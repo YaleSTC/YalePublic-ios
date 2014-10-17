@@ -67,6 +67,7 @@
 		9B8BE2B319DE153D00CFE39A /* YaleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YaleTests.m; sourceTree = "<group>"; };
 		9BCB4AD219DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPMainViewButtonCollectionViewCell.h; path = "Custom Views/YPMainViewButtonCollectionViewCell.h"; sourceTree = "<group>"; };
 		9BCB4AD319DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPMainViewButtonCollectionViewCell.m; path = "Custom Views/YPMainViewButtonCollectionViewCell.m"; sourceTree = "<group>"; };
+		9BF5C67919F19FDD00AB7BE9 /* ConfigPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigPrivate.h; sourceTree = "<group>"; };
 		AB0071D219E4C8F000ABF52D /* YPNewsTopicsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsTopicsTableViewController.h; sourceTree = "<group>"; };
 		AB0071D319E4C8F000ABF52D /* YPNewsTopicsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPNewsTopicsTableViewController.m; sourceTree = "<group>"; };
 		AB0071D519E4C90300ABF52D /* YPNewsArticlesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsArticlesTableViewController.h; sourceTree = "<group>"; };
@@ -74,15 +75,14 @@
 		AB0071D819E4C92300ABF52D /* YPNewsEmbeddedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsEmbeddedViewController.h; sourceTree = "<group>"; };
 		AB0071D919E4C92300ABF52D /* YPNewsEmbeddedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPNewsEmbeddedViewController.m; sourceTree = "<group>"; };
 		AB0071DC19E4D14B00ABF52D /* YPNewsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPNewsViewController.storyboard; sourceTree = "<group>"; };
+		AB7D007D19E734FA008047A6 /* YPNewsArticleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YPNewsArticleCell.xib; sourceTree = "<group>"; };
+		AB7D007F19E7361B008047A6 /* YPNewsArticleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsArticleCell.h; sourceTree = "<group>"; };
+		AB7D008019E7361B008047A6 /* YPNewsArticleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPNewsArticleCell.m; sourceTree = "<group>"; };
 		EA54231A19E4DAD200E75859 /* YPStandardCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = YPStandardCell.xib; path = "Custom Views/YPStandardCell.xib"; sourceTree = "<group>"; };
 		EA54231C19E4E63B00E75859 /* YPPhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPPhotoCollectionViewCell.h; path = "Custom Views/YPPhotoCollectionViewCell.h"; sourceTree = "<group>"; };
 		EA54231D19E4E63B00E75859 /* YPPhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPPhotoCollectionViewCell.m; path = "Custom Views/YPPhotoCollectionViewCell.m"; sourceTree = "<group>"; };
 		EA54231F19E58BB900E75859 /* YPStandardTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPStandardTableView.h; path = "Custom Views/YPStandardTableView.h"; sourceTree = "<group>"; };
 		EA54232019E58BB900E75859 /* YPStandardTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPStandardTableView.m; path = "Custom Views/YPStandardTableView.m"; sourceTree = "<group>"; };
-		EAA2DF5E19EE027E00E6F5BF /* ConfigPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConfigPrivate.h; sourceTree = "<group>"; };
-		AB7D007D19E734FA008047A6 /* YPNewsArticleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YPNewsArticleCell.xib; sourceTree = "<group>"; };
-		AB7D007F19E7361B008047A6 /* YPNewsArticleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsArticleCell.h; sourceTree = "<group>"; };
-		AB7D008019E7361B008047A6 /* YPNewsArticleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPNewsArticleCell.m; sourceTree = "<group>"; };
 		EAB6861119DF2FDF0006C06F /* YPFlickrCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPFlickrCommunicator.h; path = ServerCommunicators/YPFlickrCommunicator.h; sourceTree = "<group>"; };
 		EAB6861219DF2FDF0006C06F /* YPFlickrCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPFlickrCommunicator.m; path = ServerCommunicators/YPFlickrCommunicator.m; sourceTree = "<group>"; };
 		EAB6861419DF30F80006C06F /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
@@ -134,7 +134,6 @@
 		9B2249FD19E4C9760064C188 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				AB0071DB19E4C92A00ABF52D /* News */,
 				9B2249FC19E4C96E0064C188 /* MainView */,
 				EAB6862019E1189B0006C06F /* Photo */,
 			);
@@ -202,7 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				EAB6861419DF30F80006C06F /* Config.h */,
-				EAA2DF5E19EE027E00E6F5BF /* ConfigPrivate.h */,
+				9BF5C67919F19FDD00AB7BE9 /* ConfigPrivate.h */,
 				AB0071DB19E4C92A00ABF52D /* News */,
 				9B18DA6219DE161200CB900C /* YPAppDelegate.h */,
 				9B18DA6319DE161200CB900C /* YPAppDelegate.m */,

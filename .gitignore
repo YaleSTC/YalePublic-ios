@@ -13,3 +13,4 @@ xcuserdata
 DerivedData
 .DS_Store
 API_Secret.txt
+ConfigPrivate.h
