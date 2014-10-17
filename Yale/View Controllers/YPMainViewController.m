@@ -11,6 +11,7 @@
 #import "YPNewsTopicsTableViewController.h"
 #import <PureLayout/PureLayout.h>
 
+
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
 
 @interface YPMainViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
@@ -92,6 +93,7 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  self.screenName = @"Main View";
   
   self.buttonUnderTexts = @[@"News", @"Directory", @"Maps", @"Videos", @"Photos",
                             @"Events", @"Transit", @"Atheletics", @"Orientation"];
@@ -109,6 +111,7 @@
   CGSize size = self.buttonCollectionView.collectionViewLayout.collectionViewContentSize;
   [self.buttonCollectionView autoSetDimensionsToSize:size];
 }
+
 
 #pragma mark - UICollectionView DataSource
 
