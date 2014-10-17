@@ -10,6 +10,7 @@
 #import "YPFlickrCommunicator.h"
 #import "YPStandardCell.h"
 #import "YPPhotoDetailViewController.h"
+#import "Config.h"
 
 @interface YPPhotoViewController () {
   NSArray *_photoSets;
@@ -21,6 +22,8 @@
 
 -(void)viewDidLoad
 {
+  self.navigationItem.title = NAVIGATION_BAR_TITLE_PHOTOS;
+  [self.photoSetTableView registerNib:[UINib nibWithNibName:@"YPStandardCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"PhotoListCell"];
   [self displaySets];
 }
 
@@ -28,6 +31,7 @@
 {
   YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
   [flickr getSets:^(NSDictionary *response) {
+    NSLog(@"%@", response);
     
     _photoSets = response[@"photosets"][@"photoset"];
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -51,9 +55,18 @@
   return cell;
 }
 
--(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  [self performSegueWithIdentifier:@"PhotoSetDetail" sender:self];
+  
+  UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPPhotoViewController"
+                                                       bundle:[NSBundle mainBundle]];
+  YPPhotoDetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"PhotoDetailVC"];
+  
+  // Have to provide album title and photoSetId
+  detailViewController.albumTitle = _photoSets[indexPath.row][@"title"][@"_content"];
+  detailViewController.photoSetId = _photoSets[indexPath.row][@"id"];
+  
+  [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -61,17 +74,7 @@
   return _photoSets.count;
 }
 
-#pragma segue
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-  if ([segue.identifier isEqualToString:@"PhotoSetDetail"])
-  {
-//    YPPhotoDetailViewController* vc = segue.destinationViewController;
-//    NSIndexPath *row = [self.photoSetTableView indexPathForSelectedRow];
-#warning TODO(Charly) finish this method
-  }
-}
 
 
 @end

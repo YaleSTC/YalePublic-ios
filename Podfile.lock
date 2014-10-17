@@ -22,18 +22,50 @@ PODS:
     - AFNetworking/NSURLSession
   - FLEX (1.1.1)
   - FlickrKit (1.0.4)
+  - FormatterKit (1.7.1):
+    - FormatterKit/AddressFormatter
+    - FormatterKit/ArrayFormatter
+    - FormatterKit/ColorFormatter
+    - FormatterKit/LocationFormatter
+    - FormatterKit/NameFormatter
+    - FormatterKit/OrdinalNumberFormatter
+    - FormatterKit/TimeIntervalFormatter
+    - FormatterKit/UnitOfInformationFormatter
+    - FormatterKit/URLRequestFormatter
+  - FormatterKit/AddressFormatter (1.7.1)
+  - FormatterKit/ArrayFormatter (1.7.1)
+  - FormatterKit/ColorFormatter (1.7.1)
+  - FormatterKit/LocationFormatter (1.7.1)
+  - FormatterKit/NameFormatter (1.7.1)
+  - FormatterKit/OrdinalNumberFormatter (1.7.1)
+  - FormatterKit/TimeIntervalFormatter (1.7.1)
+  - FormatterKit/UnitOfInformationFormatter (1.7.1)
+  - FormatterKit/URLRequestFormatter (1.7.1)
+  - MWFeedParser (1.0.1):
+    - MWFeedParser/FeedParser
+    - MWFeedParser/NSDate+InternetDateTime
+    - MWFeedParser/NSString+HTML
+  - MWFeedParser/FeedParser (1.0.1):
+    - MWFeedParser/NSDate+InternetDateTime
+    - MWFeedParser/NSString+HTML
+  - MWFeedParser/NSDate+InternetDateTime (1.0.1)
+  - MWFeedParser/NSString+HTML (1.0.1)
   - PureLayout (1.1.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.4)
   - FLEX (~> 1.1)
   - FlickrKit (~> 1.0)
+  - FormatterKit (~> 1.7)
+  - MWFeedParser
   - PureLayout (~> 1.1)
 
 SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
   FLEX: 8e53751b915759215d77c7c72b1c7bd28665dac2
   FlickrKit: 1bbc5c91f065fa0d7ce4119c5d5c63a9241eea73
+  FormatterKit: 877ff970af3feb2f602ced0a9420e9fbc25f568c
+  MWFeedParser: 003cbf5398e99a7f2057fbe9583054fd1b84be72
   PureLayout: c8960fa0f3b40d849d5e177d699d0148faa63b63
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.34.2

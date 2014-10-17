@@ -9,6 +9,7 @@
 #import "YPMainViewController.h"
 #import "YPMainViewButtonCollectionViewCell.h"
 #import "YPNewsTopicsTableViewController.h"
+#import "YPVideosPlaylistTableViewController.h"
 #import <PureLayout/PureLayout.h>
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
@@ -94,7 +95,7 @@
   [super viewDidLoad];
   
   self.buttonUnderTexts = @[@"News", @"Directory", @"Maps", @"Videos", @"Photos",
-                            @"Events", @"Transit", @"Atheletics", @"Orientation"];
+                            @"Events", @"Transit", @"Athletics", @"Orientation"];
   
   [self setupNavigationBar];
   [self setupBackgroundImage];
@@ -173,7 +174,18 @@ referenceSizeForHeaderInSection:(NSInteger)section
     UINavigationController *newsVC = [storyboard instantiateViewControllerWithIdentifier:@"NewsVC"];
     [self.navigationController pushViewController:newsVC animated:YES];
   }
-  
+  if ([underText isEqualToString:@"Videos"]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPVideosViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *videosVC = [storyboard instantiateViewControllerWithIdentifier:@"VideosVC"];
+    [self.navigationController pushViewController:videosVC animated:YES];
+  }
+  if ([underText isEqualToString:@"Photos"]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPPhotoViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *newsVC = [storyboard instantiateViewControllerWithIdentifier:@"PhotoVC"];
+    [self.navigationController pushViewController:newsVC animated:YES];
+  }
 }
 
 

@@ -1,0 +1,5 @@
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/FLEX" "${PODS_ROOT}/Headers/Public/FlickrKit" "${PODS_ROOT}/Headers/Public/FormatterKit" "${PODS_ROOT}/Headers/Public/MWFeedParser" "${PODS_ROOT}/Headers/Public/PureLayout"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/AFNetworking" -isystem "${PODS_ROOT}/Headers/Public/FLEX" -isystem "${PODS_ROOT}/Headers/Public/FlickrKit" -isystem "${PODS_ROOT}/Headers/Public/FormatterKit" -isystem "${PODS_ROOT}/Headers/Public/MWFeedParser" -isystem "${PODS_ROOT}/Headers/Public/PureLayout"
+OTHER_LDFLAGS = -ObjC -l"Pods-AFNetworking" -l"Pods-FLEX" -l"Pods-FlickrKit" -l"Pods-FormatterKit" -l"Pods-MWFeedParser" -l"Pods-PureLayout" -framework "AddressBook" -framework "AddressBookUI" -framework "CoreGraphics" -framework "CoreLocation" -framework "MobileCoreServices" -framework "Security" -framework "SystemConfiguration" -weak_framework "AssetsLibrary"
+PODS_ROOT = ${SRCROOT}/Pods
