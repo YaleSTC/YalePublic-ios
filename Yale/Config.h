@@ -15,5 +15,4 @@
 #define NAVIGATION_BAR_TITLE_PHOTOS @"Photos"
 
 
-
 #endif
