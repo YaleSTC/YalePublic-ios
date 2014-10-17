@@ -10,5 +10,6 @@
 
 @interface YPPhotoCollectionViewCell : UICollectionViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *photoImageView;
+@property (strong, nonatomic) NSString *photoTitle;
 
 @end

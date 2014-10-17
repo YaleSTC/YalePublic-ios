@@ -49,7 +49,6 @@
   YPStandardCell *cell = [self.photoSetTableView dequeueReusableCellWithIdentifier:@"PhotoListCell" forIndexPath:indexPath];
   
   NSDictionary *set = _photoSets[indexPath.row];
-  
   [cell.title setText:set[@"title"][@"_content"]];
   
   return cell;
