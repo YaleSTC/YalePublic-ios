@@ -7,6 +7,9 @@
 //
 
 #import "YPNewsTopicsTableViewController.h"
+#import "GAI.h"
+#import "GAIFields.h"
+#import "GAIDictionaryBuilder.h"
 
 @interface YPNewsTopicsTableViewController ()
 
@@ -22,6 +25,18 @@
   
   // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
   // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+  
+  [super viewDidAppear:animated];
+  
+  //Google Analytics
+  id tracker = [[GAI sharedInstance] defaultTracker];
+  [tracker set:kGAIScreenName
+         value:@"News VC"];
+  [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -10,6 +10,9 @@
 #import "YPFlickrCommunicator.h"
 #import "YPStandardCell.h"
 #import "YPPhotoDetailViewController.h"
+#import "GAI.h"
+#import "GAIFields.h"
+#import "GAIDictionaryBuilder.h"
 
 @interface YPPhotoViewController () {
   NSArray *_photoSets;
@@ -19,12 +22,22 @@
 
 @implementation YPPhotoViewController
 
--(void)viewDidLoad
+- (void)viewDidLoad
 {
   [self displaySets];
 }
 
--(void)displaySets
+- (void)viewDidAppear:(BOOL)animated
+{
+  //Google Analytics
+  id tracker = [[GAI sharedInstance] defaultTracker];
+  [tracker set:kGAIScreenName
+         value:@"Photo VC"];
+  [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+}
+
+
+- (void)displaySets
 {
   YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
   [flickr getSets:^(NSDictionary *response) {
