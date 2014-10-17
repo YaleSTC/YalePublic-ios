@@ -24,12 +24,14 @@
 
 @implementation YPAthleticsViewController
 
-- (NSURL*)athleticsURL {
+- (NSURL*)athleticsURL
+{
   NSString *url= ATHLETICS_URL;
   return [NSURL URLWithString:url];
 }
 
-- (void)addAthleticsWebview {
+- (void)addAthleticsWebview
+{
   self.athleticsWebView = [[WKWebView alloc] initWithFrame:self.view.bounds];
   
   NSString *url= ATHLETICS_URL;
@@ -43,13 +45,15 @@
 }
 
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
   self.title = ATHLETICS_TITLE;
   [super viewDidLoad];
   [self addAthleticsWebview];
 }
 
--(void) updateButtons{
+-(void) updateButtons
+{
   self.back.enabled = self.athleticsWebView.canGoBack;
   self.forward.enabled = self.athleticsWebView.canGoForward;
   if (self.athleticsWebView.loading) {
@@ -60,19 +64,22 @@
   }
 }
 
--(void) showStopButton{
+-(void) showStopButton
+{
   NSMutableArray *toolBarItems = [NSMutableArray arrayWithArray:[self.toolbar items]];
   toolBarItems[4] = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:self action:@selector(refresh)];
   [self.toolbar setItems:toolBarItems animated:NO];
 }
 
--(void) showRefreshButton{
+-(void) showRefreshButton
+{
   NSMutableArray *toolBarItems = [NSMutableArray arrayWithArray:[self.toolbar items]];
   toolBarItems[4] = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(touchRefresh:)];
   [self.toolbar setItems:toolBarItems animated:NO];
 }
 
--(void) showLoading{
+-(void) showLoading
+{
   self.title = @"Loading";
   UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc]
                             initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
@@ -92,34 +99,40 @@ didCommitNavigation:(WKNavigation *)navigation
 }
 
 -(void) webView:(WKWebView *)webView
-didStartProvisionalNavigation: (WKNavigation *)navigation {
+didStartProvisionalNavigation: (WKNavigation *)navigation
+{
   [self updateButtons];
   [self showLoading];
 }
 
 -(void) webView:(WKWebView *)webView
-didFinishNavigation: (WKNavigation *)navigation {
+didFinishNavigation: (WKNavigation *)navigation
+{
   [self updateButtons];
   self.title = ATHLETICS_TITLE;
   self.navigationItem.rightBarButtonItem = nil;
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)touchBack:(UIBarButtonItem *)sender {
+- (IBAction)touchBack:(UIBarButtonItem *)sender
+{
   [self.athleticsWebView goBack];
 }
 
 
-- (IBAction)touchForward:(UIBarButtonItem *)sender {
+- (IBAction)touchForward:(UIBarButtonItem *)sender
+{
   [self.athleticsWebView goForward];
 }
 
 
-- (IBAction)touchRefresh:(id)sender {
+- (IBAction)touchRefresh:(id)sender
+{
   if (self.athleticsWebView.loading) {
     [self.athleticsWebView stopLoading];
     [self showRefreshButton];
@@ -130,7 +143,8 @@ didFinishNavigation: (WKNavigation *)navigation {
   }
 }
 
-- (IBAction)openSafari:(UIBarButtonItem *)sender {
+- (IBAction)openSafari:(UIBarButtonItem *)sender
+{
    [[UIApplication sharedApplication] openURL:self.athleticsURL];
 }
 
