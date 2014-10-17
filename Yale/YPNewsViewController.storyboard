@@ -12,6 +12,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="uFs-TS-G78">
+                            <rect key="frame" x="0.0" y="-21" width="600" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </searchBar>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TopicCell" id="i9B-wj-6EJ">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -19,7 +24,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="OTf-ST-oaa" kind="show" id="XL8-xi-l4i"/>
+                                    <segue destination="OTf-ST-oaa" kind="show" identifier="showArticleList" id="XL8-xi-l4i"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -28,6 +33,9 @@
                             <outlet property="delegate" destination="m3j-a8-HNx" id="QmY-8I-g6N"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="searchBar" destination="uFs-TS-G78" id="EGp-vq-opt"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="flX-sB-fl6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -37,18 +45,18 @@
         <scene sceneID="wQm-1p-6Ts">
             <objects>
                 <tableViewController id="OTf-ST-oaa" customClass="YPNewsArticlesTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="KSW-eC-JDV">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="22" sectionFooterHeight="22" id="KSW-eC-JDV">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="bw4-cx-A3T">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="articleCell" rowHeight="100" id="bw4-cx-A3T" customClass="YPNewsArticleCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bw4-cx-A3T" id="JXh-1u-AhV">
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="1A2-wN-oWE" kind="show" id="jQB-s1-mdZ"/>
+                                    <segue destination="1A2-wN-oWE" kind="show" identifier="showArticle" id="jQB-s1-mdZ"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -62,10 +70,10 @@
             </objects>
             <point key="canvasLocation" x="3558" y="772"/>
         </scene>
-        <!--View Controller-->
+        <!--News Embedded View Controller-->
         <scene sceneID="2dT-GN-gzu">
             <objects>
-                <viewController id="1A2-wN-oWE" sceneMemberID="viewController">
+                <viewController id="1A2-wN-oWE" customClass="YPNewsEmbeddedViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="YDT-du-5OJ"/>
                         <viewControllerLayoutGuide type="bottom" id="Npn-NI-iVp"/>
