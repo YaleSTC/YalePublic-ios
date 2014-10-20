@@ -14,5 +14,7 @@
 // Navigation Bar Titles
 #define NAVIGATION_BAR_TITLE_PHOTOS @"Photos"
 
+#define ATHLETICS_URL @"http://www.yalebulldogs.com"
+#define ATHLETICS_TITLE @"Athletics"
 
 #endif
