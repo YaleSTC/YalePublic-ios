@@ -13,8 +13,11 @@
 
 @interface YPPhotoDetailViewController () {
   __block NSMutableArray *_photoSet;
+  UIView *overlayView;
   UIImageView *thumbnailImageView;
   UIImageView *fullscreenImageView;
+  UILabel *title;
+  NSIndexPath *selectedIndexPath;
 }
 
 @end
@@ -34,32 +37,28 @@
   YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
   [flickr getPhotosForSet:self.photoSetId completionBlock:^(NSDictionary *response) {
     
+    NSLog(@"%@", response);
     
       // Get a list of URLs
       NSMutableArray *photoURLs = [NSMutableArray array];
       for (NSDictionary *photoDictionary in [response valueForKeyPath:@"photoset.photo"]) {
         NSURL *url = [flickr urlForImageFromDictionary:photoDictionary];
-        [photoURLs addObject:url];
+        //[photoURLs addObject:url];
+        [photoURLs addObject:@{@"url": url, @"title": photoDictionary[@"title"]}];
       }
     
       // Download image for each URL
-      for (NSURL *url in photoURLs) {
-        NSLog(@"%@", url);
-        [flickr downloadImageForURL:url completionBlock:^(UIImage *image) {
-          NSLog(@"add image, %@", image);
-          [_photoSet addObject:image];
-          NSLog(@"count: %ld", _photoSet.count);
+      //for (NSURL *url in photoURLs) {
+       for (NSDictionary *photo in photoURLs) {
+        //NSLog(@"%@", url);
+        [flickr downloadImageForURL:photo[@"url"] completionBlock:^(UIImage *image) {
+          //NSLog(@"add image, %@", image);
+          [_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
 
           [self.photoCollectionView reloadData];
-          
-          
-          dispatch_async(dispatch_get_main_queue(), ^{
-            [self.photoCollectionView reloadData];
-          });
           }
          ];
       }
-
   }];
 }
 
@@ -72,64 +71,136 @@
                                   forIndexPath:indexPath];
   
 
-  cell.photoImageView.image = _photoSet[indexPath.row];
+  cell.photoImageView.image = _photoSet[indexPath.row][@"image"];
+  cell.photoTitle = _photoSet[indexPath.row][@"title"];
   return cell;
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
   
   YPPhotoCollectionViewCell *selectedCell = (YPPhotoCollectionViewCell *) [self.photoCollectionView cellForItemAtIndexPath:indexPath];
+  selectedIndexPath = indexPath;
+  NSLog(@"selected indexPath %@", indexPath);
+  
+  overlayView = [[UIView alloc] init];
   
   thumbnailImageView = selectedCell.photoImageView;
-  fullscreenImageView = [[UIImageView alloc] init];
+  UIImage *image = [thumbnailImageView image];
+  fullscreenImageView = [[UIImageView alloc] initWithImage:image];
   [fullscreenImageView setContentMode:UIViewContentModeScaleAspectFit];
   
-  fullscreenImageView.image = [thumbnailImageView image];
   CGRect tempPoint = CGRectMake(thumbnailImageView.center.x, thumbnailImageView.center.y, 0, 0);
   CGRect startingPoint = [self.view convertRect:tempPoint fromView:[self.collectionView cellForItemAtIndexPath:indexPath]];
+  
+  [overlayView setFrame:startingPoint];
   [fullscreenImageView setFrame:startingPoint];
-  [fullscreenImageView setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.8f]];
+  
+  
+  [overlayView setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.8f]];
+  
+  [self.view addSubview:overlayView];
   [self.view addSubview:fullscreenImageView];
+  
+  float marginFactor = 0.2;
+  
   
   [UIView animateWithDuration:0.4
                    animations:^{
-                     [fullscreenImageView setFrame:CGRectMake(0,
-                                                              0,
-                                                              self.view.bounds.size.width,
-                                                              self.view.bounds.size.height)];
-                   }];
+                     [overlayView setFrame:CGRectMake(0,0,self.view.bounds.size.width,self.view.bounds.size.height)];
+                     
+                     // we want some space to display a label in portrait mode
+                     int margin = (marginFactor*fullscreenImageView.bounds.size.height);
+                     CGRect fullscreenFrame = CGRectMake(0,(margin/2),self.view.bounds.size.width, (self.view.bounds.size.height-margin));
+                     
+                     [fullscreenImageView setFrame:fullscreenFrame];
+                   }
+                   completion:^(BOOL finished){
+                     
+                     // Create title label
+                     int distanceFromBottom = ((marginFactor/2)*fullscreenImageView.bounds.size.height);
+                     int labelYCoordinate = (overlayView.bounds.size.height-distanceFromBottom);
+                     
+
+                     title = [[UILabel alloc] initWithFrame:CGRectMake(0, labelYCoordinate, self.view.bounds.size.width, distanceFromBottom)];
+                     title.textColor = [UIColor whiteColor];
+                     title.textAlignment = NSTextAlignmentCenter;
+                     title.numberOfLines = 2;
+                     title.text = selectedCell.photoTitle;
+                     [overlayView addSubview:title];
+                   }
+   ];
+
+  
+  
   UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewTapped:)];
   singleTap.numberOfTapsRequired = 1;
   singleTap.numberOfTouchesRequired = 1;
-  [fullscreenImageView addGestureRecognizer:singleTap];
-  [fullscreenImageView setUserInteractionEnabled:YES];
+  [overlayView addGestureRecognizer:singleTap];
+  [overlayView setUserInteractionEnabled:YES];
+  
+  UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewLeftSwiped:)];
+  [leftSwipe setDirection:UISwipeGestureRecognizerDirectionLeft];
+  [overlayView addGestureRecognizer:leftSwipe];
+  
+  UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewRightSwiped:)];
+  [rightSwipe setDirection:UISwipeGestureRecognizerDirectionRight];
+  [overlayView addGestureRecognizer:rightSwipe];
+
 
 }
 
+-(void)fullScreenImageViewLeftSwiped:(UIGestureRecognizer *)gestureRecognizer
+{
+  
+  //first check if there is more pictures to see.
+  if(selectedIndexPath.row < (_photoSet.count-1))
+  {
+    NSIndexPath *newIndex = [NSIndexPath indexPathForRow:selectedIndexPath.row+1 inSection:selectedIndexPath.section];
+    NSLog(@"new indexPath.orw %ld", (long)newIndex.row);
+    selectedIndexPath = newIndex;
+    
+    fullscreenImageView.image = _photoSet[newIndex.row][@"image"];
+    [title setText:_photoSet[newIndex.row][@"title"]];
+  }
 
+}
+
+-(void)fullScreenImageViewRightSwiped:(UIGestureRecognizer *)gestureRecognizer
+{
+  
+  if(selectedIndexPath.row > 0)
+  {
+    NSIndexPath *newIndex = [NSIndexPath indexPathForRow:selectedIndexPath.row-1 inSection:selectedIndexPath.section];
+    NSLog(@"new indexPath.orw %ld", (long)newIndex.row);
+    selectedIndexPath = newIndex;
+    
+    fullscreenImageView.image = _photoSet[newIndex.row][@"image"];
+    [title setText:_photoSet[newIndex.row][@"title"]];
+  }
+}
 
 - (void)fullScreenImageViewTapped:(UIGestureRecognizer *)gestureRecognizer {
   
   CGRect point=[self.view convertRect:thumbnailImageView.bounds fromView:thumbnailImageView];
   
+  
   gestureRecognizer.view.backgroundColor=[UIColor clearColor];
+  [title removeFromSuperview];
+  title = nil;
+  
   [UIView animateWithDuration:0.5
                    animations:^{
-                     [(UIImageView *)gestureRecognizer.view setFrame:point];
+                     [fullscreenImageView setFrame:point];
                    }
                    completion:^(BOOL finished){
-                     [self animationDone:gestureRecognizer.view];
+                     [overlayView removeFromSuperview];
+                     overlayView = nil;
+                     
+                     [fullscreenImageView removeFromSuperview];
+                     fullscreenImageView = nil;
                    }
-   
-   ];  
+   ];
 }
-
--(void)animationDone:(UIView  *)view
-{
-  [fullscreenImageView removeFromSuperview];
-  fullscreenImageView = nil;
-}
-
 
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {

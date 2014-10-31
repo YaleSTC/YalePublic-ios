@@ -100,6 +100,8 @@
 {
   [super viewDidLoad];
   
+  self.screenName = @"Main View";
+  
   self.buttonUnderTexts = @[@"News", @"Directory", @"Maps", @"Videos", @"Photos",
                             @"Events", @"Transit", @"Athletics", @"Orientation"];
   
@@ -201,7 +203,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
   UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPInfoViewController"
                                                        bundle:[NSBundle mainBundle]];
-  UINavigationController *infoVC = [storyboard instantiateViewControllerWithIdentifier:@"InfoVC"];
+  UINavigationController *infoVC = [storyboard instantiateViewControllerWithIdentifier:@"InfoVC Root"];
   [self.navigationController presentViewController:infoVC animated:YES completion:nil];
 }
 

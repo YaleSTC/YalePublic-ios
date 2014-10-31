@@ -7,66 +7,96 @@
 //
 
 #import "YPInfoViewViewController.h"
+#import <QuartzCore/QuartzCore.h>
+#import "Config.h"
 
 @interface YPInfoViewViewController ()
-@property (nonatomic, strong) UIBarButtonItem *doneButton;
 @end
 
 @implementation YPInfoViewViewController
 
-#pragma mark Setup Navigation Bar
+#pragma mark Setup VC
 
 - (void)setupNavigationBar
 {
-  UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
-  self.doneButton = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
-  self.navigationItem.rightBarButtonItem = self.doneButton;
+
   self.navigationController.navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName : [UIColor whiteColor] };
-  [doneButton addTarget:self action:[self.presentingViewController dismissViewControllerAnimated:YES completion:nil] forControlEvents:UItouch]
   self.navigationController.navigationBar.translucent = YES;
-  self.title = @"Done";
+  self.title = @"About";
 }
 
-- (void)setupBackgroundImage
+- (void)setShadow:(UIView *)view
 {
-  CGFloat screenHeight = [[UIScreen mainScreen] bounds].size.height;
+  view.layer.masksToBounds = NO;
+  view.layer.shadowColor = [UIColor blackColor].CGColor;
+  view.layer.shadowOffset = CGSizeMake(2.0f, 2.0f);
+  view.layer.shadowOpacity = 1.0f;
+  view.layer.shadowRadius = 5.0f;
   
-  UIImage *backgroundImage;
+  view.layer.cornerRadius = 8.0f;
+}
+
+- (void)setupVC
+{
+  self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"grey_background"]]
+  ;
+  UIImage *logo = [UIImage imageNamed:@"TestButtonImage"];
+  UIImageView *imgView = [[UIImageView alloc] initWithImage:logo];
+  [imgView.layer setMasksToBounds:YES];
   
-  if (screenHeight == 568) {
-    backgroundImage = [UIImage imageNamed:@"background5"];
-  } else if (screenHeight == 667) {
-    backgroundImage = [UIImage imageNamed:@"background6"];
-  } else if (screenHeight) {
-    backgroundImage = [UIImage imageNamed:@"background6+"];
-  } else {
-    backgroundImage = [UIImage imageNamed:@"background5"];
-  }
+  imgView.clipsToBounds = YES;
+  [self.logoImageView addSubview:imgView];
+  self.logoImageView.layer.cornerRadius = 8.0f;
+  self.logoImageView.layer.masksToBounds = NO;
+  self.logoImageView.layer.shadowOffset = CGSizeMake(2.0f, 2.0f);
+  self.logoImageView.layer.shadowRadius = 5;
+  self.logoImageView.layer.shadowOpacity = 0.5;
+  self.logoImageView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.logoImageView.bounds].CGPath;
   
-//  self.backgroundImageView.image = backgroundImage;
-//  self.backgroundImageView.layer.zPosition -= 1;
+  self.releaseLabel.text = [NSString stringWithFormat:@"release: %@", APP_RELEASE_VERSION];
+  
+  [self setShadow:self.supportButton];
+  
+  [self setShadow:self.projectInfoButton];
+  
+  [self.supportButton addTarget:self action:@selector(sendMail) forControlEvents:UIControlEventTouchUpInside];
 }
 
 
-- (void)viewDidLoad {
+
+- (void)viewDidLoad
+{
   [super viewDidLoad];
   [self setupNavigationBar];
-  [self setupBackgroundImage];
+  [self setupVC];
 }
 
-- (void)didReceiveMemoryWarning {
-  [super didReceiveMemoryWarning];
-  // Dispose of any resources that can be recreated.
+#pragma mark Mail
+
+- (void)sendMail
+{
+  if([MFMailComposeViewController canSendMail]) {
+    MFMailComposeViewController *mailCont = [[MFMailComposeViewController alloc] init];
+    mailCont.mailComposeDelegate = self;
+    
+    [mailCont setSubject:@"Feedback"];
+    [mailCont setToRecipients:[NSArray arrayWithObject:@"yalepublic@gmail.com"]];
+    [mailCont setMessageBody:@"" isHTML:NO];
+    [self.navigationController presentViewController:mailCont animated:YES completion:nil];
+  }
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+
+// Then implement the delegate method
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+  [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+#pragma mark - Navigation
+- (IBAction)dissmissThisVC:(id)sender {
+  [self dismissViewControllerAnimated:YES completion:nil];
+
+}
 
 @end

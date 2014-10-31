@@ -28,6 +28,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+  [super viewWillAppear:animated];
   [self loadVideos];
   [self.tableView setSeparatorInset:UIEdgeInsetsZero];
 }

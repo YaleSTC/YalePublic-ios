@@ -11,7 +11,7 @@
 
 
 
-@interface YPFlickrCommunicator : UIView
+@interface YPFlickrCommunicator : NSObject
 
 -(NSURL *)urlForImageFromDictionary:(NSDictionary *)photoDictionary;
 -(void)downloadImageForURL:(NSURL *)url completionBlock:(void (^)(UIImage *))completionBlock;

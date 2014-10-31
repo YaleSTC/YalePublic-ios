@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1386AE3719F1A66F00CA203F /* YPAthleticsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1386AE3619F1A66F00CA203F /* YPAthleticsViewController.storyboard */; };
-		1386AE3B19F1A69700CA203F /* YPAthleticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1386AE3A19F1A69700CA203F /* YPAthleticsViewController.m */; };
 		9B18DA6419DE161200CB900C /* YPAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B18DA6319DE161200CB900C /* YPAppDelegate.m */; };
 		9B18DA6619DE173D00CB900C /* YPMainViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B18DA6519DE173D00CB900C /* YPMainViewController.storyboard */; };
 		9B18DA6919DE17E500CB900C /* YPMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B18DA6819DE17E500CB900C /* YPMainViewController.m */; };
@@ -18,6 +17,7 @@
 		9B8BE2A519DE153D00CFE39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B8BE2A419DE153D00CFE39A /* Images.xcassets */; };
 		9B8BE2A819DE153D00CFE39A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B8BE2A619DE153D00CFE39A /* LaunchScreen.xib */; };
 		9B8BE2B419DE153D00CFE39A /* YaleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B8BE2B319DE153D00CFE39A /* YaleTests.m */; };
+		9BC369991A040F9A00B63FF8 /* YPAthleticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC369981A040F9A00B63FF8 /* YPAthleticsViewController.m */; };
 		9BCB4AD419DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCB4AD319DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m */; };
 		AB0071D419E4C8F000ABF52D /* YPNewsTopicsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0071D319E4C8F000ABF52D /* YPNewsTopicsTableViewController.m */; };
 		AB0071D719E4C90300ABF52D /* YPNewsArticlesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0071D619E4C90300ABF52D /* YPNewsArticlesTableViewController.m */; };
@@ -25,6 +25,9 @@
 		AB0071DD19E4D14B00ABF52D /* YPNewsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB0071DC19E4D14B00ABF52D /* YPNewsViewController.storyboard */; };
 		AB6F832E1A04081700F3FBD7 /* YPInfoViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */; };
 		AB6F83301A0408A500F3FBD7 /* YPInfoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB6F832F1A0408A500F3FBD7 /* YPInfoViewController.storyboard */; };
+		AB6F83321A041BE000F3FBD7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB6F83311A041BE000F3FBD7 /* QuartzCore.framework */; };
+		AB6F83351A041F0000F3FBD7 /* YPProjectInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6F83341A041F0000F3FBD7 /* YPProjectInfoViewController.m */; };
+		AB6F83371A04231900F3FBD7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB6F83361A04231900F3FBD7 /* MessageUI.framework */; };
 		AB7D007E19E734FA008047A6 /* YPNewsArticleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB7D007D19E734FA008047A6 /* YPNewsArticleCell.xib */; };
 		AB7D008119E7361B008047A6 /* YPNewsArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7D008019E7361B008047A6 /* YPNewsArticleCell.m */; };
 		ABD3211A19EAF31D009D9281 /* YPVideosViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABD3211919EAF31D009D9281 /* YPVideosViewController.storyboard */; };
@@ -57,8 +60,6 @@
 
 /* Begin PBXFileReference section */
 		1386AE3619F1A66F00CA203F /* YPAthleticsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPAthleticsViewController.storyboard; sourceTree = "<group>"; };
-		1386AE3919F1A69700CA203F /* YPAthleticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPAthleticsViewController.h; path = "View Controllers/YPAthleticsViewController.h"; sourceTree = "<group>"; };
-		1386AE3A19F1A69700CA203F /* YPAthleticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPAthleticsViewController.m; path = "View Controllers/YPAthleticsViewController.m"; sourceTree = "<group>"; };
 		1386AE3D19F1A6E100CA203F /* ConfigPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigPrivate.h; sourceTree = "<group>"; };
 		1D18846582394F449BE058FB /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8109631B08B5F638A8E23FA0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -79,6 +80,8 @@
 		9B8BE2AD19DE153D00CFE39A /* YaleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YaleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B8BE2B219DE153D00CFE39A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B8BE2B319DE153D00CFE39A /* YaleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YaleTests.m; sourceTree = "<group>"; };
+		9BC369971A040F9A00B63FF8 /* YPAthleticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPAthleticsViewController.h; path = "View Controllers/YPAthleticsViewController.h"; sourceTree = "<group>"; };
+		9BC369981A040F9A00B63FF8 /* YPAthleticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPAthleticsViewController.m; path = "View Controllers/YPAthleticsViewController.m"; sourceTree = "<group>"; };
 		9BCB4AD219DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPMainViewButtonCollectionViewCell.h; path = "Custom Views/YPMainViewButtonCollectionViewCell.h"; sourceTree = "<group>"; };
 		9BCB4AD319DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPMainViewButtonCollectionViewCell.m; path = "Custom Views/YPMainViewButtonCollectionViewCell.m"; sourceTree = "<group>"; };
 		AB0071D219E4C8F000ABF52D /* YPNewsTopicsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsTopicsTableViewController.h; sourceTree = "<group>"; };
@@ -91,6 +94,10 @@
 		AB6F832C1A04081700F3FBD7 /* YPInfoViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPInfoViewViewController.h; sourceTree = "<group>"; };
 		AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPInfoViewViewController.m; sourceTree = "<group>"; };
 		AB6F832F1A0408A500F3FBD7 /* YPInfoViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPInfoViewController.storyboard; sourceTree = "<group>"; };
+		AB6F83311A041BE000F3FBD7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		AB6F83331A041F0000F3FBD7 /* YPProjectInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPProjectInfoViewController.h; sourceTree = "<group>"; };
+		AB6F83341A041F0000F3FBD7 /* YPProjectInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPProjectInfoViewController.m; sourceTree = "<group>"; };
+		AB6F83361A04231900F3FBD7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		AB7D007D19E734FA008047A6 /* YPNewsArticleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YPNewsArticleCell.xib; sourceTree = "<group>"; };
 		AB7D007F19E7361B008047A6 /* YPNewsArticleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsArticleCell.h; sourceTree = "<group>"; };
 		AB7D008019E7361B008047A6 /* YPNewsArticleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPNewsArticleCell.m; sourceTree = "<group>"; };
@@ -129,6 +136,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB6F83371A04231900F3FBD7 /* MessageUI.framework in Frameworks */,
+				AB6F83321A041BE000F3FBD7 /* QuartzCore.framework in Frameworks */,
 				DC72D6F84DC8499796A7F96A /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -146,8 +155,8 @@
 		1386AE3819F1A67F00CA203F /* Athletics */ = {
 			isa = PBXGroup;
 			children = (
-				1386AE3919F1A69700CA203F /* YPAthleticsViewController.h */,
-				1386AE3A19F1A69700CA203F /* YPAthleticsViewController.m */,
+				9BC369971A040F9A00B63FF8 /* YPAthleticsViewController.h */,
+				9BC369981A040F9A00B63FF8 /* YPAthleticsViewController.m */,
 			);
 			name = Athletics;
 			sourceTree = "<group>";
@@ -155,6 +164,8 @@
 		2395C5850E374676A9D38AFB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AB6F83361A04231900F3FBD7 /* MessageUI.framework */,
+				AB6F83311A041BE000F3FBD7 /* QuartzCore.framework */,
 				ABD3211E19EAF93B009D9281 /* GTLFramework.h */,
 				ABD3211F19EAF93B009D9281 /* GTLFramework.m */,
 				1D18846582394F449BE058FB /* libPods.a */,
@@ -175,6 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				AB6F832B1A04079500F3FBD7 /* Info */,
+				AB0071DB19E4C92A00ABF52D /* News */,
 				1386AE3819F1A67F00CA203F /* Athletics */,
 				ABD3211819EAF306009D9281 /* Videos */,
 				9B2249FC19E4C96E0064C188 /* MainView */,
@@ -186,6 +198,12 @@
 		9B2249FE19E4C9850064C188 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
+				AB7D007D19E734FA008047A6 /* YPNewsArticleCell.xib */,
+				AB7D007F19E7361B008047A6 /* YPNewsArticleCell.h */,
+				AB7D008019E7361B008047A6 /* YPNewsArticleCell.m */,
+				ABD3212819EB0B48009D9281 /* YPVideoTableViewCell.h */,
+				ABD3212919EB0B48009D9281 /* YPVideoTableViewCell.m */,
+				ABD3212A19EB0B48009D9281 /* YPVideoTableViewCell.xib */,
 				9B18DA6D19DE254400CB900C /* YPMainViewButton.h */,
 				9B18DA6E19DE254400CB900C /* YPMainViewButton.m */,
 				EAB6861A19E09B830006C06F /* YPStandardCell.h */,
@@ -248,7 +266,6 @@
 			children = (
 				EAB6861419DF30F80006C06F /* Config.h */,
 				1386AE3D19F1A6E100CA203F /* ConfigPrivate.h */,
-				AB0071DB19E4C92A00ABF52D /* News */,
 				9B18DA6219DE161200CB900C /* YPAppDelegate.h */,
 				9B18DA6319DE161200CB900C /* YPAppDelegate.m */,
 				EAB6861019DF2F890006C06F /* ServerCommunicators */,
@@ -292,9 +309,6 @@
 		AB0071DB19E4C92A00ABF52D /* News */ = {
 			isa = PBXGroup;
 			children = (
-				AB7D007D19E734FA008047A6 /* YPNewsArticleCell.xib */,
-				AB7D007F19E7361B008047A6 /* YPNewsArticleCell.h */,
-				AB7D008019E7361B008047A6 /* YPNewsArticleCell.m */,
 				AB0071D519E4C90300ABF52D /* YPNewsArticlesTableViewController.h */,
 				AB0071D619E4C90300ABF52D /* YPNewsArticlesTableViewController.m */,
 				AB0071D219E4C8F000ABF52D /* YPNewsTopicsTableViewController.h */,
@@ -308,6 +322,8 @@
 		AB6F832B1A04079500F3FBD7 /* Info */ = {
 			isa = PBXGroup;
 			children = (
+				AB6F83331A041F0000F3FBD7 /* YPProjectInfoViewController.h */,
+				AB6F83341A041F0000F3FBD7 /* YPProjectInfoViewController.m */,
 				AB6F832C1A04081700F3FBD7 /* YPInfoViewViewController.h */,
 				AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */,
 			);
@@ -323,9 +339,6 @@
 				ABD3211C19EAF341009D9281 /* YPVideosPlaylistTableViewController.m */,
 				ABD3212219EB056F009D9281 /* YPVideoListTableViewController.h */,
 				ABD3212319EB056F009D9281 /* YPVideoListTableViewController.m */,
-				ABD3212819EB0B48009D9281 /* YPVideoTableViewCell.h */,
-				ABD3212919EB0B48009D9281 /* YPVideoTableViewCell.m */,
-				ABD3212A19EB0B48009D9281 /* YPVideoTableViewCell.xib */,
 			);
 			name = Videos;
 			sourceTree = "<group>";
@@ -514,8 +527,9 @@
 				EAB6861919DF3CB00006C06F /* YPPhotoViewController.m in Sources */,
 				EAB6861F19E118830006C06F /* YPPhotoDetailViewController.m in Sources */,
 				AB6F832E1A04081700F3FBD7 /* YPInfoViewViewController.m in Sources */,
+				AB6F83351A041F0000F3FBD7 /* YPProjectInfoViewController.m in Sources */,
 				ABD3211D19EAF341009D9281 /* YPVideosPlaylistTableViewController.m in Sources */,
-				1386AE3B19F1A69700CA203F /* YPAthleticsViewController.m in Sources */,
+				9BC369991A040F9A00B63FF8 /* YPAthleticsViewController.m in Sources */,
 				9BCB4AD419DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m in Sources */,
 				9B18DA6919DE17E500CB900C /* YPMainViewController.m in Sources */,
 				EA54231E19E4E63B00E75859 /* YPPhotoCollectionViewCell.m in Sources */,

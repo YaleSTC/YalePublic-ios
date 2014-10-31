@@ -41,6 +41,7 @@ PODS:
   - FormatterKit/TimeIntervalFormatter (1.7.1)
   - FormatterKit/UnitOfInformationFormatter (1.7.1)
   - FormatterKit/URLRequestFormatter (1.7.1)
+  - GoogleAnalytics-iOS-SDK (3.0.9)
   - MWFeedParser (1.0.1):
     - MWFeedParser/FeedParser
     - MWFeedParser/NSDate+InternetDateTime
@@ -57,6 +58,7 @@ DEPENDENCIES:
   - FLEX (~> 1.1)
   - FlickrKit (~> 1.0)
   - FormatterKit (~> 1.7)
+  - GoogleAnalytics-iOS-SDK (~> 3.0)
   - MWFeedParser
   - PureLayout (~> 1.1)
 
@@ -65,6 +67,7 @@ SPEC CHECKSUMS:
   FLEX: 8e53751b915759215d77c7c72b1c7bd28665dac2
   FlickrKit: 1bbc5c91f065fa0d7ce4119c5d5c63a9241eea73
   FormatterKit: 877ff970af3feb2f602ced0a9420e9fbc25f568c
+  GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
   MWFeedParser: 003cbf5398e99a7f2057fbe9583054fd1b84be72
   PureLayout: c8960fa0f3b40d849d5e177d699d0148faa63b63
 

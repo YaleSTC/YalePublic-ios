@@ -2,12 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Yale/View Controllers/YPAthleticsViewController.h">
-   </FileRef>
-   <FileRef
-      location = "group:Yale/View Controllers/YPAthleticsViewController.m">
-   </FileRef>
-   <FileRef
       location = "group:Yale.xcodeproj">
    </FileRef>
    <FileRef

@@ -8,6 +8,9 @@
 
 #import "YPNewsTopicsTableViewController.h"
 #import "YPNewsArticlesTableViewController.h"
+#import <GAI.h>
+#import <GAIFields.h>
+#import <GAIDictionaryBuilder.h>
 
 @interface YPNewsTopicsTableViewController ()
 
@@ -19,6 +22,17 @@
   [super viewDidLoad];
   
   self.title = @"News";
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+  [super viewDidAppear:animated];
+  
+  //Google Analytics
+  id tracker = [[GAI sharedInstance] defaultTracker];
+  [tracker set:kGAIScreenName
+         value:@"News VC"];
+  [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 - (void)didReceiveMemoryWarning {
