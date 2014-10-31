@@ -186,6 +186,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 
+## GoogleAnalytics-iOS-SDK
+
+Copyright 2009 - 2014 Google, Inc. All rights reserved.
+
+
 ## MWFeedParser
 
 Copyright (c) 2010 Michael Waterfall

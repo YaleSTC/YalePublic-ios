@@ -95,6 +95,8 @@
 {
   [super viewDidLoad];
   
+  self.screenName = @"Main View";
+  
   self.buttonUnderTexts = @[@"News", @"Directory", @"Maps", @"Videos", @"Photos",
                             @"Events", @"Transit", @"Athletics", @"Orientation"];
   

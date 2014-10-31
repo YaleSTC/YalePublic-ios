@@ -120,6 +120,12 @@
 #define COCOAPODS_VERSION_MINOR_FormatterKit_UnitOfInformationFormatter 7
 #define COCOAPODS_VERSION_PATCH_FormatterKit_UnitOfInformationFormatter 1
 
+// GoogleAnalytics-iOS-SDK
+#define COCOAPODS_POD_AVAILABLE_GoogleAnalytics_iOS_SDK
+#define COCOAPODS_VERSION_MAJOR_GoogleAnalytics_iOS_SDK 3
+#define COCOAPODS_VERSION_MINOR_GoogleAnalytics_iOS_SDK 0
+#define COCOAPODS_VERSION_PATCH_GoogleAnalytics_iOS_SDK 9
+
 // MWFeedParser
 #define COCOAPODS_POD_AVAILABLE_MWFeedParser
 #define COCOAPODS_VERSION_MAJOR_MWFeedParser 1

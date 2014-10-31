@@ -9,6 +9,7 @@
 #import "YPAppDelegate.h"
 #import "YPTheme.h"
 #import <FLEX/FLEXManager.h>
+#import <GAI.h>
 
 @interface YPAppDelegate ()
 
@@ -48,6 +49,20 @@
 #ifdef DEBUG
   [[FLEXManager sharedManager] showExplorer];
 #endif
+  
+  //Google Analytics
+  
+  // Optional: automatically send uncaught exceptions to Google Analytics.
+  [GAI sharedInstance].trackUncaughtExceptions = YES;
+  
+  // Optional: set Google Analytics dispatch interval to e.g. 20 seconds.
+  [GAI sharedInstance].dispatchInterval = 20;
+  
+  // Optional: set Logger to VERBOSE for debug information.
+  [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
+  
+  // Initialize tracker. Replace with your tracking ID.
+  [[GAI sharedInstance] trackerWithTrackingId:@"UA-55867542-1"];
   
   return YES;
 }

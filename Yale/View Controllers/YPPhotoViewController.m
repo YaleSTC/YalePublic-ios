@@ -11,6 +11,9 @@
 #import "YPStandardCell.h"
 #import "YPPhotoDetailViewController.h"
 #import "Config.h"
+#import <GAI.h>
+#import <GAIFields.h>
+#import <GAIDictionaryBuilder.h>
 
 @interface YPPhotoViewController () {
   NSArray *_photoSets;
@@ -20,14 +23,25 @@
 
 @implementation YPPhotoViewController
 
--(void)viewDidLoad
+- (void)viewDidLoad
 {
+  [super viewDidLoad];
   self.navigationItem.title = NAVIGATION_BAR_TITLE_PHOTOS;
   [self.photoSetTableView registerNib:[UINib nibWithNibName:@"YPStandardCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"PhotoListCell"];
   [self displaySets];
 }
 
--(void)displaySets
+- (void)viewDidAppear:(BOOL)animated
+{
+  [super viewDidAppear:animated];
+  //Google Analytics
+  id tracker = [[GAI sharedInstance] defaultTracker];
+  [tracker set:kGAIScreenName
+         value:@"Photo VC"];
+  [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+}
+
+- (void)displaySets
 {
   YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
   [flickr getSets:^(NSDictionary *response) {
