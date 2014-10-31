@@ -43,6 +43,14 @@
   end testing only
   */
   
+  
+  UIStoryboard *athleticsStoryboard = [UIStoryboard storyboardWithName:@"YPAthleticsViewController"
+                                                            bundle:[NSBundle mainBundle]];
+  
+  UIViewController *athleticsVC = [athleticsStoryboard instantiateViewControllerWithIdentifier:@"AthleticsVC"];
+  
+  [rootVC pushViewController:athleticsVC animated:YES];
+  
   [[UINavigationBar appearance] setBarTintColor:[YPTheme navigationBarColor]];
   [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
   
