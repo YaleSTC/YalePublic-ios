@@ -11,6 +11,7 @@
 #import "YPNewsTopicsTableViewController.h"
 #import "YPVideosPlaylistTableViewController.h"
 #import "YPAthleticsViewController.h"
+#import "YPInfoViewViewController.h"
 #import <PureLayout/PureLayout.h>
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
@@ -33,6 +34,9 @@
   UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
   self.infoButton = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
   self.navigationItem.rightBarButtonItem = self.infoButton;
+  [infoButton addTarget:self action:@selector(viewInfo) forControlEvents:UIControlEventTouchUpInside];
+  
+  
   self.navigationController.navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName : [UIColor whiteColor] };
   self.navigationController.navigationBar.translucent = YES;
   self.title = @"Home";
@@ -191,6 +195,14 @@ referenceSizeForHeaderInSection:(NSInteger)section
     UINavigationController *athleticsVC = [storyboard instantiateViewControllerWithIdentifier:@"AthleticsVC"];
     [self.navigationController pushViewController:athleticsVC animated:YES];
   }
+}
+
+- (void)viewInfo
+{
+  UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPInfoViewController"
+                                                       bundle:[NSBundle mainBundle]];
+  UINavigationController *infoVC = [storyboard instantiateViewControllerWithIdentifier:@"InfoVC"];
+  [self.navigationController presentViewController:infoVC animated:YES completion:nil];
 }
 
 

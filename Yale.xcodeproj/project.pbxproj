@@ -23,6 +23,8 @@
 		AB0071D719E4C90300ABF52D /* YPNewsArticlesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0071D619E4C90300ABF52D /* YPNewsArticlesTableViewController.m */; };
 		AB0071DA19E4C92300ABF52D /* YPNewsEmbeddedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0071D919E4C92300ABF52D /* YPNewsEmbeddedViewController.m */; };
 		AB0071DD19E4D14B00ABF52D /* YPNewsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB0071DC19E4D14B00ABF52D /* YPNewsViewController.storyboard */; };
+		AB6F832E1A04081700F3FBD7 /* YPInfoViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */; };
+		AB6F83301A0408A500F3FBD7 /* YPInfoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB6F832F1A0408A500F3FBD7 /* YPInfoViewController.storyboard */; };
 		AB7D007E19E734FA008047A6 /* YPNewsArticleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB7D007D19E734FA008047A6 /* YPNewsArticleCell.xib */; };
 		AB7D008119E7361B008047A6 /* YPNewsArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7D008019E7361B008047A6 /* YPNewsArticleCell.m */; };
 		ABD3211A19EAF31D009D9281 /* YPVideosViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABD3211919EAF31D009D9281 /* YPVideosViewController.storyboard */; };
@@ -86,6 +88,9 @@
 		AB0071D819E4C92300ABF52D /* YPNewsEmbeddedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsEmbeddedViewController.h; sourceTree = "<group>"; };
 		AB0071D919E4C92300ABF52D /* YPNewsEmbeddedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPNewsEmbeddedViewController.m; sourceTree = "<group>"; };
 		AB0071DC19E4D14B00ABF52D /* YPNewsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPNewsViewController.storyboard; sourceTree = "<group>"; };
+		AB6F832C1A04081700F3FBD7 /* YPInfoViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPInfoViewViewController.h; sourceTree = "<group>"; };
+		AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPInfoViewViewController.m; sourceTree = "<group>"; };
+		AB6F832F1A0408A500F3FBD7 /* YPInfoViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPInfoViewController.storyboard; sourceTree = "<group>"; };
 		AB7D007D19E734FA008047A6 /* YPNewsArticleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YPNewsArticleCell.xib; sourceTree = "<group>"; };
 		AB7D007F19E7361B008047A6 /* YPNewsArticleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsArticleCell.h; sourceTree = "<group>"; };
 		AB7D008019E7361B008047A6 /* YPNewsArticleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPNewsArticleCell.m; sourceTree = "<group>"; };
@@ -169,6 +174,7 @@
 		9B2249FD19E4C9760064C188 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				AB6F832B1A04079500F3FBD7 /* Info */,
 				1386AE3819F1A67F00CA203F /* Athletics */,
 				ABD3211819EAF306009D9281 /* Videos */,
 				9B2249FC19E4C96E0064C188 /* MainView */,
@@ -203,6 +209,7 @@
 				ABD3211919EAF31D009D9281 /* YPVideosViewController.storyboard */,
 				EAB6861519DF34690006C06F /* YPPhotoViewController.storyboard */,
 				1386AE3619F1A66F00CA203F /* YPAthleticsViewController.storyboard */,
+				AB6F832F1A0408A500F3FBD7 /* YPInfoViewController.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -296,6 +303,15 @@
 				AB0071D919E4C92300ABF52D /* YPNewsEmbeddedViewController.m */,
 			);
 			name = News;
+			sourceTree = "<group>";
+		};
+		AB6F832B1A04079500F3FBD7 /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				AB6F832C1A04081700F3FBD7 /* YPInfoViewViewController.h */,
+				AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */,
+			);
+			name = Info;
 			sourceTree = "<group>";
 		};
 		ABD3211819EAF306009D9281 /* Videos */ = {
@@ -427,6 +443,7 @@
 			files = (
 				ABD3212C19EB0B48009D9281 /* YPVideoTableViewCell.xib in Resources */,
 				AB7D007E19E734FA008047A6 /* YPNewsArticleCell.xib in Resources */,
+				AB6F83301A0408A500F3FBD7 /* YPInfoViewController.storyboard in Resources */,
 				9B8BE2A819DE153D00CFE39A /* LaunchScreen.xib in Resources */,
 				1386AE3719F1A66F00CA203F /* YPAthleticsViewController.storyboard in Resources */,
 				9B8BE2A519DE153D00CFE39A /* Images.xcassets in Resources */,
@@ -496,6 +513,7 @@
 				AB7D008119E7361B008047A6 /* YPNewsArticleCell.m in Sources */,
 				EAB6861919DF3CB00006C06F /* YPPhotoViewController.m in Sources */,
 				EAB6861F19E118830006C06F /* YPPhotoDetailViewController.m in Sources */,
+				AB6F832E1A04081700F3FBD7 /* YPInfoViewViewController.m in Sources */,
 				ABD3211D19EAF341009D9281 /* YPVideosPlaylistTableViewController.m in Sources */,
 				1386AE3B19F1A69700CA203F /* YPAthleticsViewController.m in Sources */,
 				9BCB4AD419DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m in Sources */,
