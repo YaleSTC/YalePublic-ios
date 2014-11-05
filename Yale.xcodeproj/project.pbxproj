@@ -18,6 +18,7 @@
 		9B8BE2A819DE153D00CFE39A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B8BE2A619DE153D00CFE39A /* LaunchScreen.xib */; };
 		9B8BE2B419DE153D00CFE39A /* YaleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B8BE2B319DE153D00CFE39A /* YaleTests.m */; };
 		9BC369991A040F9A00B63FF8 /* YPAthleticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC369981A040F9A00B63FF8 /* YPAthleticsViewController.m */; };
+		9BC369D31A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC369D21A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m */; };
 		9BCB4AD419DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCB4AD319DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m */; };
 		AB0071D419E4C8F000ABF52D /* YPNewsTopicsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0071D319E4C8F000ABF52D /* YPNewsTopicsTableViewController.m */; };
 		AB0071D719E4C90300ABF52D /* YPNewsArticlesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0071D619E4C90300ABF52D /* YPNewsArticlesTableViewController.m */; };
@@ -82,6 +83,8 @@
 		9B8BE2B319DE153D00CFE39A /* YaleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YaleTests.m; sourceTree = "<group>"; };
 		9BC369971A040F9A00B63FF8 /* YPAthleticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPAthleticsViewController.h; path = "View Controllers/YPAthleticsViewController.h"; sourceTree = "<group>"; };
 		9BC369981A040F9A00B63FF8 /* YPAthleticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPAthleticsViewController.m; path = "View Controllers/YPAthleticsViewController.m"; sourceTree = "<group>"; };
+		9BC369D11A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPCalendarEventsServerCommunicator.h; path = ServerCommunicators/YPCalendarEventsServerCommunicator.h; sourceTree = "<group>"; };
+		9BC369D21A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPCalendarEventsServerCommunicator.m; path = ServerCommunicators/YPCalendarEventsServerCommunicator.m; sourceTree = "<group>"; };
 		9BCB4AD219DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPMainViewButtonCollectionViewCell.h; path = "Custom Views/YPMainViewButtonCollectionViewCell.h"; sourceTree = "<group>"; };
 		9BCB4AD319DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPMainViewButtonCollectionViewCell.m; path = "Custom Views/YPMainViewButtonCollectionViewCell.m"; sourceTree = "<group>"; };
 		AB0071D219E4C8F000ABF52D /* YPNewsTopicsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsTopicsTableViewController.h; sourceTree = "<group>"; };
@@ -355,6 +358,8 @@
 		EAB6861019DF2F890006C06F /* ServerCommunicators */ = {
 			isa = PBXGroup;
 			children = (
+				9BC369D11A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.h */,
+				9BC369D21A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m */,
 				EAB6861119DF2FDF0006C06F /* YPFlickrCommunicator.h */,
 				EAB6861219DF2FDF0006C06F /* YPFlickrCommunicator.m */,
 			);
@@ -531,6 +536,7 @@
 				ABD3211D19EAF341009D9281 /* YPVideosPlaylistTableViewController.m in Sources */,
 				9BC369991A040F9A00B63FF8 /* YPAthleticsViewController.m in Sources */,
 				9BCB4AD419DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m in Sources */,
+				9BC369D31A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m in Sources */,
 				9B18DA6919DE17E500CB900C /* YPMainViewController.m in Sources */,
 				EA54231E19E4E63B00E75859 /* YPPhotoCollectionViewCell.m in Sources */,
 				AB0071DA19E4C92300ABF52D /* YPNewsEmbeddedViewController.m in Sources */,
