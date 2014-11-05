@@ -25,9 +25,6 @@
 		AB0071DD19E4D14B00ABF52D /* YPNewsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB0071DC19E4D14B00ABF52D /* YPNewsViewController.storyboard */; };
 		AB6F832E1A04081700F3FBD7 /* YPInfoViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */; };
 		AB6F83301A0408A500F3FBD7 /* YPInfoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB6F832F1A0408A500F3FBD7 /* YPInfoViewController.storyboard */; };
-		AB6F83321A041BE000F3FBD7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB6F83311A041BE000F3FBD7 /* QuartzCore.framework */; };
-		AB6F83351A041F0000F3FBD7 /* YPProjectInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6F83341A041F0000F3FBD7 /* YPProjectInfoViewController.m */; };
-		AB6F83371A04231900F3FBD7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB6F83361A04231900F3FBD7 /* MessageUI.framework */; };
 		AB7D007E19E734FA008047A6 /* YPNewsArticleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB7D007D19E734FA008047A6 /* YPNewsArticleCell.xib */; };
 		AB7D008119E7361B008047A6 /* YPNewsArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7D008019E7361B008047A6 /* YPNewsArticleCell.m */; };
 		ABD3211A19EAF31D009D9281 /* YPVideosViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABD3211919EAF31D009D9281 /* YPVideosViewController.storyboard */; };
@@ -94,10 +91,6 @@
 		AB6F832C1A04081700F3FBD7 /* YPInfoViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPInfoViewViewController.h; sourceTree = "<group>"; };
 		AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPInfoViewViewController.m; sourceTree = "<group>"; };
 		AB6F832F1A0408A500F3FBD7 /* YPInfoViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPInfoViewController.storyboard; sourceTree = "<group>"; };
-		AB6F83311A041BE000F3FBD7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		AB6F83331A041F0000F3FBD7 /* YPProjectInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPProjectInfoViewController.h; sourceTree = "<group>"; };
-		AB6F83341A041F0000F3FBD7 /* YPProjectInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPProjectInfoViewController.m; sourceTree = "<group>"; };
-		AB6F83361A04231900F3FBD7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		AB7D007D19E734FA008047A6 /* YPNewsArticleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YPNewsArticleCell.xib; sourceTree = "<group>"; };
 		AB7D007F19E7361B008047A6 /* YPNewsArticleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsArticleCell.h; sourceTree = "<group>"; };
 		AB7D008019E7361B008047A6 /* YPNewsArticleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPNewsArticleCell.m; sourceTree = "<group>"; };
@@ -136,8 +129,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB6F83371A04231900F3FBD7 /* MessageUI.framework in Frameworks */,
-				AB6F83321A041BE000F3FBD7 /* QuartzCore.framework in Frameworks */,
 				DC72D6F84DC8499796A7F96A /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -164,8 +155,6 @@
 		2395C5850E374676A9D38AFB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AB6F83361A04231900F3FBD7 /* MessageUI.framework */,
-				AB6F83311A041BE000F3FBD7 /* QuartzCore.framework */,
 				ABD3211E19EAF93B009D9281 /* GTLFramework.h */,
 				ABD3211F19EAF93B009D9281 /* GTLFramework.m */,
 				1D18846582394F449BE058FB /* libPods.a */,
@@ -322,8 +311,6 @@
 		AB6F832B1A04079500F3FBD7 /* Info */ = {
 			isa = PBXGroup;
 			children = (
-				AB6F83331A041F0000F3FBD7 /* YPProjectInfoViewController.h */,
-				AB6F83341A041F0000F3FBD7 /* YPProjectInfoViewController.m */,
 				AB6F832C1A04081700F3FBD7 /* YPInfoViewViewController.h */,
 				AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */,
 			);
@@ -527,7 +514,6 @@
 				EAB6861919DF3CB00006C06F /* YPPhotoViewController.m in Sources */,
 				EAB6861F19E118830006C06F /* YPPhotoDetailViewController.m in Sources */,
 				AB6F832E1A04081700F3FBD7 /* YPInfoViewViewController.m in Sources */,
-				AB6F83351A041F0000F3FBD7 /* YPProjectInfoViewController.m in Sources */,
 				ABD3211D19EAF341009D9281 /* YPVideosPlaylistTableViewController.m in Sources */,
 				9BC369991A040F9A00B63FF8 /* YPAthleticsViewController.m in Sources */,
 				9BCB4AD419DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m in Sources */,
