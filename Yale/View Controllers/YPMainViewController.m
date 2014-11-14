@@ -196,6 +196,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                          bundle:[NSBundle mainBundle]];
     UINavigationController *athleticsVC = [storyboard instantiateViewControllerWithIdentifier:@"AthleticsVC"];
     [self.navigationController pushViewController:athleticsVC animated:YES];
+  } else if ([underText isEqualToString:@"Transit"]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPTransitViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *transitVC = [storyboard instantiateViewControllerWithIdentifier:@"TransitVC"];
+    [self.navigationController pushViewController:transitVC animated:YES];
   }
 }
 
