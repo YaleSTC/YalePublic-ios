@@ -31,6 +31,8 @@
 		AB6F83371A04231900F3FBD7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB6F83361A04231900F3FBD7 /* MessageUI.framework */; };
 		AB7D007E19E734FA008047A6 /* YPNewsArticleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB7D007D19E734FA008047A6 /* YPNewsArticleCell.xib */; };
 		AB7D008119E7361B008047A6 /* YPNewsArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7D008019E7361B008047A6 /* YPNewsArticleCell.m */; };
+		AB99B3451A16AE480003F752 /* YPOrientationViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB99B3441A16AE480003F752 /* YPOrientationViewController.storyboard */; };
+		AB99B3481A16AE890003F752 /* YPOrientationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB99B3471A16AE890003F752 /* YPOrientationViewController.m */; };
 		ABD3211A19EAF31D009D9281 /* YPVideosViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABD3211919EAF31D009D9281 /* YPVideosViewController.storyboard */; };
 		ABD3211D19EAF341009D9281 /* YPVideosPlaylistTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD3211C19EAF341009D9281 /* YPVideosPlaylistTableViewController.m */; };
 		ABD3212419EB056F009D9281 /* YPVideoListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD3212319EB056F009D9281 /* YPVideoListTableViewController.m */; };
@@ -104,6 +106,9 @@
 		AB7D007D19E734FA008047A6 /* YPNewsArticleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YPNewsArticleCell.xib; sourceTree = "<group>"; };
 		AB7D007F19E7361B008047A6 /* YPNewsArticleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsArticleCell.h; sourceTree = "<group>"; };
 		AB7D008019E7361B008047A6 /* YPNewsArticleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPNewsArticleCell.m; sourceTree = "<group>"; };
+		AB99B3441A16AE480003F752 /* YPOrientationViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPOrientationViewController.storyboard; sourceTree = "<group>"; };
+		AB99B3461A16AE890003F752 /* YPOrientationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPOrientationViewController.h; sourceTree = "<group>"; };
+		AB99B3471A16AE890003F752 /* YPOrientationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPOrientationViewController.m; sourceTree = "<group>"; };
 		ABD3211919EAF31D009D9281 /* YPVideosViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPVideosViewController.storyboard; sourceTree = "<group>"; };
 		ABD3211B19EAF341009D9281 /* YPVideosPlaylistTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPVideosPlaylistTableViewController.h; sourceTree = "<group>"; };
 		ABD3211C19EAF341009D9281 /* YPVideosPlaylistTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPVideosPlaylistTableViewController.m; sourceTree = "<group>"; };
@@ -188,6 +193,7 @@
 		9B2249FD19E4C9760064C188 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				AB99B3491A16AE910003F752 /* Orientation */,
 				AB6F832B1A04079500F3FBD7 /* Info */,
 				AB0071DB19E4C92A00ABF52D /* News */,
 				1386AE3819F1A67F00CA203F /* Athletics */,
@@ -225,6 +231,7 @@
 		9B2249FF19E4C98D0064C188 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				AB99B3441A16AE480003F752 /* YPOrientationViewController.storyboard */,
 				AB0071DC19E4D14B00ABF52D /* YPNewsViewController.storyboard */,
 				9B18DA6519DE173D00CB900C /* YPMainViewController.storyboard */,
 				ABD3211919EAF31D009D9281 /* YPVideosViewController.storyboard */,
@@ -331,6 +338,15 @@
 				AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */,
 			);
 			name = Info;
+			sourceTree = "<group>";
+		};
+		AB99B3491A16AE910003F752 /* Orientation */ = {
+			isa = PBXGroup;
+			children = (
+				AB99B3461A16AE890003F752 /* YPOrientationViewController.h */,
+				AB99B3471A16AE890003F752 /* YPOrientationViewController.m */,
+			);
+			name = Orientation;
 			sourceTree = "<group>";
 		};
 		ABD3211819EAF306009D9281 /* Videos */ = {
@@ -463,6 +479,7 @@
 				AB7D007E19E734FA008047A6 /* YPNewsArticleCell.xib in Resources */,
 				AB6F83301A0408A500F3FBD7 /* YPInfoViewController.storyboard in Resources */,
 				9B8BE2A819DE153D00CFE39A /* LaunchScreen.xib in Resources */,
+				AB99B3451A16AE480003F752 /* YPOrientationViewController.storyboard in Resources */,
 				1386AE3719F1A66F00CA203F /* YPAthleticsViewController.storyboard in Resources */,
 				9B8BE2A519DE153D00CFE39A /* Images.xcassets in Resources */,
 				EA54231919E4CEE000E75859 /* (null) in Resources */,
@@ -545,6 +562,7 @@
 				EA54232119E58BB900E75859 /* YPStandardTableView.m in Sources */,
 				EAB6861319DF2FDF0006C06F /* YPFlickrCommunicator.m in Sources */,
 				9B18DA6F19DE254400CB900C /* YPMainViewButton.m in Sources */,
+				AB99B3481A16AE890003F752 /* YPOrientationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
