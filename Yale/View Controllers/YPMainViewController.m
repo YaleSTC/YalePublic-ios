@@ -12,6 +12,7 @@
 #import "YPVideosPlaylistTableViewController.h"
 #import "YPAthleticsViewController.h"
 #import "YPInfoViewViewController.h"
+#import "YPOrientationViewController.h"
 #import <PureLayout/PureLayout.h>
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
@@ -196,6 +197,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                          bundle:[NSBundle mainBundle]];
     UINavigationController *athleticsVC = [storyboard instantiateViewControllerWithIdentifier:@"AthleticsVC"];
     [self.navigationController pushViewController:athleticsVC animated:YES];
+  } else if ([underText isEqualToString:@"Orientation"]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPOrientationViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *orientationVC = [storyboard instantiateViewControllerWithIdentifier:@"OrientationVC"];
+    [self.navigationController pushViewController:orientationVC animated:YES];
   }
 }
 
