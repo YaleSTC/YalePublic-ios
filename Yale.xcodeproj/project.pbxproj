@@ -33,6 +33,8 @@
 		AB7D008119E7361B008047A6 /* YPNewsArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7D008019E7361B008047A6 /* YPNewsArticleCell.m */; };
 		AB99B3451A16AE480003F752 /* YPOrientationViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB99B3441A16AE480003F752 /* YPOrientationViewController.storyboard */; };
 		AB99B3481A16AE890003F752 /* YPOrientationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB99B3471A16AE890003F752 /* YPOrientationViewController.m */; };
+		AB99B34D1A16B0DC0003F752 /* YPTransitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB99B34C1A16B0DC0003F752 /* YPTransitViewController.m */; };
+		AB99B34F1A16B0ED0003F752 /* YPTransitViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB99B34E1A16B0ED0003F752 /* YPTransitViewController.storyboard */; };
 		ABD3211A19EAF31D009D9281 /* YPVideosViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABD3211919EAF31D009D9281 /* YPVideosViewController.storyboard */; };
 		ABD3211D19EAF341009D9281 /* YPVideosPlaylistTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD3211C19EAF341009D9281 /* YPVideosPlaylistTableViewController.m */; };
 		ABD3212419EB056F009D9281 /* YPVideoListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD3212319EB056F009D9281 /* YPVideoListTableViewController.m */; };
@@ -109,6 +111,9 @@
 		AB99B3441A16AE480003F752 /* YPOrientationViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPOrientationViewController.storyboard; sourceTree = "<group>"; };
 		AB99B3461A16AE890003F752 /* YPOrientationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPOrientationViewController.h; sourceTree = "<group>"; };
 		AB99B3471A16AE890003F752 /* YPOrientationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPOrientationViewController.m; sourceTree = "<group>"; };
+		AB99B34B1A16B0DC0003F752 /* YPTransitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPTransitViewController.h; sourceTree = "<group>"; };
+		AB99B34C1A16B0DC0003F752 /* YPTransitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPTransitViewController.m; sourceTree = "<group>"; };
+		AB99B34E1A16B0ED0003F752 /* YPTransitViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPTransitViewController.storyboard; sourceTree = "<group>"; };
 		ABD3211919EAF31D009D9281 /* YPVideosViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPVideosViewController.storyboard; sourceTree = "<group>"; };
 		ABD3211B19EAF341009D9281 /* YPVideosPlaylistTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPVideosPlaylistTableViewController.h; sourceTree = "<group>"; };
 		ABD3211C19EAF341009D9281 /* YPVideosPlaylistTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPVideosPlaylistTableViewController.m; sourceTree = "<group>"; };
@@ -194,6 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				AB99B3491A16AE910003F752 /* Orientation */,
+				AB99B34A1A16B0CD0003F752 /* Transit */,
 				AB6F832B1A04079500F3FBD7 /* Info */,
 				AB0071DB19E4C92A00ABF52D /* News */,
 				1386AE3819F1A67F00CA203F /* Athletics */,
@@ -232,6 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				AB99B3441A16AE480003F752 /* YPOrientationViewController.storyboard */,
+				AB99B34E1A16B0ED0003F752 /* YPTransitViewController.storyboard */,
 				AB0071DC19E4D14B00ABF52D /* YPNewsViewController.storyboard */,
 				9B18DA6519DE173D00CB900C /* YPMainViewController.storyboard */,
 				ABD3211919EAF31D009D9281 /* YPVideosViewController.storyboard */,
@@ -347,6 +354,15 @@
 				AB99B3471A16AE890003F752 /* YPOrientationViewController.m */,
 			);
 			name = Orientation;
+			sourceTree = "<group>";
+		};
+		AB99B34A1A16B0CD0003F752 /* Transit */ = {
+			isa = PBXGroup;
+			children = (
+				AB99B34B1A16B0DC0003F752 /* YPTransitViewController.h */,
+				AB99B34C1A16B0DC0003F752 /* YPTransitViewController.m */,
+			);
+			name = Transit;
 			sourceTree = "<group>";
 		};
 		ABD3211819EAF306009D9281 /* Videos */ = {
@@ -476,6 +492,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ABD3212C19EB0B48009D9281 /* YPVideoTableViewCell.xib in Resources */,
+				AB99B34F1A16B0ED0003F752 /* YPTransitViewController.storyboard in Resources */,
 				AB7D007E19E734FA008047A6 /* YPNewsArticleCell.xib in Resources */,
 				AB6F83301A0408A500F3FBD7 /* YPInfoViewController.storyboard in Resources */,
 				9B8BE2A819DE153D00CFE39A /* LaunchScreen.xib in Resources */,
@@ -538,6 +555,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB99B34D1A16B0DC0003F752 /* YPTransitViewController.m in Sources */,
 				ABD3212B19EB0B48009D9281 /* YPVideoTableViewCell.m in Sources */,
 				9B18DA6C19DE1A6700CB900C /* YPTheme.m in Sources */,
 				AB0071D419E4C8F000ABF52D /* YPNewsTopicsTableViewController.m in Sources */,

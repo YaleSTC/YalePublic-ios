@@ -21,7 +21,6 @@
 {
 
   self.navigationController.navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName : [UIColor whiteColor] };
-  self.navigationController.navigationBar.translucent = YES;
   self.title = @"About";
 }
 
@@ -40,7 +39,7 @@
 {
   self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"grey_background"]]
   ;
-  UIImage *logo = [UIImage imageNamed:@"TestButtonImage"];
+  UIImage *logo = [UIImage imageNamed:@"infopage-logo"];
   UIImageView *imgView = [[UIImageView alloc] initWithImage:logo];
   [imgView.layer setMasksToBounds:YES];
   

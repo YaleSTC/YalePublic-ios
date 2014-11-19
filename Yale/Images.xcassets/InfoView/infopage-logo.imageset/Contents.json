@@ -2,12 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "Info Page Icon_106px.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "bg-phone6.png"
+      "filename" : "Info Page Icon_212px.png"
     },
     {
       "idiom" : "universal",

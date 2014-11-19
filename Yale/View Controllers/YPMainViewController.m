@@ -13,6 +13,7 @@
 #import "YPAthleticsViewController.h"
 #import "YPInfoViewViewController.h"
 #import "YPOrientationViewController.h"
+#import "YPTheme.h"
 #import <PureLayout/PureLayout.h>
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
@@ -37,9 +38,7 @@
   self.navigationItem.rightBarButtonItem = self.infoButton;
   [infoButton addTarget:self action:@selector(viewInfo) forControlEvents:UIControlEventTouchUpInside];
   
-  
   self.navigationController.navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName : [UIColor whiteColor] };
-  self.navigationController.navigationBar.translucent = YES;
   self.title = @"Home";
 }
 
@@ -138,7 +137,37 @@
 {
   YPMainViewButtonCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:COLLECTIONVIEW_REUSE_IDENTIFIER
                                                                                        forIndexPath:indexPath];
-  cell.button.icon = [UIImage imageNamed:@"TestButtonImage"];
+  
+  switch (indexPath.row) {
+    case 0:
+      cell.button.icon = [UIImage imageNamed:@"NewsIcon"];
+      break;
+    case 1:
+      cell.button.icon = [UIImage imageNamed:@"DirectoryIcon"];
+      break;
+    case 2:
+      cell.button.icon = [UIImage imageNamed:@"MapsIcon"];
+      break;
+    case 3:
+      cell.button.icon = [UIImage imageNamed:@"VideosIcon"];
+      break;
+    case 4:
+      cell.button.icon = [UIImage imageNamed:@"PhotosIcon"];
+      break;
+    case 5:
+      cell.button.icon = [UIImage imageNamed:@"EventsIcon"];
+      break;
+    case 6:
+      cell.button.icon = [UIImage imageNamed:@"TransitIcon"];
+      break;
+    case 7:
+      cell.button.icon = [UIImage imageNamed:@"AthleticsIcon"];
+      break;
+    case 8:
+      cell.button.icon = [UIImage imageNamed:@"OrientationIcon"];
+      break;
+
+  }
   cell.button.underText = self.buttonUnderTexts[indexPath.row];
   [cell.button addTarget:self action:@selector(pushViewController:) forControlEvents:UIControlEventTouchUpInside];
   return cell;
@@ -202,6 +231,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                          bundle:[NSBundle mainBundle]];
     UINavigationController *orientationVC = [storyboard instantiateViewControllerWithIdentifier:@"OrientationVC"];
     [self.navigationController pushViewController:orientationVC animated:YES];
+  } else if ([underText isEqualToString:@"Transit"]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPTransitViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *transitVC = [storyboard instantiateViewControllerWithIdentifier:@"TransitVC"];
+    [self.navigationController pushViewController:transitVC animated:YES];
   }
 }
 
