@@ -27,6 +27,8 @@
 {
   [super viewDidLoad];
   self.navigationItem.title = NAVIGATION_BAR_TITLE_PHOTOS;
+  self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+
   [self.photoSetTableView registerNib:[UINib nibWithNibName:@"YPStandardCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"PhotoListCell"];
   [self displaySets];
 }
