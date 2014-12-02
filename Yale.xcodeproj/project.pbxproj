@@ -15,7 +15,6 @@
 		9B18DA6F19DE254400CB900C /* YPMainViewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B18DA6E19DE254400CB900C /* YPMainViewButton.m */; };
 		9B8BE29A19DE153D00CFE39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B8BE29919DE153D00CFE39A /* main.m */; };
 		9B8BE2A519DE153D00CFE39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B8BE2A419DE153D00CFE39A /* Images.xcassets */; };
-		9B8BE2A819DE153D00CFE39A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B8BE2A619DE153D00CFE39A /* LaunchScreen.xib */; };
 		9B8BE2B419DE153D00CFE39A /* YaleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B8BE2B319DE153D00CFE39A /* YaleTests.m */; };
 		9BC369991A040F9A00B63FF8 /* YPAthleticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC369981A040F9A00B63FF8 /* YPAthleticsViewController.m */; };
 		9BC369D31A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC369D21A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m */; };
@@ -81,7 +80,6 @@
 		9B8BE29819DE153D00CFE39A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B8BE29919DE153D00CFE39A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9B8BE2A419DE153D00CFE39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		9B8BE2A719DE153D00CFE39A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		9B8BE2AD19DE153D00CFE39A /* YaleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YaleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B8BE2B219DE153D00CFE39A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B8BE2B319DE153D00CFE39A /* YaleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YaleTests.m; sourceTree = "<group>"; };
@@ -291,7 +289,6 @@
 				9B2249FD19E4C9760064C188 /* View Controllers */,
 				9B224A0019E4C9A20064C188 /* UI Helpers */,
 				9B8BE2A419DE153D00CFE39A /* Images.xcassets */,
-				9B8BE2A619DE153D00CFE39A /* LaunchScreen.xib */,
 				9B8BE29719DE153D00CFE39A /* Supporting Files */,
 			);
 			path = Yale;
@@ -495,7 +492,6 @@
 				AB99B34F1A16B0ED0003F752 /* YPTransitViewController.storyboard in Resources */,
 				AB7D007E19E734FA008047A6 /* YPNewsArticleCell.xib in Resources */,
 				AB6F83301A0408A500F3FBD7 /* YPInfoViewController.storyboard in Resources */,
-				9B8BE2A819DE153D00CFE39A /* LaunchScreen.xib in Resources */,
 				AB99B3451A16AE480003F752 /* YPOrientationViewController.storyboard in Resources */,
 				1386AE3719F1A66F00CA203F /* YPAthleticsViewController.storyboard in Resources */,
 				9B8BE2A519DE153D00CFE39A /* Images.xcassets in Resources */,
@@ -602,17 +598,6 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		9B8BE2A619DE153D00CFE39A /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9B8BE2A719DE153D00CFE39A /* Base */,
-			);
-			name = LaunchScreen.xib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		9B8BE2B519DE153D00CFE39A /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -695,6 +680,7 @@
 			baseConfigurationReference = D36213B97DEAFA85FA3F3799 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Yale/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -706,6 +692,7 @@
 			baseConfigurationReference = 8109631B08B5F638A8E23FA0 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = Yale/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
