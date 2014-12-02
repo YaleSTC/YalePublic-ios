@@ -13,6 +13,7 @@
 #import "YPAthleticsViewController.h"
 #import "YPInfoViewViewController.h"
 #import "YPOrientationViewController.h"
+#import "YPDirectoryTableViewController.h"
 #import "YPTheme.h"
 #import "YPMainViewButton.h"
 #import <PureLayout/PureLayout.h>
@@ -236,6 +237,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                          bundle:[NSBundle mainBundle]];
     UINavigationController *transitVC = [storyboard instantiateViewControllerWithIdentifier:@"TransitVC"];
     [self.navigationController pushViewController:transitVC animated:YES];
+  } else if ([underText isEqualToString:@"Directory"]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPDirectoryViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *directoryVC = [storyboard instantiateViewControllerWithIdentifier:@"DirectoryVC"];
+    [self.navigationController pushViewController:directoryVC animated:YES];
   }
 }
 

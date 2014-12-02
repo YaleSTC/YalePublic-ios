@@ -23,6 +23,14 @@
 		AB0071D719E4C90300ABF52D /* YPNewsArticlesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0071D619E4C90300ABF52D /* YPNewsArticlesTableViewController.m */; };
 		AB0071DA19E4C92300ABF52D /* YPNewsEmbeddedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0071D919E4C92300ABF52D /* YPNewsEmbeddedViewController.m */; };
 		AB0071DD19E4D14B00ABF52D /* YPNewsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB0071DC19E4D14B00ABF52D /* YPNewsViewController.storyboard */; };
+		AB39E7811A2D8B840071C684 /* YPDirectoryViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB39E7801A2D8B840071C684 /* YPDirectoryViewController.storyboard */; };
+		AB39E7841A2D8BA90071C684 /* YPDirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E7831A2D8BA90071C684 /* YPDirectoryTableViewController.m */; };
+		AB39E7881A2D8EA70071C684 /* YPDirectoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E7871A2D8EA70071C684 /* YPDirectoryDetailViewController.m */; };
+		AB39E78B1A2D94F60071C684 /* YPGlobalHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E78A1A2D94F60071C684 /* YPGlobalHelper.m */; };
+		AB39E7921A2DA7160071C684 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E78D1A2DA7160071C684 /* TFHpple.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AB39E7931A2DA7160071C684 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E78F1A2DA7160071C684 /* TFHppleElement.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AB39E7941A2DA7160071C684 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E7911A2DA7160071C684 /* XPathQuery.m */; };
+		AB39E7991A2DAB5D0071C684 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB39E7981A2DAB5D0071C684 /* libxml2.dylib */; };
 		AB6F832E1A04081700F3FBD7 /* YPInfoViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */; };
 		AB6F83301A0408A500F3FBD7 /* YPInfoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB6F832F1A0408A500F3FBD7 /* YPInfoViewController.storyboard */; };
 		AB6F83321A041BE000F3FBD7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB6F83311A041BE000F3FBD7 /* QuartzCore.framework */; };
@@ -96,6 +104,20 @@
 		AB0071D819E4C92300ABF52D /* YPNewsEmbeddedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsEmbeddedViewController.h; sourceTree = "<group>"; };
 		AB0071D919E4C92300ABF52D /* YPNewsEmbeddedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPNewsEmbeddedViewController.m; sourceTree = "<group>"; };
 		AB0071DC19E4D14B00ABF52D /* YPNewsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPNewsViewController.storyboard; sourceTree = "<group>"; };
+		AB39E7801A2D8B840071C684 /* YPDirectoryViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPDirectoryViewController.storyboard; sourceTree = "<group>"; };
+		AB39E7821A2D8BA90071C684 /* YPDirectoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPDirectoryTableViewController.h; sourceTree = "<group>"; };
+		AB39E7831A2D8BA90071C684 /* YPDirectoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPDirectoryTableViewController.m; sourceTree = "<group>"; };
+		AB39E7861A2D8EA70071C684 /* YPDirectoryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPDirectoryDetailViewController.h; sourceTree = "<group>"; };
+		AB39E7871A2D8EA70071C684 /* YPDirectoryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPDirectoryDetailViewController.m; sourceTree = "<group>"; };
+		AB39E7891A2D94F60071C684 /* YPGlobalHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPGlobalHelper.h; sourceTree = "<group>"; };
+		AB39E78A1A2D94F60071C684 /* YPGlobalHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPGlobalHelper.m; sourceTree = "<group>"; };
+		AB39E78C1A2DA7160071C684 /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TFHpple.h; path = "../../YaleMobile/YaleMobile/Helper Classes/Hpple/TFHpple.h"; sourceTree = "<group>"; };
+		AB39E78D1A2DA7160071C684 /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TFHpple.m; path = "../../YaleMobile/YaleMobile/Helper Classes/Hpple/TFHpple.m"; sourceTree = "<group>"; };
+		AB39E78E1A2DA7160071C684 /* TFHppleElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TFHppleElement.h; path = "../../YaleMobile/YaleMobile/Helper Classes/Hpple/TFHppleElement.h"; sourceTree = "<group>"; };
+		AB39E78F1A2DA7160071C684 /* TFHppleElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TFHppleElement.m; path = "../../YaleMobile/YaleMobile/Helper Classes/Hpple/TFHppleElement.m"; sourceTree = "<group>"; };
+		AB39E7901A2DA7160071C684 /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XPathQuery.h; path = "../../YaleMobile/YaleMobile/Helper Classes/Hpple/XPathQuery.h"; sourceTree = "<group>"; };
+		AB39E7911A2DA7160071C684 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XPathQuery.m; path = "../../YaleMobile/YaleMobile/Helper Classes/Hpple/XPathQuery.m"; sourceTree = "<group>"; };
+		AB39E7981A2DAB5D0071C684 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		AB6F832C1A04081700F3FBD7 /* YPInfoViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPInfoViewViewController.h; sourceTree = "<group>"; };
 		AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPInfoViewViewController.m; sourceTree = "<group>"; };
 		AB6F832F1A0408A500F3FBD7 /* YPInfoViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPInfoViewController.storyboard; sourceTree = "<group>"; };
@@ -147,6 +169,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB39E7991A2DAB5D0071C684 /* libxml2.dylib in Frameworks */,
 				AB6F83371A04231900F3FBD7 /* MessageUI.framework in Frameworks */,
 				AB6F83321A041BE000F3FBD7 /* QuartzCore.framework in Frameworks */,
 				DC72D6F84DC8499796A7F96A /* libPods.a in Frameworks */,
@@ -175,6 +198,7 @@
 		2395C5850E374676A9D38AFB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AB39E7981A2DAB5D0071C684 /* libxml2.dylib */,
 				AB6F83361A04231900F3FBD7 /* MessageUI.framework */,
 				AB6F83311A041BE000F3FBD7 /* QuartzCore.framework */,
 				ABD3211E19EAF93B009D9281 /* GTLFramework.h */,
@@ -204,6 +228,7 @@
 				ABD3211819EAF306009D9281 /* Videos */,
 				9B2249FC19E4C96E0064C188 /* MainView */,
 				EAB6862019E1189B0006C06F /* Photo */,
+				AB39E7851A2D8BAE0071C684 /* Directory */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -238,6 +263,7 @@
 				AB99B3441A16AE480003F752 /* YPOrientationViewController.storyboard */,
 				AB99B34E1A16B0ED0003F752 /* YPTransitViewController.storyboard */,
 				AB0071DC19E4D14B00ABF52D /* YPNewsViewController.storyboard */,
+				AB39E7801A2D8B840071C684 /* YPDirectoryViewController.storyboard */,
 				9B18DA6519DE173D00CB900C /* YPMainViewController.storyboard */,
 				ABD3211919EAF31D009D9281 /* YPVideosViewController.storyboard */,
 				EAB6861519DF34690006C06F /* YPPhotoViewController.storyboard */,
@@ -289,6 +315,7 @@
 				9B2249FD19E4C9760064C188 /* View Controllers */,
 				9B224A0019E4C9A20064C188 /* UI Helpers */,
 				9B8BE2A419DE153D00CFE39A /* Images.xcassets */,
+				AB39E7951A2DA71E0071C684 /* Helpers */,
 				9B8BE29719DE153D00CFE39A /* Supporting Files */,
 			);
 			path = Yale;
@@ -331,6 +358,32 @@
 				AB0071D919E4C92300ABF52D /* YPNewsEmbeddedViewController.m */,
 			);
 			name = News;
+			sourceTree = "<group>";
+		};
+		AB39E7851A2D8BAE0071C684 /* Directory */ = {
+			isa = PBXGroup;
+			children = (
+				AB39E7821A2D8BA90071C684 /* YPDirectoryTableViewController.h */,
+				AB39E7831A2D8BA90071C684 /* YPDirectoryTableViewController.m */,
+				AB39E7861A2D8EA70071C684 /* YPDirectoryDetailViewController.h */,
+				AB39E7871A2D8EA70071C684 /* YPDirectoryDetailViewController.m */,
+			);
+			name = Directory;
+			sourceTree = "<group>";
+		};
+		AB39E7951A2DA71E0071C684 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				AB39E78C1A2DA7160071C684 /* TFHpple.h */,
+				AB39E78D1A2DA7160071C684 /* TFHpple.m */,
+				AB39E78E1A2DA7160071C684 /* TFHppleElement.h */,
+				AB39E78F1A2DA7160071C684 /* TFHppleElement.m */,
+				AB39E7901A2DA7160071C684 /* XPathQuery.h */,
+				AB39E7911A2DA7160071C684 /* XPathQuery.m */,
+				AB39E7891A2D94F60071C684 /* YPGlobalHelper.h */,
+				AB39E78A1A2D94F60071C684 /* YPGlobalHelper.m */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 		AB6F832B1A04079500F3FBD7 /* Info */ = {
@@ -496,6 +549,7 @@
 				1386AE3719F1A66F00CA203F /* YPAthleticsViewController.storyboard in Resources */,
 				9B8BE2A519DE153D00CFE39A /* Images.xcassets in Resources */,
 				EA54231919E4CEE000E75859 /* (null) in Resources */,
+				AB39E7811A2D8B840071C684 /* YPDirectoryViewController.storyboard in Resources */,
 				EAB6861619DF34690006C06F /* YPPhotoViewController.storyboard in Resources */,
 				EA54231B19E4DAD200E75859 /* YPStandardCell.xib in Resources */,
 				9B18DA6619DE173D00CB900C /* YPMainViewController.storyboard in Resources */,
@@ -553,29 +607,35 @@
 			files = (
 				AB99B34D1A16B0DC0003F752 /* YPTransitViewController.m in Sources */,
 				ABD3212B19EB0B48009D9281 /* YPVideoTableViewCell.m in Sources */,
+				AB39E7941A2DA7160071C684 /* XPathQuery.m in Sources */,
 				9B18DA6C19DE1A6700CB900C /* YPTheme.m in Sources */,
 				AB0071D419E4C8F000ABF52D /* YPNewsTopicsTableViewController.m in Sources */,
 				ABD3212719EB059F009D9281 /* YPVideoEmbeddedViewViewController.m in Sources */,
 				AB0071D719E4C90300ABF52D /* YPNewsArticlesTableViewController.m in Sources */,
 				ABD3212419EB056F009D9281 /* YPVideoListTableViewController.m in Sources */,
 				9B18DA6419DE161200CB900C /* YPAppDelegate.m in Sources */,
+				AB39E7881A2D8EA70071C684 /* YPDirectoryDetailViewController.m in Sources */,
 				AB7D008119E7361B008047A6 /* YPNewsArticleCell.m in Sources */,
 				EAB6861919DF3CB00006C06F /* YPPhotoViewController.m in Sources */,
 				EAB6861F19E118830006C06F /* YPPhotoDetailViewController.m in Sources */,
 				AB6F832E1A04081700F3FBD7 /* YPInfoViewViewController.m in Sources */,
 				AB6F83351A041F0000F3FBD7 /* YPProjectInfoViewController.m in Sources */,
 				ABD3211D19EAF341009D9281 /* YPVideosPlaylistTableViewController.m in Sources */,
+				AB39E7931A2DA7160071C684 /* TFHppleElement.m in Sources */,
 				9BC369991A040F9A00B63FF8 /* YPAthleticsViewController.m in Sources */,
 				9BCB4AD419DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m in Sources */,
 				9BC369D31A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m in Sources */,
+				AB39E7841A2D8BA90071C684 /* YPDirectoryTableViewController.m in Sources */,
 				9B18DA6919DE17E500CB900C /* YPMainViewController.m in Sources */,
 				EA54231E19E4E63B00E75859 /* YPPhotoCollectionViewCell.m in Sources */,
 				AB0071DA19E4C92300ABF52D /* YPNewsEmbeddedViewController.m in Sources */,
 				9B8BE29A19DE153D00CFE39A /* main.m in Sources */,
 				EAB6861C19E09B830006C06F /* YPStandardCell.m in Sources */,
 				EA54232119E58BB900E75859 /* YPStandardTableView.m in Sources */,
+				AB39E7921A2DA7160071C684 /* TFHpple.m in Sources */,
 				EAB6861319DF2FDF0006C06F /* YPFlickrCommunicator.m in Sources */,
 				9B18DA6F19DE254400CB900C /* YPMainViewButton.m in Sources */,
+				AB39E78B1A2D94F60071C684 /* YPGlobalHelper.m in Sources */,
 				AB99B3481A16AE890003F752 /* YPOrientationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -681,6 +741,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/FLEX\"",
+					"\"${PODS_ROOT}/Headers/Public/FlickrKit\"",
+					"\"${PODS_ROOT}/Headers/Public/FormatterKit\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleAnalytics-iOS-SDK\"",
+					"\"${PODS_ROOT}/Headers/Public/JGProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/MWFeedParser\"",
+					"\"${PODS_ROOT}/Headers/Public/PureLayout\"",
+					"\"${PODS_ROOT}/Headers/Public/XMLDictionary\"",
+					"$(SDKROOT)/usr/include/libz",
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				INFOPLIST_FILE = Yale/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -693,6 +767,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/FLEX\"",
+					"\"${PODS_ROOT}/Headers/Public/FlickrKit\"",
+					"\"${PODS_ROOT}/Headers/Public/FormatterKit\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleAnalytics-iOS-SDK\"",
+					"\"${PODS_ROOT}/Headers/Public/JGProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/MWFeedParser\"",
+					"\"${PODS_ROOT}/Headers/Public/PureLayout\"",
+					"\"${PODS_ROOT}/Headers/Public/XMLDictionary\"",
+					"$(SDKROOT)/usr/include/libz",
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				INFOPLIST_FILE = Yale/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
