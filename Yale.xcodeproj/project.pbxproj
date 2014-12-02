@@ -19,6 +19,9 @@
 		9BC369991A040F9A00B63FF8 /* YPAthleticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC369981A040F9A00B63FF8 /* YPAthleticsViewController.m */; };
 		9BC369D31A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC369D21A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m */; };
 		9BCB4AD419DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCB4AD319DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m */; };
+		9BEDA9FC1A2E66AD0095EF2C /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDA9F71A2E66AD0095EF2C /* TFHpple.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		9BEDA9FD1A2E66AD0095EF2C /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDA9F91A2E66AD0095EF2C /* TFHppleElement.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		9BEDA9FE1A2E66AD0095EF2C /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDA9FB1A2E66AD0095EF2C /* XPathQuery.m */; };
 		AB0071D419E4C8F000ABF52D /* YPNewsTopicsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0071D319E4C8F000ABF52D /* YPNewsTopicsTableViewController.m */; };
 		AB0071D719E4C90300ABF52D /* YPNewsArticlesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0071D619E4C90300ABF52D /* YPNewsArticlesTableViewController.m */; };
 		AB0071DA19E4C92300ABF52D /* YPNewsEmbeddedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0071D919E4C92300ABF52D /* YPNewsEmbeddedViewController.m */; };
@@ -27,9 +30,6 @@
 		AB39E7841A2D8BA90071C684 /* YPDirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E7831A2D8BA90071C684 /* YPDirectoryTableViewController.m */; };
 		AB39E7881A2D8EA70071C684 /* YPDirectoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E7871A2D8EA70071C684 /* YPDirectoryDetailViewController.m */; };
 		AB39E78B1A2D94F60071C684 /* YPGlobalHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E78A1A2D94F60071C684 /* YPGlobalHelper.m */; };
-		AB39E7921A2DA7160071C684 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E78D1A2DA7160071C684 /* TFHpple.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AB39E7931A2DA7160071C684 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E78F1A2DA7160071C684 /* TFHppleElement.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		AB39E7941A2DA7160071C684 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E7911A2DA7160071C684 /* XPathQuery.m */; };
 		AB39E7991A2DAB5D0071C684 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB39E7981A2DAB5D0071C684 /* libxml2.dylib */; };
 		AB6F832E1A04081700F3FBD7 /* YPInfoViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */; };
 		AB6F83301A0408A500F3FBD7 /* YPInfoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB6F832F1A0408A500F3FBD7 /* YPInfoViewController.storyboard */; };
@@ -97,6 +97,13 @@
 		9BC369D21A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPCalendarEventsServerCommunicator.m; path = ServerCommunicators/YPCalendarEventsServerCommunicator.m; sourceTree = "<group>"; };
 		9BCB4AD219DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPMainViewButtonCollectionViewCell.h; path = "Custom Views/YPMainViewButtonCollectionViewCell.h"; sourceTree = "<group>"; };
 		9BCB4AD319DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPMainViewButtonCollectionViewCell.m; path = "Custom Views/YPMainViewButtonCollectionViewCell.m"; sourceTree = "<group>"; };
+		9BEDA9F61A2E66AD0095EF2C /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
+		9BEDA9F71A2E66AD0095EF2C /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
+		9BEDA9F81A2E66AD0095EF2C /* TFHppleElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHppleElement.h; sourceTree = "<group>"; };
+		9BEDA9F91A2E66AD0095EF2C /* TFHppleElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHppleElement.m; sourceTree = "<group>"; };
+		9BEDA9FA1A2E66AD0095EF2C /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XPathQuery.h; sourceTree = "<group>"; };
+		9BEDA9FB1A2E66AD0095EF2C /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
+		9BEDAA001A2E677D0095EF2C /* CoreMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreMacro.h; sourceTree = "<group>"; };
 		AB0071D219E4C8F000ABF52D /* YPNewsTopicsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsTopicsTableViewController.h; sourceTree = "<group>"; };
 		AB0071D319E4C8F000ABF52D /* YPNewsTopicsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPNewsTopicsTableViewController.m; sourceTree = "<group>"; };
 		AB0071D519E4C90300ABF52D /* YPNewsArticlesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsArticlesTableViewController.h; sourceTree = "<group>"; };
@@ -111,12 +118,6 @@
 		AB39E7871A2D8EA70071C684 /* YPDirectoryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPDirectoryDetailViewController.m; sourceTree = "<group>"; };
 		AB39E7891A2D94F60071C684 /* YPGlobalHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPGlobalHelper.h; sourceTree = "<group>"; };
 		AB39E78A1A2D94F60071C684 /* YPGlobalHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPGlobalHelper.m; sourceTree = "<group>"; };
-		AB39E78C1A2DA7160071C684 /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TFHpple.h; path = "../../YaleMobile/YaleMobile/Helper Classes/Hpple/TFHpple.h"; sourceTree = "<group>"; };
-		AB39E78D1A2DA7160071C684 /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TFHpple.m; path = "../../YaleMobile/YaleMobile/Helper Classes/Hpple/TFHpple.m"; sourceTree = "<group>"; };
-		AB39E78E1A2DA7160071C684 /* TFHppleElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TFHppleElement.h; path = "../../YaleMobile/YaleMobile/Helper Classes/Hpple/TFHppleElement.h"; sourceTree = "<group>"; };
-		AB39E78F1A2DA7160071C684 /* TFHppleElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TFHppleElement.m; path = "../../YaleMobile/YaleMobile/Helper Classes/Hpple/TFHppleElement.m"; sourceTree = "<group>"; };
-		AB39E7901A2DA7160071C684 /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XPathQuery.h; path = "../../YaleMobile/YaleMobile/Helper Classes/Hpple/XPathQuery.h"; sourceTree = "<group>"; };
-		AB39E7911A2DA7160071C684 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XPathQuery.m; path = "../../YaleMobile/YaleMobile/Helper Classes/Hpple/XPathQuery.m"; sourceTree = "<group>"; };
 		AB39E7981A2DAB5D0071C684 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		AB6F832C1A04081700F3FBD7 /* YPInfoViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPInfoViewViewController.h; sourceTree = "<group>"; };
 		AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPInfoViewViewController.m; sourceTree = "<group>"; };
@@ -305,6 +306,7 @@
 		9B8BE29619DE153D00CFE39A /* Yale */ = {
 			isa = PBXGroup;
 			children = (
+				9BEDAA001A2E677D0095EF2C /* CoreMacro.h */,
 				EAB6861419DF30F80006C06F /* Config.h */,
 				1386AE3D19F1A6E100CA203F /* ConfigPrivate.h */,
 				9B18DA6219DE161200CB900C /* YPAppDelegate.h */,
@@ -374,12 +376,12 @@
 		AB39E7951A2DA71E0071C684 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				AB39E78C1A2DA7160071C684 /* TFHpple.h */,
-				AB39E78D1A2DA7160071C684 /* TFHpple.m */,
-				AB39E78E1A2DA7160071C684 /* TFHppleElement.h */,
-				AB39E78F1A2DA7160071C684 /* TFHppleElement.m */,
-				AB39E7901A2DA7160071C684 /* XPathQuery.h */,
-				AB39E7911A2DA7160071C684 /* XPathQuery.m */,
+				9BEDA9F61A2E66AD0095EF2C /* TFHpple.h */,
+				9BEDA9F71A2E66AD0095EF2C /* TFHpple.m */,
+				9BEDA9F81A2E66AD0095EF2C /* TFHppleElement.h */,
+				9BEDA9F91A2E66AD0095EF2C /* TFHppleElement.m */,
+				9BEDA9FA1A2E66AD0095EF2C /* XPathQuery.h */,
+				9BEDA9FB1A2E66AD0095EF2C /* XPathQuery.m */,
 				AB39E7891A2D94F60071C684 /* YPGlobalHelper.h */,
 				AB39E78A1A2D94F60071C684 /* YPGlobalHelper.m */,
 			);
@@ -607,7 +609,7 @@
 			files = (
 				AB99B34D1A16B0DC0003F752 /* YPTransitViewController.m in Sources */,
 				ABD3212B19EB0B48009D9281 /* YPVideoTableViewCell.m in Sources */,
-				AB39E7941A2DA7160071C684 /* XPathQuery.m in Sources */,
+				9BEDA9FE1A2E66AD0095EF2C /* XPathQuery.m in Sources */,
 				9B18DA6C19DE1A6700CB900C /* YPTheme.m in Sources */,
 				AB0071D419E4C8F000ABF52D /* YPNewsTopicsTableViewController.m in Sources */,
 				ABD3212719EB059F009D9281 /* YPVideoEmbeddedViewViewController.m in Sources */,
@@ -621,7 +623,7 @@
 				AB6F832E1A04081700F3FBD7 /* YPInfoViewViewController.m in Sources */,
 				AB6F83351A041F0000F3FBD7 /* YPProjectInfoViewController.m in Sources */,
 				ABD3211D19EAF341009D9281 /* YPVideosPlaylistTableViewController.m in Sources */,
-				AB39E7931A2DA7160071C684 /* TFHppleElement.m in Sources */,
+				9BEDA9FD1A2E66AD0095EF2C /* TFHppleElement.m in Sources */,
 				9BC369991A040F9A00B63FF8 /* YPAthleticsViewController.m in Sources */,
 				9BCB4AD419DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m in Sources */,
 				9BC369D31A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m in Sources */,
@@ -632,7 +634,7 @@
 				9B8BE29A19DE153D00CFE39A /* main.m in Sources */,
 				EAB6861C19E09B830006C06F /* YPStandardCell.m in Sources */,
 				EA54232119E58BB900E75859 /* YPStandardTableView.m in Sources */,
-				AB39E7921A2DA7160071C684 /* TFHpple.m in Sources */,
+				9BEDA9FC1A2E66AD0095EF2C /* TFHpple.m in Sources */,
 				EAB6861319DF2FDF0006C06F /* YPFlickrCommunicator.m in Sources */,
 				9B18DA6F19DE254400CB900C /* YPMainViewButton.m in Sources */,
 				AB39E78B1A2D94F60071C684 /* YPGlobalHelper.m in Sources */,

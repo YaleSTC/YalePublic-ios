@@ -7,16 +7,12 @@
 //
 
 #import "YPDirectoryDetailViewController.h"
+#import "CoreMacro.h"
+
 
 @interface YPDirectoryDetailViewController ()
 
 @end
-
-#if DEBUG
-#define DLog(format, ...) NSLog((format), ## __VA_ARGS__)
-#else
-#define DLog(format, ...)
-#endif
 
 @implementation YPDirectoryDetailViewController
 
