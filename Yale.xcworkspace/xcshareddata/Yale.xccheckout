@@ -14,6 +14,8 @@
 		<string>http://google-api-objectivec-client.googlecode.com/svn/trunk</string>
 		<key>2026A95716A5CF67242A130B163447F50D1F6F24</key>
 		<string>github.com:YaleSTC/YalePublic-ios.git</string>
+		<key>AB1ACB7A52526127A7E81A26CB3B3AD10CC8EF25</key>
+		<string>github.com:kiokoo/YaleMobile.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Yale.xcworkspace</string>
@@ -23,6 +25,8 @@
 		<string>../../google-api-objectivec-client-read-only</string>
 		<key>2026A95716A5CF67242A130B163447F50D1F6F24</key>
 		<string>..</string>
+		<key>AB1ACB7A52526127A7E81A26CB3B3AD10CC8EF25</key>
+		<string>..Mobile/</string>
 	</dict>
 	<key>IDESourceControlProjectRepositoryRootDictionary</key>
 	<dict>
@@ -52,6 +56,14 @@
 			<string>2026A95716A5CF67242A130B163447F50D1F6F24</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Yale</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>AB1ACB7A52526127A7E81A26CB3B3AD10CC8EF25</string>
+			<key>IDESourceControlWCCName</key>
+			<string>YaleMobile</string>
 		</dict>
 	</array>
 </dict>
