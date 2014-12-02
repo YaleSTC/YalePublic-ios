@@ -14,6 +14,7 @@
 #import "YPInfoViewViewController.h"
 #import "YPOrientationViewController.h"
 #import "YPTheme.h"
+#import "YPMainViewButton.h"
 #import <PureLayout/PureLayout.h>
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
@@ -67,7 +68,7 @@
   UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
   // 57 is the button width, 20 is the left margin to edge of screen
   flowLayout.minimumInteritemSpacing = ([UIScreen mainScreen].bounds.size.width - 57*3 - 20*2) / 2;
-  flowLayout.minimumLineSpacing      = 20;
+  flowLayout.minimumLineSpacing      = flowLayout.minimumInteritemSpacing - 20;
   
   self.automaticallyAdjustsScrollViewInsets = NO;
   
@@ -82,10 +83,9 @@
   
   [self.view addSubview:self.buttonCollectionView];
   
-  CGFloat navBarHeight    = [self.navigationController.navigationBar frame].size.height;
-  CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+
   
-  [self.buttonCollectionView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20 + navBarHeight + statusBarHeight];
+  [self.buttonCollectionView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20];
   [self.buttonCollectionView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:20];
   [self.buttonCollectionView autoAlignAxisToSuperviewAxis:ALAxisVertical];
   [self.buttonCollectionView layoutIfNeeded];
