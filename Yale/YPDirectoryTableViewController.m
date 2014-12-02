@@ -56,7 +56,7 @@
       *stop = YES;
     }];
     if ([[lastName substringToIndex:1] isEqualToString:lastLetter]) {
-      [letterArray addObject:fullName];
+      [letterArray addObject:@{ @"name": fullName, @"link": [person objectForKey:@"link"] }];
     } else {
       if (!start) {
         [self.sectionedPeople setObject:[letterArray copy] forKey:lastLetter];
@@ -64,7 +64,7 @@
       }
       
       lastLetter = [lastName substringToIndex:1];
-      [letterArray addObject:fullName];
+       [letterArray addObject:@{ @"name": fullName, @"link": [person objectForKey:@"link"] }];
     }
     start = NO;
   }
@@ -184,7 +184,7 @@
   
   NSString *sectionTitle = [self.firstLetters objectAtIndex:indexPath.section];
   NSArray *sectionPeople = [self.sectionedPeople objectForKey:sectionTitle];
-  NSString *person = [sectionPeople objectAtIndex:indexPath.row];
+  NSString *person = [[sectionPeople objectAtIndex:indexPath.row] objectForKey:@"name"];
   cell.textLabel.text = person;
   return cell;
 }
@@ -199,6 +199,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+  NSLog(@"%@",self.people);
   if ([sender isKindOfClass:[YPDirectoryTableViewController class]]) {
     YPDirectoryDetailViewController *pdvc = (YPDirectoryDetailViewController *)[segue destinationViewController];
     pdvc.data = self.individualData;
@@ -206,7 +207,19 @@
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
     self.selectedIndexPath = indexPath;
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSString *urlString = [[self.people objectAtIndex:indexPath.row] objectForKey:@"link"];
+    
+    UITableViewCell *cell = sender;
+    NSString *fullName = cell.textLabel.text;
+    __block NSString *lastName = nil;
+    [fullName enumerateSubstringsInRange:NSMakeRange(0, [fullName length])
+                                 options:NSStringEnumerationByWords| NSStringEnumerationReverse
+                              usingBlock:^(NSString *substring, NSRange subrange, NSRange enclosingRange, BOOL *stop) {
+                                lastName = substring;
+                                *stop = YES;
+                              }];
+    
+    
+    NSString *urlString = [[[self.sectionedPeople objectForKey:[lastName substringToIndex:1]] objectAtIndex:indexPath.row] objectForKey:@"link"];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
