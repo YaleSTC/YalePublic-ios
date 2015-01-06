@@ -9,6 +9,7 @@
 #import "YPAthleticsViewController.h"
 @import WebKit;
 #import "Config.h"
+#import "YPGlobalHelper.h"
 
 @interface YPAthleticsViewController ()
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *back;
@@ -42,6 +43,14 @@
   [self.view addSubview:self.athleticsWebView];
   self.athleticsWebView.navigationDelegate = self;
   
+  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
+  dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    while (self.athleticsWebView.loading)
+      ;
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [YPGlobalHelper hideNotificationView];
+    });
+  });
 }
 
 
@@ -78,31 +87,18 @@
   [self.toolbar setItems:toolBarItems animated:NO];
 }
 
--(void) showLoading
-{
-  self.title = @"Loading";
-  UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc]
-                            initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
-  [spinner startAnimating];
-  spinner.hidden = NO;
-  UIBarButtonItem* spinButton = [[UIBarButtonItem alloc] initWithCustomView:spinner];
-  self.navigationItem.rightBarButtonItem = spinButton;
-  
-}
 
 
 - (void)webView:(WKWebView *)webView
 didCommitNavigation:(WKNavigation *)navigation
 {
   [self updateButtons];
-  [self showLoading];
 }
 
 -(void) webView:(WKWebView *)webView
 didStartProvisionalNavigation: (WKNavigation *)navigation
 {
   [self updateButtons];
-  [self showLoading];
 }
 
 -(void) webView:(WKWebView *)webView

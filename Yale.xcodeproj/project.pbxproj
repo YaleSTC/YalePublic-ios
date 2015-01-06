@@ -50,13 +50,11 @@
 		ABD3212C19EB0B48009D9281 /* YPVideoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABD3212A19EB0B48009D9281 /* YPVideoTableViewCell.xib */; };
 		DC72D6F84DC8499796A7F96A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D18846582394F449BE058FB /* libPods.a */; };
 		EA54231919E4CEE000E75859 /* (null) in Resources */ = {isa = PBXBuildFile; };
-		EA54231B19E4DAD200E75859 /* YPStandardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA54231A19E4DAD200E75859 /* YPStandardCell.xib */; };
 		EA54231E19E4E63B00E75859 /* YPPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA54231D19E4E63B00E75859 /* YPPhotoCollectionViewCell.m */; };
 		EA54232119E58BB900E75859 /* YPStandardTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA54232019E58BB900E75859 /* YPStandardTableView.m */; };
 		EAB6861319DF2FDF0006C06F /* YPFlickrCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB6861219DF2FDF0006C06F /* YPFlickrCommunicator.m */; };
 		EAB6861619DF34690006C06F /* YPPhotoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAB6861519DF34690006C06F /* YPPhotoViewController.storyboard */; };
 		EAB6861919DF3CB00006C06F /* YPPhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB6861819DF3CB00006C06F /* YPPhotoViewController.m */; };
-		EAB6861C19E09B830006C06F /* YPStandardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB6861B19E09B830006C06F /* YPStandardCell.m */; };
 		EAB6861F19E118830006C06F /* YPPhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB6861E19E118830006C06F /* YPPhotoDetailViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -148,7 +146,6 @@
 		ABD3212919EB0B48009D9281 /* YPVideoTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPVideoTableViewCell.m; sourceTree = "<group>"; };
 		ABD3212A19EB0B48009D9281 /* YPVideoTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YPVideoTableViewCell.xib; sourceTree = "<group>"; };
 		D36213B97DEAFA85FA3F3799 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		EA54231A19E4DAD200E75859 /* YPStandardCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = YPStandardCell.xib; path = "Custom Views/YPStandardCell.xib"; sourceTree = "<group>"; };
 		EA54231C19E4E63B00E75859 /* YPPhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPPhotoCollectionViewCell.h; path = "Custom Views/YPPhotoCollectionViewCell.h"; sourceTree = "<group>"; };
 		EA54231D19E4E63B00E75859 /* YPPhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPPhotoCollectionViewCell.m; path = "Custom Views/YPPhotoCollectionViewCell.m"; sourceTree = "<group>"; };
 		EA54231F19E58BB900E75859 /* YPStandardTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPStandardTableView.h; path = "Custom Views/YPStandardTableView.h"; sourceTree = "<group>"; };
@@ -159,8 +156,6 @@
 		EAB6861519DF34690006C06F /* YPPhotoViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = YPPhotoViewController.storyboard; path = Storyboards/YPPhotoViewController.storyboard; sourceTree = "<group>"; };
 		EAB6861719DF3CB00006C06F /* YPPhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPPhotoViewController.h; path = "View Controllers/YPPhotoViewController.h"; sourceTree = "<group>"; };
 		EAB6861819DF3CB00006C06F /* YPPhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPPhotoViewController.m; path = "View Controllers/YPPhotoViewController.m"; sourceTree = "<group>"; };
-		EAB6861A19E09B830006C06F /* YPStandardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPStandardCell.h; path = "Custom Views/YPStandardCell.h"; sourceTree = "<group>"; };
-		EAB6861B19E09B830006C06F /* YPStandardCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPStandardCell.m; path = "Custom Views/YPStandardCell.m"; sourceTree = "<group>"; };
 		EAB6861D19E118830006C06F /* YPPhotoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPPhotoDetailViewController.h; path = "View Controllers/YPPhotoDetailViewController.h"; sourceTree = "<group>"; };
 		EAB6861E19E118830006C06F /* YPPhotoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPPhotoDetailViewController.m; path = "View Controllers/YPPhotoDetailViewController.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -245,9 +240,6 @@
 				ABD3212A19EB0B48009D9281 /* YPVideoTableViewCell.xib */,
 				9B18DA6D19DE254400CB900C /* YPMainViewButton.h */,
 				9B18DA6E19DE254400CB900C /* YPMainViewButton.m */,
-				EAB6861A19E09B830006C06F /* YPStandardCell.h */,
-				EAB6861B19E09B830006C06F /* YPStandardCell.m */,
-				EA54231A19E4DAD200E75859 /* YPStandardCell.xib */,
 				9BCB4AD219DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.h */,
 				9BCB4AD319DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m */,
 				EA54231C19E4E63B00E75859 /* YPPhotoCollectionViewCell.h */,
@@ -553,7 +545,6 @@
 				EA54231919E4CEE000E75859 /* (null) in Resources */,
 				AB39E7811A2D8B840071C684 /* YPDirectoryViewController.storyboard in Resources */,
 				EAB6861619DF34690006C06F /* YPPhotoViewController.storyboard in Resources */,
-				EA54231B19E4DAD200E75859 /* YPStandardCell.xib in Resources */,
 				9B18DA6619DE173D00CB900C /* YPMainViewController.storyboard in Resources */,
 				ABD3211A19EAF31D009D9281 /* YPVideosViewController.storyboard in Resources */,
 				AB0071DD19E4D14B00ABF52D /* YPNewsViewController.storyboard in Resources */,
@@ -632,7 +623,6 @@
 				EA54231E19E4E63B00E75859 /* YPPhotoCollectionViewCell.m in Sources */,
 				AB0071DA19E4C92300ABF52D /* YPNewsEmbeddedViewController.m in Sources */,
 				9B8BE29A19DE153D00CFE39A /* main.m in Sources */,
-				EAB6861C19E09B830006C06F /* YPStandardCell.m in Sources */,
 				EA54232119E58BB900E75859 /* YPStandardTableView.m in Sources */,
 				9BEDA9FC1A2E66AD0095EF2C /* TFHpple.m in Sources */,
 				EAB6861319DF2FDF0006C06F /* YPFlickrCommunicator.m in Sources */,

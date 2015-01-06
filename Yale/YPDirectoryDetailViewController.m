@@ -8,6 +8,7 @@
 
 #import "YPDirectoryDetailViewController.h"
 #import "CoreMacro.h"
+#import "YPGlobalHelper.h"
 
 
 @interface YPDirectoryDetailViewController ()
@@ -18,17 +19,25 @@
 
 - (void)viewDidLoad
 {
+  self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+  
+  [YPGlobalHelper showNotificationInViewController:self message:@"loading" style:JGProgressHUDStyleDark];
+
+  
+}
+
+- (void)loadData {
   [self prettifyData];
   [self updateTableHeader];
-  [super viewDidLoad];
-
+  [self.tableView reloadData];
+  [YPGlobalHelper hideNotificationView];
 }
 
 - (void)updateTableHeader
 {
   self.title = [self.data valueForKey:@"Name"];
   self.nameLabel.text = [self.data valueForKey:@"Name"];
-
+  
   
   NSString *subheaderString = @"";
   for (NSString *item in [self.data allKeys]) {
@@ -76,11 +85,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   UITableViewCell *cell = cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
-                                                         reuseIdentifier:@"Info Cell"];
+                                                        reuseIdentifier:@"Info Cell"];
   NSString *title = [[[self.data allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:indexPath.row];
   cell.textLabel.text = title;
   cell.detailTextLabel.text = [self.data objectForKey:title];
-
+  
   
   cell.userInteractionEnabled = ([title isEqualToString:@"Email"] || [title isEqualToString:@"Phone"]) ? YES : NO;
   
@@ -102,7 +111,7 @@
       [mailer setToRecipients:toRecipients];
       [self presentViewController:mailer animated:YES completion:nil];
     } else {
-      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"YaleMobile is unable to launch the email service. Your device doesn't support the composer sheet."
+      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Yale is unable to launch the email service. Your device doesn't support the composer sheet."
                                                      delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
       [alert show];
     }

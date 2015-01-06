@@ -11,6 +11,8 @@
 
 
 @interface YPDirectoryDetailViewController : UIViewController<MFMailComposeViewControllerDelegate, UIActionSheetDelegate>
+- (void)loadData;
+
 @property (nonatomic, strong) NSMutableDictionary *data;
 @property (nonatomic, strong) NSString *phoneURL;
 @property (strong, nonatomic) IBOutlet UILabel *nameLabel;

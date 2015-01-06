@@ -9,6 +9,7 @@
 #import "YPPhotoDetailViewController.h"
 #import "YPFlickrCommunicator.h"
 #import "YPPhotoCollectionViewCell.h"
+#import "YPGlobalHelper.h"
 
 
 @interface YPPhotoDetailViewController () {
@@ -35,30 +36,30 @@
   _photoSet = [NSMutableArray array];
   
   YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
+  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
   [flickr getPhotosForSet:self.photoSetId completionBlock:^(NSDictionary *response) {
     
     NSLog(@"%@", response);
     
-      // Get a list of URLs
-      NSMutableArray *photoURLs = [NSMutableArray array];
-      for (NSDictionary *photoDictionary in [response valueForKeyPath:@"photoset.photo"]) {
-        NSURL *url = [flickr urlForImageFromDictionary:photoDictionary];
-        //[photoURLs addObject:url];
-        [photoURLs addObject:@{@"url": url, @"title": photoDictionary[@"title"]}];
-      }
+    // Get a list of URLs
+    NSMutableArray *photoURLs = [NSMutableArray array];
+    for (NSDictionary *photoDictionary in [response valueForKeyPath:@"photoset.photo"]) {
+      NSURL *url = [flickr urlForImageFromDictionary:photoDictionary];
+      //[photoURLs addObject:url];
+      [photoURLs addObject:@{@"url": url, @"title": photoDictionary[@"title"]}];
+    }
     
-      // Download image for each URL
-      //for (NSURL *url in photoURLs) {
-       for (NSDictionary *photo in photoURLs) {
-        //NSLog(@"%@", url);
-        [flickr downloadImageForURL:photo[@"url"] completionBlock:^(UIImage *image) {
-          //NSLog(@"add image, %@", image);
-          [_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
-
-          [self.photoCollectionView reloadData];
-          }
-         ];
-      }
+    // Download image for each URL
+    //for (NSURL *url in photoURLs) {
+    for (NSDictionary *photo in photoURLs) {
+      //NSLog(@"%@", url);
+      [flickr downloadImageForURL:photo[@"url"] completionBlock:^(UIImage *image) {
+        //NSLog(@"add image, %@", image);
+        [_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
+        [self.photoCollectionView reloadData];
+      }];
+    }
+    [YPGlobalHelper hideNotificationView];
   }];
 }
 
@@ -67,10 +68,10 @@
                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
   YPPhotoCollectionViewCell *cell = [self.photoCollectionView
-                                  dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCell"
-                                  forIndexPath:indexPath];
+                                     dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCell"
+                                     forIndexPath:indexPath];
   
-
+  
   cell.photoImageView.image = _photoSet[indexPath.row][@"image"];
   cell.photoTitle = _photoSet[indexPath.row][@"title"];
   return cell;
@@ -120,7 +121,7 @@
                      int distanceFromBottom = ((marginFactor/2)*fullscreenImageView.bounds.size.height);
                      int labelYCoordinate = (overlayView.bounds.size.height-distanceFromBottom);
                      
-
+                     
                      title = [[UILabel alloc] initWithFrame:CGRectMake(0, labelYCoordinate, self.view.bounds.size.width, distanceFromBottom)];
                      title.textColor = [UIColor whiteColor];
                      title.textAlignment = NSTextAlignmentCenter;
@@ -129,7 +130,7 @@
                      [overlayView addSubview:title];
                    }
    ];
-
+  
   
   
   UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewTapped:)];
@@ -145,8 +146,8 @@
   UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewRightSwiped:)];
   [rightSwipe setDirection:UISwipeGestureRecognizerDirectionRight];
   [overlayView addGestureRecognizer:rightSwipe];
-
-
+  
+  
 }
 
 -(void)fullScreenImageViewLeftSwiped:(UIGestureRecognizer *)gestureRecognizer
@@ -162,7 +163,7 @@
     fullscreenImageView.image = _photoSet[newIndex.row][@"image"];
     [title setText:_photoSet[newIndex.row][@"title"]];
   }
-
+  
 }
 
 -(void)fullScreenImageViewRightSwiped:(UIGestureRecognizer *)gestureRecognizer
@@ -213,8 +214,8 @@
 }
 
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
 }
 
 

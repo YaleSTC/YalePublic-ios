@@ -217,8 +217,9 @@
                                 lastName = substring;
                                 *stop = YES;
                               }];
+    YPDirectoryDetailViewController *pdvc = (YPDirectoryDetailViewController *)[segue destinationViewController];
     
-    
+    pdvc.title = fullName;    
     NSString *urlString = [[[self.sectionedPeople objectForKey:[lastName substringToIndex:1]] objectAtIndex:indexPath.row] objectForKey:@"link"];
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -230,10 +231,9 @@
       
       NSString *responseString = operation.responseString;
       self.individualData = [YPGlobalHelper getInformationForPerson:responseString];
-      YPDirectoryDetailViewController *pdvc = (YPDirectoryDetailViewController *)[segue destinationViewController];
+     
       pdvc.data = self.individualData;
-      [pdvc viewDidLoad];
-      [pdvc.tableView reloadData];
+      [pdvc loadData];
       
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
       UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Error"
