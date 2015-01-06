@@ -11,6 +11,7 @@
 #import "YPVideoEmbeddedViewViewController.h"
 #import "AFNetworking.h"
 #import "TTTTimeIntervalFormatter.h"
+#import "YPGlobalHelper.h"
 #import "Config.h"
 
 @interface YPVideoListTableViewController ()
@@ -22,36 +23,46 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  
+  [self loadVideos];
+  self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
   
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
-  [self loadVideos];
   [self.tableView setSeparatorInset:UIEdgeInsetsZero];
 }
 
 - (void)loadVideos
 {
-  NSString *url = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=%@&key=%@", self.playlistID, YOUTUBE_API_KEY];
-  AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-  [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-    NSData *responseData = operation.responseData;
-    NSError *error = nil;
-    NSDictionary *videosObject = [NSJSONSerialization
-                                  JSONObjectWithData:responseData
-                                  options:NSJSONReadingMutableContainers
-                                  error:&error];
-    
-    self.videosArray = videosObject[@"items"];
-    [self.tableView reloadData];
+  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    NSString *url = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=%@&key=%@", self.playlistID, YOUTUBE_API_KEY];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [YPGlobalHelper hideNotificationView];
+      });
+      NSData *responseData = operation.responseData;
+      NSError *error = nil;
+      NSDictionary *videosObject = [NSJSONSerialization
+                                    JSONObjectWithData:responseData
+                                    options:NSJSONReadingMutableContainers
+                                    error:&error];
+      
+      self.videosArray = videosObject[@"items"];
+      [self.tableView reloadData];
+      
+      
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [YPGlobalHelper hideNotificationView];
+      });
+      NSLog(@"Error: %@", error);
+    }];
+  });
 
-    
-  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-    NSLog(@"Error: %@", error);
-  }];
   
 }
 
@@ -86,10 +97,11 @@
   cell.titleLabel.text = snippet[@"title"];
   cell.subtitleLabel.text = snippet[@"description"];
   NSURL *imgURL = [NSURL URLWithString:snippet[@"thumbnails"][@"default"][@"url"]];
-  UIImage *img = [self imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:imgURL]]
-                         scaledToSize:cell.imageContainer.bounds.size];
-  [cell.imageContainer setImage:img];
-  
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    UIImage *img = [self imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:imgURL]]
+                           scaledToSize:cell.imageContainer.bounds.size];
+    [cell.imageContainer setImage:img];
+  });
   NSString *dateString = [snippet[@"publishedAt"] substringToIndex:10];
   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
   [dateFormatter setDateStyle:NSDateFormatterMediumStyle];

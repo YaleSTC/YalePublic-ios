@@ -9,6 +9,7 @@
 #import "YPVideosPlaylistTableViewController.h"
 #import "YPVideoListTableViewController.h"
 #import "AFNetworking.h"
+#import "YPGlobalHelper.h"
 #import "Config.h"
 
 @interface YPVideosPlaylistTableViewController ()
@@ -23,34 +24,45 @@
 {
   [super viewDidLoad];
   self.title = @"Videos";
+  self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+  [self loadPlaylists];
+  
   
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
-  [self loadPlaylists];
+  
   [self.tableView setSeparatorInset:UIEdgeInsetsZero];
 }
 
 - (void)loadPlaylists
 {
-  NSString *url = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/playlists?part=snippet&maxResults=50&channelId=%@&key=%@", CHANNEL_ID, YOUTUBE_API_KEY];
-  AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-  [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-    NSData *responseData = operation.responseData;
-    NSError *error = nil;
-    NSDictionary *playlistsObject = [NSJSONSerialization
-                                    JSONObjectWithData:responseData
-                                    options:NSJSONReadingMutableContainers
-                                    error:&error];
-    
-    self.playlistArray = playlistsObject[@"items"];
-    [self.tableView reloadData];
-  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-    NSLog(@"Error: %@", error);
-  }];
-  
+  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    NSString *url = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/playlists?part=snippet&maxResults=50&channelId=%@&key=%@", CHANNEL_ID, YOUTUBE_API_KEY];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [YPGlobalHelper hideNotificationView];
+      });
+      NSData *responseData = operation.responseData;
+      NSError *error = nil;
+      NSDictionary *playlistsObject = [NSJSONSerialization
+                                       JSONObjectWithData:responseData
+                                       options:NSJSONReadingMutableContainers
+                                       error:&error];
+      
+      self.playlistArray = playlistsObject[@"items"];
+      [self.tableView reloadData];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [YPGlobalHelper hideNotificationView];
+      });
+      NSLog(@"Error: %@", error);
+    }];
+  });
 }
 
 

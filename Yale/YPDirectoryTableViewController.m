@@ -141,7 +141,7 @@
   
   [YPGlobalHelper showNotificationInViewController:self
                                            message:@"Searching..."
-                                             style:JGProgressHUDStyleLight];
+                                             style:JGProgressHUDStyleDark];
   
   [operation start];
 }
@@ -244,7 +244,7 @@
     
     [YPGlobalHelper showNotificationInViewController:self
                                              message:@"Loading..."
-                                               style:JGProgressHUDStyleLight];
+                                               style:JGProgressHUDStyleDark];
     
     [operation start];
   }
