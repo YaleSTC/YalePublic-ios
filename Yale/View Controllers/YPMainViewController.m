@@ -35,13 +35,24 @@
 
 - (void)setupNavigationBar
 {
+  UINavigationBar *navigationBar = self.navigationController.navigationBar;
   UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
   self.infoButton = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
   self.navigationItem.rightBarButtonItem = self.infoButton;
   [infoButton addTarget:self action:@selector(viewInfo) forControlEvents:UIControlEventTouchUpInside];
+  navigationBar.barStyle = UIBarStyleBlack;
+  navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName : [UIColor whiteColor] };
+  navigationBar.translucent = NO;
+  [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
+                                    forBarPosition:UIBarPositionAny
+                                        barMetrics:UIBarMetricsDefault];
   
-  self.navigationController.navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName : [UIColor whiteColor] };
+  [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
   self.title = @"Home";
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle{
+  return UIStatusBarStyleLightContent;
 }
 
 - (void)setupBackgroundImage
