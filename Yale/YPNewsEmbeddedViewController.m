@@ -7,6 +7,7 @@
 //
 
 #import "YPNewsEmbeddedViewController.h"
+#import "YPGlobalHelper.h"
 @import WebKit;
 
 @interface YPNewsEmbeddedViewController ()
@@ -44,8 +45,21 @@
   
   WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
   webView.allowsBackForwardNavigationGestures = YES;
+  
+  
   [webView loadRequest:request];
   [self.view addSubview:webView];
+  
+  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
+  dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    while (webView.loading)
+      ;
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [YPGlobalHelper hideNotificationView];
+    });
+  });
+  
+  
 }
 
 - (void)didReceiveMemoryWarning

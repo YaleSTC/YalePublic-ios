@@ -15,7 +15,7 @@
 		<key>2026A95716A5CF67242A130B163447F50D1F6F24</key>
 		<string>github.com:YaleSTC/YalePublic-ios.git</string>
 		<key>AB1ACB7A52526127A7E81A26CB3B3AD10CC8EF25</key>
-		<string>github.com:kiokoo/YaleMobile.git</string>
+		<string>github.com:YaleSTC/YaleMobile.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Yale.xcworkspace</string>

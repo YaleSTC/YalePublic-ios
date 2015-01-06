@@ -12,6 +12,7 @@
 #import "AFNetworking.h"
 #import "TTTTimeIntervalFormatter.h"
 #import "MWFeedParser/NSString+HTML.h"
+#import "YPGlobalHelper.h"
 
 @interface YPNewsArticlesTableViewController ()
 @property (nonatomic, strong) NSArray *articlesArray;
@@ -22,6 +23,7 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
   
 }
 
@@ -34,8 +36,11 @@
 
 - (void)getArticles
 {
+  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
+  
   AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
   [manager GET:self.url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [YPGlobalHelper hideNotificationView];
     NSData *responseData = operation.responseData;
     NSError *error = nil;
     NSDictionary *articlesObject = [NSJSONSerialization
@@ -46,9 +51,14 @@
     self.articlesArray = articlesObject[@"news"];
     [self.tableView reloadData];
     
+    
   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    [YPGlobalHelper hideNotificationView];
     NSLog(@"Error: %@", error);
+    
   }];
+  
+  
   
   
 }
@@ -97,12 +107,24 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  return 100.0;
+  if ([self.articlesArray count] == 0)
+    return 0;
+  NSDictionary *articleNode = self.articlesArray[indexPath.row][@"node"];
+  
+  NSString *text = [[articleNode[@"title"] stringByDecodingHTMLEntities] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  CGSize size = [text sizeWithAttributes: @{
+                                            NSFontAttributeName: [UIFont boldSystemFontOfSize:17.0]
+                                            }];
+  CGFloat disclosureIndicatorWidth = 58.0;
+  if (size.width > self.tableView.frame.size.width - disclosureIndicatorWidth)
+    return 100.0;
+  else
+    return 80.0;
 }
 
 
 
- #pragma mark - Navigation
+#pragma mark - Navigation
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -112,14 +134,14 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-   if ([segue.identifier isEqualToString:@"showArticle"]) {
-     YPNewsEmbeddedViewController *articleVC = segue.destinationViewController;
-     NSDictionary *articleNode = self.articlesArray[[self.tableView indexPathForCell:sender].row][@"node"];
-     articleVC.url = articleNode[@"path"];
-     articleVC.title = [NSString stringWithFormat:@"YaleNews | %@", [articleNode[@"title"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
-     
-     
-   }
+  if ([segue.identifier isEqualToString:@"showArticle"]) {
+    YPNewsEmbeddedViewController *articleVC = segue.destinationViewController;
+    NSDictionary *articleNode = self.articlesArray[[self.tableView indexPathForCell:sender].row][@"node"];
+    articleVC.url = articleNode[@"path"];
+    articleVC.title = [NSString stringWithFormat:@"YaleNews | %@", [articleNode[@"title"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
+    
+    
+  }
 }
 
 
