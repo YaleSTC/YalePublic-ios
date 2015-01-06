@@ -19,8 +19,14 @@
 
 - (void)setupNavigationBar
 {
-
-  self.navigationController.navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName : [UIColor whiteColor] };
+  UINavigationBar *navigationBar = self.navigationController.navigationBar;
+  navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName : [UIColor whiteColor] };
+  navigationBar.barStyle = UIBarStyleBlack;
+  [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
+                                    forBarPosition:UIBarPositionAny
+                                        barMetrics:UIBarMetricsDefault];
+  
+  [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
   self.title = @"About";
 }
 
