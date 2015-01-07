@@ -38,6 +38,9 @@
 		AB6F83371A04231900F3FBD7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB6F83361A04231900F3FBD7 /* MessageUI.framework */; };
 		AB7D007E19E734FA008047A6 /* YPNewsArticleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB7D007D19E734FA008047A6 /* YPNewsArticleCell.xib */; };
 		AB7D008119E7361B008047A6 /* YPNewsArticleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7D008019E7361B008047A6 /* YPNewsArticleCell.m */; };
+		AB8AB5C11A5D347800149B4B /* YPMapsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB8AB5C01A5D347800149B4B /* YPMapsViewController.m */; };
+		AB8AB5C61A5D354300149B4B /* YPMapsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB8AB5C51A5D354300149B4B /* YPMapsViewController.storyboard */; };
+		AB8AB5C81A5D360B00149B4B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8AB5C71A5D360B00149B4B /* MapKit.framework */; };
 		AB99B3451A16AE480003F752 /* YPOrientationViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB99B3441A16AE480003F752 /* YPOrientationViewController.storyboard */; };
 		AB99B3481A16AE890003F752 /* YPOrientationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB99B3471A16AE890003F752 /* YPOrientationViewController.m */; };
 		AB99B34D1A16B0DC0003F752 /* YPTransitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB99B34C1A16B0DC0003F752 /* YPTransitViewController.m */; };
@@ -127,6 +130,10 @@
 		AB7D007D19E734FA008047A6 /* YPNewsArticleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YPNewsArticleCell.xib; sourceTree = "<group>"; };
 		AB7D007F19E7361B008047A6 /* YPNewsArticleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsArticleCell.h; sourceTree = "<group>"; };
 		AB7D008019E7361B008047A6 /* YPNewsArticleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPNewsArticleCell.m; sourceTree = "<group>"; };
+		AB8AB5BF1A5D347800149B4B /* YPMapsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPMapsViewController.h; sourceTree = "<group>"; };
+		AB8AB5C01A5D347800149B4B /* YPMapsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPMapsViewController.m; sourceTree = "<group>"; };
+		AB8AB5C51A5D354300149B4B /* YPMapsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPMapsViewController.storyboard; sourceTree = "<group>"; };
+		AB8AB5C71A5D360B00149B4B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		AB99B3441A16AE480003F752 /* YPOrientationViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPOrientationViewController.storyboard; sourceTree = "<group>"; };
 		AB99B3461A16AE890003F752 /* YPOrientationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPOrientationViewController.h; sourceTree = "<group>"; };
 		AB99B3471A16AE890003F752 /* YPOrientationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPOrientationViewController.m; sourceTree = "<group>"; };
@@ -167,6 +174,7 @@
 			files = (
 				AB39E7991A2DAB5D0071C684 /* libxml2.dylib in Frameworks */,
 				AB6F83371A04231900F3FBD7 /* MessageUI.framework in Frameworks */,
+				AB8AB5C81A5D360B00149B4B /* MapKit.framework in Frameworks */,
 				AB6F83321A041BE000F3FBD7 /* QuartzCore.framework in Frameworks */,
 				DC72D6F84DC8499796A7F96A /* libPods.a in Frameworks */,
 			);
@@ -194,6 +202,7 @@
 		2395C5850E374676A9D38AFB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AB8AB5C71A5D360B00149B4B /* MapKit.framework */,
 				AB39E7981A2DAB5D0071C684 /* libxml2.dylib */,
 				AB6F83361A04231900F3FBD7 /* MessageUI.framework */,
 				AB6F83311A041BE000F3FBD7 /* QuartzCore.framework */,
@@ -216,6 +225,7 @@
 		9B2249FD19E4C9760064C188 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				AB8AB5C21A5D348000149B4B /* Maps */,
 				AB99B3491A16AE910003F752 /* Orientation */,
 				AB99B34A1A16B0CD0003F752 /* Transit */,
 				AB6F832B1A04079500F3FBD7 /* Info */,
@@ -253,6 +263,7 @@
 		9B2249FF19E4C98D0064C188 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				AB8AB5C51A5D354300149B4B /* YPMapsViewController.storyboard */,
 				AB99B3441A16AE480003F752 /* YPOrientationViewController.storyboard */,
 				AB99B34E1A16B0ED0003F752 /* YPTransitViewController.storyboard */,
 				AB0071DC19E4D14B00ABF52D /* YPNewsViewController.storyboard */,
@@ -391,6 +402,15 @@
 			name = Info;
 			sourceTree = "<group>";
 		};
+		AB8AB5C21A5D348000149B4B /* Maps */ = {
+			isa = PBXGroup;
+			children = (
+				AB8AB5BF1A5D347800149B4B /* YPMapsViewController.h */,
+				AB8AB5C01A5D347800149B4B /* YPMapsViewController.m */,
+			);
+			name = Maps;
+			sourceTree = "<group>";
+		};
 		AB99B3491A16AE910003F752 /* Orientation */ = {
 			isa = PBXGroup;
 			children = (
@@ -504,6 +524,11 @@
 				TargetAttributes = {
 					9B8BE29319DE153D00CFE39A = {
 						CreatedOnToolsVersion = 6.0.1;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					9B8BE2AC19DE153D00CFE39A = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -540,6 +565,7 @@
 				AB7D007E19E734FA008047A6 /* YPNewsArticleCell.xib in Resources */,
 				AB6F83301A0408A500F3FBD7 /* YPInfoViewController.storyboard in Resources */,
 				AB99B3451A16AE480003F752 /* YPOrientationViewController.storyboard in Resources */,
+				AB8AB5C61A5D354300149B4B /* YPMapsViewController.storyboard in Resources */,
 				1386AE3719F1A66F00CA203F /* YPAthleticsViewController.storyboard in Resources */,
 				9B8BE2A519DE153D00CFE39A /* Images.xcassets in Resources */,
 				EA54231919E4CEE000E75859 /* (null) in Resources */,
@@ -620,6 +646,7 @@
 				9BC369D31A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m in Sources */,
 				AB39E7841A2D8BA90071C684 /* YPDirectoryTableViewController.m in Sources */,
 				9B18DA6919DE17E500CB900C /* YPMainViewController.m in Sources */,
+				AB8AB5C11A5D347800149B4B /* YPMapsViewController.m in Sources */,
 				EA54231E19E4E63B00E75859 /* YPPhotoCollectionViewCell.m in Sources */,
 				AB0071DA19E4C92300ABF52D /* YPNewsEmbeddedViewController.m in Sources */,
 				9B8BE29A19DE153D00CFE39A /* main.m in Sources */,

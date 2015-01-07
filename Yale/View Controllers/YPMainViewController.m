@@ -14,6 +14,7 @@
 #import "YPInfoViewViewController.h"
 #import "YPOrientationViewController.h"
 #import "YPDirectoryTableViewController.h"
+#import "YPMapsViewController.h"
 #import "YPTheme.h"
 #import "YPMainViewButton.h"
 #import <PureLayout/PureLayout.h>
@@ -253,6 +254,11 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                          bundle:[NSBundle mainBundle]];
     UINavigationController *directoryVC = [storyboard instantiateViewControllerWithIdentifier:@"DirectoryVC"];
     [self.navigationController pushViewController:directoryVC animated:YES];
+  } else if ([underText isEqualToString:@"Maps"]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPMapsViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *mapsVC = [storyboard instantiateViewControllerWithIdentifier:@"MapsVC"];
+    [self.navigationController pushViewController:mapsVC animated:YES];
   }
 }
 
