@@ -15,6 +15,7 @@
 #import "YPOrientationViewController.h"
 #import "YPDirectoryTableViewController.h"
 #import "YPMapsViewController.h"
+#import "YPEventsViewController.h"
 #import "YPTheme.h"
 #import "YPMainViewButton.h"
 #import <PureLayout/PureLayout.h>
@@ -259,6 +260,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                          bundle:[NSBundle mainBundle]];
     UINavigationController *mapsVC = [storyboard instantiateViewControllerWithIdentifier:@"MapsVC"];
     [self.navigationController pushViewController:mapsVC animated:YES];
+  } else if ([underText isEqualToString:@"Events"]) {
+    YPEventsViewController *eventsVC = [[YPEventsViewController alloc] init];
+    [self.navigationController pushViewController:eventsVC animated:YES];
   }
 }
 

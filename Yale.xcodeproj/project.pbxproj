@@ -31,6 +31,7 @@
 		AB39E7881A2D8EA70071C684 /* YPDirectoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E7871A2D8EA70071C684 /* YPDirectoryDetailViewController.m */; };
 		AB39E78B1A2D94F60071C684 /* YPGlobalHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E78A1A2D94F60071C684 /* YPGlobalHelper.m */; };
 		AB39E7991A2DAB5D0071C684 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB39E7981A2DAB5D0071C684 /* libxml2.dylib */; };
+		AB3EB6681A5E911C0029EEFF /* YPEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3EB6671A5E911C0029EEFF /* YPEventsViewController.m */; };
 		AB6F832E1A04081700F3FBD7 /* YPInfoViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */; };
 		AB6F83301A0408A500F3FBD7 /* YPInfoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB6F832F1A0408A500F3FBD7 /* YPInfoViewController.storyboard */; };
 		AB6F83321A041BE000F3FBD7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB6F83311A041BE000F3FBD7 /* QuartzCore.framework */; };
@@ -120,6 +121,8 @@
 		AB39E7891A2D94F60071C684 /* YPGlobalHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPGlobalHelper.h; sourceTree = "<group>"; };
 		AB39E78A1A2D94F60071C684 /* YPGlobalHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPGlobalHelper.m; sourceTree = "<group>"; };
 		AB39E7981A2DAB5D0071C684 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		AB3EB6661A5E911C0029EEFF /* YPEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPEventsViewController.h; sourceTree = "<group>"; };
+		AB3EB6671A5E911C0029EEFF /* YPEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPEventsViewController.m; sourceTree = "<group>"; };
 		AB6F832C1A04081700F3FBD7 /* YPInfoViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPInfoViewViewController.h; sourceTree = "<group>"; };
 		AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPInfoViewViewController.m; sourceTree = "<group>"; };
 		AB6F832F1A0408A500F3FBD7 /* YPInfoViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPInfoViewController.storyboard; sourceTree = "<group>"; };
@@ -225,6 +228,7 @@
 		9B2249FD19E4C9760064C188 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				AB3EB6691A5E91240029EEFF /* Events */,
 				AB8AB5C21A5D348000149B4B /* Maps */,
 				AB99B3491A16AE910003F752 /* Orientation */,
 				AB99B34A1A16B0CD0003F752 /* Transit */,
@@ -389,6 +393,15 @@
 				AB39E78A1A2D94F60071C684 /* YPGlobalHelper.m */,
 			);
 			name = Helpers;
+			sourceTree = "<group>";
+		};
+		AB3EB6691A5E91240029EEFF /* Events */ = {
+			isa = PBXGroup;
+			children = (
+				AB3EB6661A5E911C0029EEFF /* YPEventsViewController.h */,
+				AB3EB6671A5E911C0029EEFF /* YPEventsViewController.m */,
+			);
+			name = Events;
 			sourceTree = "<group>";
 		};
 		AB6F832B1A04079500F3FBD7 /* Info */ = {
@@ -647,6 +660,7 @@
 				AB39E7841A2D8BA90071C684 /* YPDirectoryTableViewController.m in Sources */,
 				9B18DA6919DE17E500CB900C /* YPMainViewController.m in Sources */,
 				AB8AB5C11A5D347800149B4B /* YPMapsViewController.m in Sources */,
+				AB3EB6681A5E911C0029EEFF /* YPEventsViewController.m in Sources */,
 				EA54231E19E4E63B00E75859 /* YPPhotoCollectionViewCell.m in Sources */,
 				AB0071DA19E4C92300ABF52D /* YPNewsEmbeddedViewController.m in Sources */,
 				9B8BE29A19DE153D00CFE39A /* main.m in Sources */,
@@ -775,6 +789,7 @@
 					"$(SDKROOT)/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = Yale/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -801,6 +816,7 @@
 					"$(SDKROOT)/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = Yale/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
