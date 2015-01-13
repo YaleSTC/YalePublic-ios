@@ -100,7 +100,7 @@
   // Getting the number of days in between the two dates
   NSInteger days = [YPEventsViewController daysBetweenDate:dayOneSixMonthsBack andDate:dayOneSixMonthsForward];
   
-  [YPCalendarEventsServerCommunicator getEventsFromDay:dayOneSixMonthsBack tilNext:days tags:@[@"class", @"workshop", @"community"] completionBlock:^(NSArray *array) {
+  [YPCalendarEventsServerCommunicator getEventsFromDay:dayOneSixMonthsBack tilNext:days tags:@[@"class", @"workshop", @"community", @"conferences", @"exhibitions", @"familyfriendly", @"films", @"groupmeetings", @"performances", @"spiritual", @"worship", @"sports", @"recreation", @"talks", @"readings", @"tours"] completionBlock:^(NSArray *array) {
     self.events = array;
     [YPGlobalHelper hideNotificationView];
     [self.datePickerView reloadData];
