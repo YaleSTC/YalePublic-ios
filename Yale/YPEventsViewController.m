@@ -12,7 +12,8 @@
 
 @interface YPEventsViewController ()
 @property (nonatomic, strong) RSDFDatePickerView *datePickerView;
-@property (nonatomic, strong) NSArray *events;
+@property (nonatomic, strong) NSArray             *events;
+@property (nonatomic, strong) NSMutableDictionary *eventsDictionary;
 @end
 
 @implementation YPEventsViewController
@@ -161,7 +162,16 @@
 {
   if (_events != events) {
     _events = events;
-    NSLog(@"Updated events: %@", [self.events firstObject]);
+    self.eventsDictionary = [NSMutableDictionary dictionary];
+    
+    [_events enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+      NSString *dateString = obj[@"start"][@"shortdate"];
+      if (![self.eventsDictionary objectForKey:dateString]) {
+        [self.eventsDictionary setObject:[NSMutableArray array] forKey:dateString];
+      }
+      [self.eventsDictionary[dateString] addObject:obj];
+    }];
+    NSLog(@"Events updated: %@", self.eventsDictionary);
   }
 }
 
