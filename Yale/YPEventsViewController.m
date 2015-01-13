@@ -8,9 +8,11 @@
 
 #import "YPEventsViewController.h"
 #import "YPCalendarEventsServerCommunicator.h"
+#import "YPGlobalHelper.h"
 
 @interface YPEventsViewController ()
 @property (nonatomic, strong) RSDFDatePickerView *datePickerView;
+@property (nonatomic, strong) NSArray *events;
 @end
 
 @implementation YPEventsViewController
@@ -33,11 +35,48 @@
 
 
 - (void)getEvents {
-  [YPCalendarEventsServerCommunicator getEventsFromDay:[NSDate date] tilNext:180 tags:@[@"class", @"workshop", @"community"] completionBlock:^(NSArray *array) {
-    NSLog(@"%@", [array firstObject]);
+  NSDate *today = [NSDate date];
+  
+  // Getting first day of this month
+  NSCalendar *calendar = [NSCalendar autoupdatingCurrentCalendar];
+  NSDateComponents *components = [calendar components:(NSCalendarUnitEra  |
+                                                       NSCalendarUnitYear |
+                                                       NSCalendarUnitMonth)
+                                             fromDate:today];
+  components.day = 1;
+  NSDate *dayOneInCurrentMonth = [calendar dateFromComponents:components];
+  NSLog(@"%@", dayOneInCurrentMonth);
+  
+  // Getting day one of 6 month back
+  components.month = -6;
+  components.day   = 0;
+  components.year  = 0;
+  components.era   = 0;
+  NSDate *dayOneSixMonthsBack = [calendar dateByAddingComponents:components
+                                                          toDate:dayOneInCurrentMonth
+                                                         options:0];
+  NSLog(@"%@", dayOneSixMonthsBack);
+  
+  // Getting day one of 6 month forward
+  components.month = 6;
+  NSDate *dayOneSixMonthsForward = [calendar dateByAddingComponents:components
+                                                             toDate:dayOneInCurrentMonth
+                                                            options:0];
+  NSLog(@"%@", dayOneSixMonthsForward);
+  
+  // Getting the number of days in between the two dates
+  NSInteger days = [YPEventsViewController daysBetweenDate:dayOneSixMonthsBack andDate:dayOneSixMonthsForward];
+  
+  [YPCalendarEventsServerCommunicator getEventsFromDay:dayOneSixMonthsBack tilNext:days tags:@[@"class", @"workshop", @"community"] completionBlock:^(NSArray *array) {
+    self.events = array;
+    [YPGlobalHelper hideNotificationView];
   } failureBlock:^(NSError *error) {
     NSLog(@"error: %@", [error localizedDescription]);
   }];
+  
+  [YPGlobalHelper showNotificationInViewController:self
+                                           message:@"Loading"
+                                             style:JGProgressHUDStyleDark];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -45,7 +84,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark Data Source
+#pragma mark - Data Source
 
 // Returns YES if the date should be marked or NO if it should not.
 - (BOOL)datePickerView:(RSDFDatePickerView *)view shouldMarkDate:(NSDate *)date
@@ -74,7 +113,7 @@
 }
 
 
-#pragma mark Delegate Functions
+#pragma mark - Delegate Functions
 
 // Returns YES if the date should be highlighted or NO if it should not.
 - (BOOL)datePickerView:(RSDFDatePickerView *)view shouldHighlightDate:(NSDate *)date
@@ -96,7 +135,37 @@
 }
 
 
-#pragma mark Interaction
+#pragma mark - Helper
+
++ (NSInteger)daysBetweenDate:(NSDate*)fromDateTime andDate:(NSDate*)toDateTime
+{
+  NSDate *fromDate;
+  NSDate *toDate;
+  
+  NSCalendar *calendar = [NSCalendar currentCalendar];
+  
+  [calendar rangeOfUnit:NSCalendarUnitDay startDate:&fromDate
+               interval:NULL forDate:fromDateTime];
+  [calendar rangeOfUnit:NSCalendarUnitDay startDate:&toDate
+               interval:NULL forDate:toDateTime];
+  
+  NSDateComponents *difference = [calendar components:NSCalendarUnitDay
+                                             fromDate:fromDate toDate:toDate options:0];
+  
+  return [difference day];
+}
+
+#pragma mark - Setter
+
+- (void)setEvents:(NSArray *)events
+{
+  if (_events != events) {
+    _events = events;
+    NSLog(@"Updated events: %@", [self.events firstObject]);
+  }
+}
+
+#pragma mark - Interaction
 
 - (void)onTodayButtonTouch:(UIBarButtonItem *)sender
 {
