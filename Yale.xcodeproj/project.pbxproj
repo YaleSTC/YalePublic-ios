@@ -346,7 +346,6 @@
 				9B2249FD19E4C9760064C188 /* View Controllers */,
 				9B224A0019E4C9A20064C188 /* UI Helpers */,
 				9B8BE2A419DE153D00CFE39A /* Images.xcassets */,
-				ABB117C71A64A884009743E2 /* RSDayFlow */,
 				AB39E7951A2DA71E0071C684 /* Helpers */,
 				9B8BE29719DE153D00CFE39A /* Supporting Files */,
 			);
@@ -421,6 +420,7 @@
 		AB3EB6691A5E91240029EEFF /* Events */ = {
 			isa = PBXGroup;
 			children = (
+				ABB117C71A64A884009743E2 /* RSDayFlow */,
 				AB3EB6661A5E911C0029EEFF /* YPEventsViewController.h */,
 				AB3EB6671A5E911C0029EEFF /* YPEventsViewController.m */,
 			);

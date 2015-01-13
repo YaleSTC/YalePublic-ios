@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "RSDFDatePickerView.h"
 
-@interface YPEventsViewController : UIViewController <RSDFDatePickerViewDelegate, RSDFDatePickerViewDataSource>
+@interface YPEventsViewController : UIViewController <RSDFDatePickerViewDelegate, RSDFDatePickerViewDataSource, UITableViewDataSource, UITableViewDelegate>
 
 @end
