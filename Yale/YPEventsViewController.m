@@ -8,6 +8,7 @@
 
 #import "YPEventsViewController.h"
 #import "YPCalendarEventsServerCommunicator.h"
+#import "YPEventsDetailViewController.h"
 #import "YPGlobalHelper.h"
 
 @interface YPEventsViewController ()
@@ -16,6 +17,7 @@
 @property (nonatomic, strong) NSArray             *events;
 @property (nonatomic, strong) NSMutableDictionary *eventsDictionary;
 @property (nonatomic, strong) NSArray *currentEvents;
+
 @end
 
 @implementation YPEventsViewController
@@ -167,7 +169,17 @@
 }
 
 
-//- (BOOL)should
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+  
+  YPEventsDetailViewController *detail = [[YPEventsDetailViewController alloc] init];
+  NSDictionary *event = [self.currentEvents objectAtIndex:indexPath.row];
+  detail.url = [event objectForKey:@"eventlink"];
+  detail.title = [event objectForKey:@"summary"];
+  [self.detailTableView deselectRowAtIndexPath:indexPath animated:YES];
+  
+  if (detail.url)
+      [self.navigationController pushViewController:detail animated:YES];
+}
 
 #pragma mark - Helper
 

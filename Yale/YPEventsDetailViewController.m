@@ -7,6 +7,8 @@
 //
 
 #import "YPEventsDetailViewController.h"
+#import "YPGlobalHelper.h"
+@import WebKit;
 
 @interface YPEventsDetailViewController ()
 
@@ -14,24 +16,37 @@
 
 @implementation YPEventsDetailViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
+- (void)viewDidLoad
+{
+  [super viewDidLoad];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewWillAppear:(BOOL)animated
+{
+  [super viewWillAppear:animated];
+  [self setUpWebView];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)didReceiveMemoryWarning
+{
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
 }
-*/
-
+- (void)setUpWebView
+{
+  NSURL *url = [NSURL URLWithString:self.url];
+  NSURLRequest *request = [NSURLRequest requestWithURL:url];
+  
+  WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];;
+  [webView loadRequest:request];
+  [self.view addSubview:webView];
+  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
+  dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    while (webView.loading)
+      ;
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [YPGlobalHelper hideNotificationView];
+    });
+  });
+}
 @end

@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface YPEventsDetailViewController : UIViewController
-
+@property (nonatomic, strong) NSString *url;
 @end
