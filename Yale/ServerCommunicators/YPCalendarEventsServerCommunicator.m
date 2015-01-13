@@ -10,7 +10,7 @@
 #import <AFNetworking/AFNetworking.h>
 #import <XMLDictionary/XMLDictionary.h>
 
-static NSString * const CalendarBaseURL = @"http://calendar.yale.edu/feeds/feed/opa/rss";
+static NSString * const CalendarBaseURL = @"http://calendar.yale.edu/feeds/feed/opa/json";
 static NSString * const YPCalendarEventsErrorDomain = @"YPCalendarEventsErrorDomain";
 
 @implementation YPCalendarEventsServerCommunicator
@@ -39,29 +39,24 @@ static NSString * const YPCalendarEventsErrorDomain = @"YPCalendarEventsErrorDom
   NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@/tag=%@",
                          CalendarBaseURL, dateString, nDaysString, tagsString];
   
+  NSLog(@"%@", urlString);
+  
   AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
   manager.responseSerializer = [AFXMLParserResponseSerializer new];
-  manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/rss+xml", nil];
+  manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/javascript", nil];
   
   [manager GET:urlString
     parameters:nil
        success:^(AFHTTPRequestOperation *operation, id responseObject) {
-         XMLDictionaryParser *parser = [[XMLDictionaryParser alloc] init];
-         NSDictionary *dict = [parser dictionaryWithParser:responseObject];
-         id events = dict[@"channel"][@"item"];
-         if ([events isKindOfClass:[NSArray class]]) {
-           if (successHandler) successHandler(events);
-         } else if ([events isKindOfClass:[NSDictionary class]]) {
-           if (successHandler) successHandler(@[events]);
+         NSString *responseString = [[operation responseString] substringFromIndex:23];
+         NSError  *jsonError;
+         id events = [NSJSONSerialization JSONObjectWithData:[responseString dataUsingEncoding:NSUTF8StringEncoding]
+                                                     options:NSJSONReadingMutableContainers
+                                                       error:&jsonError];
+         if (jsonError) {
+           failureHandler(jsonError);
          } else {
-           NSDictionary *userInfo = @{
-                                      NSLocalizedDescriptionKey: @"Unexpected data format!",
-                                      NSLocalizedFailureReasonErrorKey: @"Events are expected to be at dict[@\"channel\"][@\"item\"].",
-                                      NSLocalizedRecoverySuggestionErrorKey: @"Contact the person in charge of Yale Calendar API."};
-           NSError *error = [NSError errorWithDomain:YPCalendarEventsErrorDomain
-                                                code:-1
-                                            userInfo:userInfo];
-           failureHandler(error);
+           successHandler(events[@"bwEventList"][@"events"]);
          }
        }
        failure:^(AFHTTPRequestOperation *operation, NSError *error) {

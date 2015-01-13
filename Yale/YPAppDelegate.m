@@ -54,15 +54,6 @@
   // Initialize tracker. Replace with your tracking ID.
   [[GAI sharedInstance] trackerWithTrackingId:@"UA-55867542-1"];
   
-  [YPCalendarEventsServerCommunicator getEventsFromDay:[NSDate date]
-                                               tilNext:1
-                                                  tags:@[@"workshop", @"class"]
-                                       completionBlock:^(NSArray *events) {
-                                         NSLog(@"%@", events);
-                                       } failureBlock:^(NSError *error) {
-                                         NSLog(@"%@", error.localizedDescription);
-                                       }];
-  
   return YES;
 }
 
