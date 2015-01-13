@@ -10,6 +10,7 @@
 #import "YPCalendarEventsServerCommunicator.h"
 #import "YPEventsDetailViewController.h"
 #import "YPGlobalHelper.h"
+#import "YPTheme.h"
 
 @interface YPEventsViewController ()
 @property (nonatomic, strong) RSDFDatePickerView *datePickerView;
@@ -17,12 +18,12 @@
 @property (nonatomic, strong) NSArray             *events;
 @property (nonatomic, strong) NSMutableDictionary *eventsDictionary;
 @property (nonatomic, strong) NSArray *currentEvents;
-
+@property (nonatomic, strong) UILabel *headerTextLabel;
 @end
 
 @implementation YPEventsViewController
 
-#define DETAIL_HEIGHT 200
+#define DETAIL_HEIGHT 260
 
 - (void)viewDidLoad
 {
@@ -42,6 +43,22 @@
   self.detailTableView.delegate = self;
   [self.detailTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"detailCell"];
   [self.view addSubview:self.detailTableView];
+  
+  CGRect tableHeaderFrame = CGRectMake(0, 0, self.view.bounds.size.width, 24.0f);
+  UIView *tableHeaderView = [[UIView alloc] initWithFrame:tableHeaderFrame];
+  tableHeaderView.backgroundColor = [YPTheme navigationBarColor];
+  tableHeaderFrame.origin.y += 1;
+  tableHeaderFrame.size.height -= 2;
+  self.headerTextLabel = [[UILabel alloc] initWithFrame:tableHeaderFrame];
+  [tableHeaderView addSubview:self.headerTextLabel];
+  self.headerTextLabel.textAlignment = NSTextAlignmentCenter;
+  self.headerTextLabel.textColor = [UIColor whiteColor];
+  self.detailTableView.tableHeaderView = tableHeaderView;
+  self.detailTableView.tableFooterView = nil;
+  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+  [formatter setDateFormat:@"yyyy-MM-dd"];
+  self.headerTextLabel.text = [formatter stringFromDate:[NSDate date]];
+  
   
   
   UIBarButtonItem *todayBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain target:self action:@selector(onTodayButtonTouch:)];
@@ -87,6 +104,7 @@
     self.events = array;
     [YPGlobalHelper hideNotificationView];
     [self.datePickerView reloadData];
+    [self.datePickerView selectDate:today];
   
     NSString *dateString = [self getDateString:today];
     self.currentEvents = [self.eventsDictionary objectForKey:dateString];
@@ -152,7 +170,9 @@
   NSString *dateString = [self getDateString:date];
   self.currentEvents = [self.eventsDictionary objectForKey:dateString];
   [self.detailTableView reloadData];
-  NSLog(@"%@", [date description]);
+  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+  [formatter setDateFormat:@"yyyy-MM-dd"];
+  self.headerTextLabel.text = [formatter stringFromDate:date];
 }
 
 #pragma mark Detail Delegate
