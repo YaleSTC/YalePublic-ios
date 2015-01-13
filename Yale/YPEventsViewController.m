@@ -27,9 +27,10 @@
   
   UIBarButtonItem *todayBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain target:self action:@selector(onTodayButtonTouch:)];
   self.navigationItem.rightBarButtonItem = todayBarButtonItem;
-  
   [self getEvents];
 }
+
+
 
 - (void)getEvents {
   [YPCalendarEventsServerCommunicator getEventsFromDay:[NSDate date] tilNext:60 tags:@[@"class", @"workshop", @"community"] completionBlock:^(NSArray *array) {

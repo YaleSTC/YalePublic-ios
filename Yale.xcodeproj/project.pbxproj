@@ -46,6 +46,13 @@
 		AB99B3481A16AE890003F752 /* YPOrientationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB99B3471A16AE890003F752 /* YPOrientationViewController.m */; };
 		AB99B34D1A16B0DC0003F752 /* YPTransitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB99B34C1A16B0DC0003F752 /* YPTransitViewController.m */; };
 		AB99B34F1A16B0ED0003F752 /* YPTransitViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB99B34E1A16B0ED0003F752 /* YPTransitViewController.storyboard */; };
+		ABB117C01A64A87C009743E2 /* NSCalendar+RSDFAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB117B21A64A87C009743E2 /* NSCalendar+RSDFAdditions.m */; };
+		ABB117C11A64A87C009743E2 /* RSDFDatePickerCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB117B51A64A87C009743E2 /* RSDFDatePickerCollectionView.m */; };
+		ABB117C21A64A87C009743E2 /* RSDFDatePickerCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB117B71A64A87C009743E2 /* RSDFDatePickerCollectionViewLayout.m */; };
+		ABB117C31A64A87C009743E2 /* RSDFDatePickerDayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB117B91A64A87C009743E2 /* RSDFDatePickerDayCell.m */; };
+		ABB117C41A64A87C009743E2 /* RSDFDatePickerDaysOfWeekView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB117BB1A64A87C009743E2 /* RSDFDatePickerDaysOfWeekView.m */; };
+		ABB117C51A64A87C009743E2 /* RSDFDatePickerMonthHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB117BD1A64A87C009743E2 /* RSDFDatePickerMonthHeader.m */; };
+		ABB117C61A64A87C009743E2 /* RSDFDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB117BF1A64A87C009743E2 /* RSDFDatePickerView.m */; };
 		ABD3211A19EAF31D009D9281 /* YPVideosViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABD3211919EAF31D009D9281 /* YPVideosViewController.storyboard */; };
 		ABD3211D19EAF341009D9281 /* YPVideosPlaylistTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD3211C19EAF341009D9281 /* YPVideosPlaylistTableViewController.m */; };
 		ABD3212419EB056F009D9281 /* YPVideoListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD3212319EB056F009D9281 /* YPVideoListTableViewController.m */; };
@@ -143,6 +150,21 @@
 		AB99B34B1A16B0DC0003F752 /* YPTransitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPTransitViewController.h; sourceTree = "<group>"; };
 		AB99B34C1A16B0DC0003F752 /* YPTransitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPTransitViewController.m; sourceTree = "<group>"; };
 		AB99B34E1A16B0ED0003F752 /* YPTransitViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPTransitViewController.storyboard; sourceTree = "<group>"; };
+		ABB117B11A64A87C009743E2 /* NSCalendar+RSDFAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCalendar+RSDFAdditions.h"; sourceTree = "<group>"; };
+		ABB117B21A64A87C009743E2 /* NSCalendar+RSDFAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCalendar+RSDFAdditions.m"; sourceTree = "<group>"; };
+		ABB117B31A64A87C009743E2 /* RSDayFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSDayFlow.h; sourceTree = "<group>"; };
+		ABB117B41A64A87C009743E2 /* RSDFDatePickerCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSDFDatePickerCollectionView.h; sourceTree = "<group>"; };
+		ABB117B51A64A87C009743E2 /* RSDFDatePickerCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSDFDatePickerCollectionView.m; sourceTree = "<group>"; };
+		ABB117B61A64A87C009743E2 /* RSDFDatePickerCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSDFDatePickerCollectionViewLayout.h; sourceTree = "<group>"; };
+		ABB117B71A64A87C009743E2 /* RSDFDatePickerCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSDFDatePickerCollectionViewLayout.m; sourceTree = "<group>"; };
+		ABB117B81A64A87C009743E2 /* RSDFDatePickerDayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSDFDatePickerDayCell.h; sourceTree = "<group>"; };
+		ABB117B91A64A87C009743E2 /* RSDFDatePickerDayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSDFDatePickerDayCell.m; sourceTree = "<group>"; };
+		ABB117BA1A64A87C009743E2 /* RSDFDatePickerDaysOfWeekView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSDFDatePickerDaysOfWeekView.h; sourceTree = "<group>"; };
+		ABB117BB1A64A87C009743E2 /* RSDFDatePickerDaysOfWeekView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSDFDatePickerDaysOfWeekView.m; sourceTree = "<group>"; };
+		ABB117BC1A64A87C009743E2 /* RSDFDatePickerMonthHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSDFDatePickerMonthHeader.h; sourceTree = "<group>"; };
+		ABB117BD1A64A87C009743E2 /* RSDFDatePickerMonthHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSDFDatePickerMonthHeader.m; sourceTree = "<group>"; };
+		ABB117BE1A64A87C009743E2 /* RSDFDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSDFDatePickerView.h; sourceTree = "<group>"; };
+		ABB117BF1A64A87C009743E2 /* RSDFDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSDFDatePickerView.m; sourceTree = "<group>"; };
 		ABD3211919EAF31D009D9281 /* YPVideosViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPVideosViewController.storyboard; sourceTree = "<group>"; };
 		ABD3211B19EAF341009D9281 /* YPVideosPlaylistTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPVideosPlaylistTableViewController.h; sourceTree = "<group>"; };
 		ABD3211C19EAF341009D9281 /* YPVideosPlaylistTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPVideosPlaylistTableViewController.m; sourceTree = "<group>"; };
@@ -324,6 +346,7 @@
 				9B2249FD19E4C9760064C188 /* View Controllers */,
 				9B224A0019E4C9A20064C188 /* UI Helpers */,
 				9B8BE2A419DE153D00CFE39A /* Images.xcassets */,
+				ABB117C71A64A884009743E2 /* RSDayFlow */,
 				AB39E7951A2DA71E0071C684 /* Helpers */,
 				9B8BE29719DE153D00CFE39A /* Supporting Files */,
 			);
@@ -440,6 +463,28 @@
 				AB99B34C1A16B0DC0003F752 /* YPTransitViewController.m */,
 			);
 			name = Transit;
+			sourceTree = "<group>";
+		};
+		ABB117C71A64A884009743E2 /* RSDayFlow */ = {
+			isa = PBXGroup;
+			children = (
+				ABB117B11A64A87C009743E2 /* NSCalendar+RSDFAdditions.h */,
+				ABB117B21A64A87C009743E2 /* NSCalendar+RSDFAdditions.m */,
+				ABB117B31A64A87C009743E2 /* RSDayFlow.h */,
+				ABB117B41A64A87C009743E2 /* RSDFDatePickerCollectionView.h */,
+				ABB117B51A64A87C009743E2 /* RSDFDatePickerCollectionView.m */,
+				ABB117B61A64A87C009743E2 /* RSDFDatePickerCollectionViewLayout.h */,
+				ABB117B71A64A87C009743E2 /* RSDFDatePickerCollectionViewLayout.m */,
+				ABB117B81A64A87C009743E2 /* RSDFDatePickerDayCell.h */,
+				ABB117B91A64A87C009743E2 /* RSDFDatePickerDayCell.m */,
+				ABB117BA1A64A87C009743E2 /* RSDFDatePickerDaysOfWeekView.h */,
+				ABB117BB1A64A87C009743E2 /* RSDFDatePickerDaysOfWeekView.m */,
+				ABB117BC1A64A87C009743E2 /* RSDFDatePickerMonthHeader.h */,
+				ABB117BD1A64A87C009743E2 /* RSDFDatePickerMonthHeader.m */,
+				ABB117BE1A64A87C009743E2 /* RSDFDatePickerView.h */,
+				ABB117BF1A64A87C009743E2 /* RSDFDatePickerView.m */,
+			);
+			name = RSDayFlow;
 			sourceTree = "<group>";
 		};
 		ABD3211819EAF306009D9281 /* Videos */ = {
@@ -642,12 +687,14 @@
 				9BEDA9FE1A2E66AD0095EF2C /* XPathQuery.m in Sources */,
 				9B18DA6C19DE1A6700CB900C /* YPTheme.m in Sources */,
 				AB0071D419E4C8F000ABF52D /* YPNewsTopicsTableViewController.m in Sources */,
+				ABB117C61A64A87C009743E2 /* RSDFDatePickerView.m in Sources */,
 				ABD3212719EB059F009D9281 /* YPVideoEmbeddedViewViewController.m in Sources */,
 				AB0071D719E4C90300ABF52D /* YPNewsArticlesTableViewController.m in Sources */,
 				ABD3212419EB056F009D9281 /* YPVideoListTableViewController.m in Sources */,
 				9B18DA6419DE161200CB900C /* YPAppDelegate.m in Sources */,
 				AB39E7881A2D8EA70071C684 /* YPDirectoryDetailViewController.m in Sources */,
 				AB7D008119E7361B008047A6 /* YPNewsArticleCell.m in Sources */,
+				ABB117C21A64A87C009743E2 /* RSDFDatePickerCollectionViewLayout.m in Sources */,
 				EAB6861919DF3CB00006C06F /* YPPhotoViewController.m in Sources */,
 				EAB6861F19E118830006C06F /* YPPhotoDetailViewController.m in Sources */,
 				AB6F832E1A04081700F3FBD7 /* YPInfoViewViewController.m in Sources */,
@@ -656,16 +703,21 @@
 				9BEDA9FD1A2E66AD0095EF2C /* TFHppleElement.m in Sources */,
 				9BC369991A040F9A00B63FF8 /* YPAthleticsViewController.m in Sources */,
 				9BCB4AD419DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m in Sources */,
+				ABB117C01A64A87C009743E2 /* NSCalendar+RSDFAdditions.m in Sources */,
+				ABB117C41A64A87C009743E2 /* RSDFDatePickerDaysOfWeekView.m in Sources */,
 				9BC369D31A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m in Sources */,
 				AB39E7841A2D8BA90071C684 /* YPDirectoryTableViewController.m in Sources */,
 				9B18DA6919DE17E500CB900C /* YPMainViewController.m in Sources */,
 				AB8AB5C11A5D347800149B4B /* YPMapsViewController.m in Sources */,
 				AB3EB6681A5E911C0029EEFF /* YPEventsViewController.m in Sources */,
 				EA54231E19E4E63B00E75859 /* YPPhotoCollectionViewCell.m in Sources */,
+				ABB117C31A64A87C009743E2 /* RSDFDatePickerDayCell.m in Sources */,
 				AB0071DA19E4C92300ABF52D /* YPNewsEmbeddedViewController.m in Sources */,
 				9B8BE29A19DE153D00CFE39A /* main.m in Sources */,
 				EA54232119E58BB900E75859 /* YPStandardTableView.m in Sources */,
+				ABB117C11A64A87C009743E2 /* RSDFDatePickerCollectionView.m in Sources */,
 				9BEDA9FC1A2E66AD0095EF2C /* TFHpple.m in Sources */,
+				ABB117C51A64A87C009743E2 /* RSDFDatePickerMonthHeader.m in Sources */,
 				EAB6861319DF2FDF0006C06F /* YPFlickrCommunicator.m in Sources */,
 				9B18DA6F19DE254400CB900C /* YPMainViewButton.m in Sources */,
 				AB39E78B1A2D94F60071C684 /* YPGlobalHelper.m in Sources */,

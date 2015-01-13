@@ -773,14 +773,16 @@ static NSString * const RSDFDatePickerViewDayCellIdentifier = @"RSDFDatePickerVi
     //	124.0ms    1.7%	124.0	 	-[_UICollectionViewItemKey isEqual:]
     //	118.0ms    1.7%	118.0	 	_objc_rootReleaseWasZero
     //	105.0ms    1.5%	105.0	 	DYLD-STUB$$CFDictionarySetValue$shim
-    
-    if (pickerCollectionView.contentOffset.y < 0.0f) {
-        [self appendPastDates];
-    }
-    
-    if (pickerCollectionView.contentOffset.y > (pickerCollectionView.contentSize.height - CGRectGetHeight(pickerCollectionView.bounds))) {
-        [self appendFutureDates];
-    }
+  
+  
+  //show 6 months only
+//    if (pickerCollectionView.contentOffset.y < 0.0f) {
+//        [self appendPastDates];
+//    }
+//    
+//    if (pickerCollectionView.contentOffset.y > (pickerCollectionView.contentSize.height - CGRectGetHeight(pickerCollectionView.bounds))) {
+//        [self appendFutureDates];
+//    }
 }
 
 @end

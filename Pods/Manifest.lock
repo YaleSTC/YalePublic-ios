@@ -53,7 +53,6 @@ PODS:
   - MWFeedParser/NSDate+InternetDateTime (1.0.1)
   - MWFeedParser/NSString+HTML (1.0.1)
   - PureLayout (1.1.0)
-  - RSDayFlow (0.7.3)
   - XMLDictionary (1.4)
 
 DEPENDENCIES:
@@ -65,7 +64,6 @@ DEPENDENCIES:
   - JGProgressHUD (~> 1.2.2)
   - MWFeedParser
   - PureLayout (~> 1.1)
-  - RSDayFlow
   - XMLDictionary (~> 1.4)
 
 SPEC CHECKSUMS:
@@ -77,7 +75,6 @@ SPEC CHECKSUMS:
   JGProgressHUD: a7c58f711eec0b67f257a0821c0bac9194c72398
   MWFeedParser: 003cbf5398e99a7f2057fbe9583054fd1b84be72
   PureLayout: c8960fa0f3b40d849d5e177d699d0148faa63b63
-  RSDayFlow: 06e3efb0115c1409c455e548570c5ec76d9c575b
   XMLDictionary: 735e81b9a043e220b0d24e9d4f16719606f2e0fc
 
 COCOAPODS: 0.34.4
