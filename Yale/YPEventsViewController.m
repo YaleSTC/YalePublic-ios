@@ -32,8 +32,8 @@
 }
 
 - (void)getEvents {
-  [YPCalendarEventsServerCommunicator getEventsFromDay:[NSDate date] tilNext:60 tags:@[@"class", @"workshop", @"community"] completionBlock:^(NSArray *array) {
-    NSLog(@"%@", array[2]);
+  [YPCalendarEventsServerCommunicator getEventsFromDay:[NSDate date] tilNext:180 tags:@[@"class", @"workshop", @"community"] completionBlock:^(NSArray *array) {
+    NSLog(@"%@", [array firstObject]);
   } failureBlock:^(NSError *error) {
     NSLog(@"error: %@", [error localizedDescription]);
   }];
