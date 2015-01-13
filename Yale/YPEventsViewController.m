@@ -13,7 +13,9 @@
 @interface YPEventsViewController ()
 @property (nonatomic, strong) RSDFDatePickerView *datePickerView;
 @property (nonatomic, strong) UITableView *detailTableView;
-@property (nonatomic, strong) NSArray *events;
+@property (nonatomic, strong) NSArray             *events;
+@property (nonatomic, strong) NSMutableDictionary *eventsDictionary;
+@property (nonatomic, strong) NSArray *currentEvents;
 @end
 
 @implementation YPEventsViewController
@@ -37,11 +39,13 @@
   self.detailTableView.dataSource = self;
   self.detailTableView.delegate = self;
   [self.detailTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"detailCell"];
+  [self.view addSubview:self.detailTableView];
   
   
   UIBarButtonItem *todayBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain target:self action:@selector(onTodayButtonTouch:)];
   self.navigationItem.rightBarButtonItem = todayBarButtonItem;
   [self getEvents];
+  
 }
 
 - (void)getEvents {
@@ -80,6 +84,12 @@
   [YPCalendarEventsServerCommunicator getEventsFromDay:dayOneSixMonthsBack tilNext:days tags:@[@"class", @"workshop", @"community"] completionBlock:^(NSArray *array) {
     self.events = array;
     [YPGlobalHelper hideNotificationView];
+    [self.datePickerView reloadData];
+  
+    NSString *dateString = [self getDateString:today];
+    self.currentEvents = [self.eventsDictionary objectForKey:dateString];
+    [self.detailTableView reloadData];
+    
   } failureBlock:^(NSError *error) {
     NSLog(@"error: %@", [error localizedDescription]);
   }];
@@ -94,7 +104,7 @@
                            initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
   NSDateComponents *components =
   [gregorian components:(NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear) fromDate:date];
-  return [NSString stringWithFormat:@"%ld/%ld/%ld", (long)[components month], (long)[components day], (long)[components year]];
+  return [NSString stringWithFormat:@"%ld/%ld/%ld", (long)[components month], (long)[components day], (long)[components year] % 2000];
   
 }
 #pragma mark - Data Source
@@ -102,8 +112,8 @@
 // Returns YES if the date should be marked or NO if it should not.
 - (BOOL)datePickerView:(RSDFDatePickerView *)view shouldMarkDate:(NSDate *)date
 {
-  NSLog(@"%@", [self getDateString:date]);
-  return YES;
+  NSString *dateString = [self getDateString:date];
+  return [self.eventsDictionary objectForKey:dateString];
 }
   
 
@@ -137,7 +147,8 @@
 // Prints out the selected date.
 - (void)datePickerView:(RSDFDatePickerView *)view didSelectDate:(NSDate *)date
 {
-  
+  NSString *dateString = [self getDateString:date];
+  self.currentEvents = [self.eventsDictionary objectForKey:dateString];
   [self.detailTableView reloadData];
   NSLog(@"%@", [date description]);
 }
@@ -145,14 +156,18 @@
 #pragma mark Detail Delegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-  return 0;
+  return [self.currentEvents count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   UITableViewCell *cell = [self.detailTableView dequeueReusableCellWithIdentifier:@"detailCell"];
+  NSDictionary *event = [self.currentEvents objectAtIndex:indexPath.row];
+  cell.textLabel.text = [event objectForKey:@"summary"];
   return cell;
 }
 
+
+//- (BOOL)should
 
 #pragma mark - Helper
 
@@ -180,7 +195,16 @@
 {
   if (_events != events) {
     _events = events;
-    NSLog(@"Updated events: %@", [self.events firstObject]);
+    self.eventsDictionary = [NSMutableDictionary dictionary];
+    
+    [_events enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+      NSString *dateString = obj[@"start"][@"shortdate"];
+      if (![self.eventsDictionary objectForKey:dateString]) {
+        [self.eventsDictionary setObject:[NSMutableArray array] forKey:dateString];
+      }
+      [self.eventsDictionary[dateString] addObject:obj];
+    }];
+    NSLog(@"Events updated: %@", self.eventsDictionary);
   }
 }
 

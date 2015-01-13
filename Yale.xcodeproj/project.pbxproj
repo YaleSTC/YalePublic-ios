@@ -53,6 +53,7 @@
 		ABB117C41A64A87C009743E2 /* RSDFDatePickerDaysOfWeekView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB117BB1A64A87C009743E2 /* RSDFDatePickerDaysOfWeekView.m */; };
 		ABB117C51A64A87C009743E2 /* RSDFDatePickerMonthHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB117BD1A64A87C009743E2 /* RSDFDatePickerMonthHeader.m */; };
 		ABB117C61A64A87C009743E2 /* RSDFDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB117BF1A64A87C009743E2 /* RSDFDatePickerView.m */; };
+		ABB117CA1A64B733009743E2 /* YPEventsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABB117C91A64B733009743E2 /* YPEventsDetailViewController.m */; };
 		ABD3211A19EAF31D009D9281 /* YPVideosViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABD3211919EAF31D009D9281 /* YPVideosViewController.storyboard */; };
 		ABD3211D19EAF341009D9281 /* YPVideosPlaylistTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD3211C19EAF341009D9281 /* YPVideosPlaylistTableViewController.m */; };
 		ABD3212419EB056F009D9281 /* YPVideoListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD3212319EB056F009D9281 /* YPVideoListTableViewController.m */; };
@@ -165,6 +166,8 @@
 		ABB117BD1A64A87C009743E2 /* RSDFDatePickerMonthHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSDFDatePickerMonthHeader.m; sourceTree = "<group>"; };
 		ABB117BE1A64A87C009743E2 /* RSDFDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSDFDatePickerView.h; sourceTree = "<group>"; };
 		ABB117BF1A64A87C009743E2 /* RSDFDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSDFDatePickerView.m; sourceTree = "<group>"; };
+		ABB117C81A64B733009743E2 /* YPEventsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPEventsDetailViewController.h; sourceTree = "<group>"; };
+		ABB117C91A64B733009743E2 /* YPEventsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPEventsDetailViewController.m; sourceTree = "<group>"; };
 		ABD3211919EAF31D009D9281 /* YPVideosViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPVideosViewController.storyboard; sourceTree = "<group>"; };
 		ABD3211B19EAF341009D9281 /* YPVideosPlaylistTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPVideosPlaylistTableViewController.h; sourceTree = "<group>"; };
 		ABD3211C19EAF341009D9281 /* YPVideosPlaylistTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPVideosPlaylistTableViewController.m; sourceTree = "<group>"; };
@@ -423,6 +426,8 @@
 				ABB117C71A64A884009743E2 /* RSDayFlow */,
 				AB3EB6661A5E911C0029EEFF /* YPEventsViewController.h */,
 				AB3EB6671A5E911C0029EEFF /* YPEventsViewController.m */,
+				ABB117C81A64B733009743E2 /* YPEventsDetailViewController.h */,
+				ABB117C91A64B733009743E2 /* YPEventsDetailViewController.m */,
 			);
 			name = Events;
 			sourceTree = "<group>";
@@ -708,6 +713,7 @@
 				9BC369D31A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m in Sources */,
 				AB39E7841A2D8BA90071C684 /* YPDirectoryTableViewController.m in Sources */,
 				9B18DA6919DE17E500CB900C /* YPMainViewController.m in Sources */,
+				ABB117CA1A64B733009743E2 /* YPEventsDetailViewController.m in Sources */,
 				AB8AB5C11A5D347800149B4B /* YPMapsViewController.m in Sources */,
 				AB3EB6681A5E911C0029EEFF /* YPEventsViewController.m in Sources */,
 				EA54231E19E4E63B00E75859 /* YPPhotoCollectionViewCell.m in Sources */,
