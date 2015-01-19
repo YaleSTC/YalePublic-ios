@@ -29,7 +29,7 @@
   self.navigationItem.title = NAVIGATION_BAR_TITLE_PHOTOS;
    //BackButton
   UIBarButtonItem* backItem = [[UIBarButtonItem alloc] init];
-  backItem.title = @"Photos";
+  backItem.title = @" ";
   self.navigationItem.backBarButtonItem = backItem;
   
   self.photoSetTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];

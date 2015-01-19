@@ -40,7 +40,7 @@
   
      //BackButton
   UIBarButtonItem* backItem = [[UIBarButtonItem alloc] init];
-  backItem.title = @"Photos";
+  backItem.title = @" ";
   self.navigationItem.backBarButtonItem = backItem;
  
   NSLog(@"backButtonTitle: %@",backItem.title);
