@@ -169,10 +169,43 @@
   
 }
 
+
 -(void)fullScreenImageViewLongPressed:(UIGestureRecognizer *)gestureRecognizer
 {
   //Show a dialog to download the photo
-  
+  UIAlertController* downloadSheet = [UIAlertController alertControllerWithTitle:@"Saving This Photo"
+                                                                         message:nil
+                                                                  preferredStyle:UIAlertControllerStyleActionSheet];
+  UIAlertAction* downloadingAction = [UIAlertAction actionWithTitle:@"Save"
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction *action) {
+                                                              //Saving Code here
+                                                              UIImageWriteToSavedPhotosAlbum(fullscreenImageView.image, self, @selector(savingImageIsFinished:didFinishSavingWithError:contextInfo:), nil);
+                                                            }];
+  UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                         style:UIAlertActionStyleDestructive
+                                                       handler:^(UIAlertAction *action) {
+                                                         //cancel
+                                                       }];
+  [downloadSheet addAction:downloadingAction];
+  [downloadSheet addAction:cancelAction];
+  [self presentViewController:downloadSheet animated:YES completion:nil];
+}
+
+-(void)savingImageIsFinished:(UIImage*)_image didFinishSavingWithError:(NSError*)_error contextInfo:(void*)_contextInfo
+{
+  NSString* alertTitle;
+  if (_error) {
+    alertTitle = @"Saving Failed";
+  }else {
+    alertTitle = @"Photo Saved Successfully!";
+  }
+  UIAlertController* alert = [UIAlertController alertControllerWithTitle:alertTitle
+                                                                            message:nil
+                                                                     preferredStyle:UIAlertControllerStyleAlert];
+  UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+  [alert addAction:okAction];
+  [self presentViewController:alert animated:YES completion:nil];
 }
 
 
