@@ -27,8 +27,24 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  NSLog(@"set album title");
-  self.navigationItem.title = self.albumTitle;
+  NSLog(@"set album title: %@",self.albumTitle);
+  
+  //NavigationBar title
+  UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+  titleLabel.font = [UIFont boldSystemFontOfSize:16.0];
+  titleLabel.textColor = [UIColor whiteColor];
+  titleLabel.text = self.albumTitle;
+  [titleLabel sizeToFit];
+  self.navigationItem.titleView = titleLabel;
+  //self.navigationItem.title = self.albumTitle;
+  
+     //BackButton
+  UIBarButtonItem* backItem = [[UIBarButtonItem alloc] init];
+  backItem.title = @"Photos";
+  self.navigationItem.backBarButtonItem = backItem;
+ 
+  NSLog(@"backButtonTitle: %@",backItem.title);
+  
   [self loadPhotos];
 }
 
@@ -89,7 +105,7 @@
   UIImage *image = [thumbnailImageView image];
   fullscreenImageView = [[UIImageView alloc] initWithImage:image];
   [fullscreenImageView setContentMode:UIViewContentModeScaleAspectFit];
-  
+ 
   CGRect tempPoint = CGRectMake(thumbnailImageView.center.x, thumbnailImageView.center.y, 0, 0);
   CGRect startingPoint = [self.view convertRect:tempPoint fromView:[self.collectionView cellForItemAtIndexPath:indexPath]];
   
@@ -147,8 +163,18 @@
   [rightSwipe setDirection:UISwipeGestureRecognizerDirectionRight];
   [overlayView addGestureRecognizer:rightSwipe];
   
+  //For downloading a photo
+  UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewLongPressed:)];
+  [overlayView addGestureRecognizer:longPress];
   
 }
+
+-(void)fullScreenImageViewLongPressed:(UIGestureRecognizer *)gestureRecognizer
+{
+  //Show a dialog to download the photo
+  
+}
+
 
 -(void)fullScreenImageViewLeftSwiped:(UIGestureRecognizer *)gestureRecognizer
 {

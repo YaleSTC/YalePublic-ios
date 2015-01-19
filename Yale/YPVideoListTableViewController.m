@@ -18,6 +18,10 @@
 @property (nonatomic, strong) NSArray *videosArray;
 @end
 
+//Adding temporarily
+#define YOUTUBE_API_KEY @"abc"
+//
+
 @implementation YPVideoListTableViewController
 
 - (void)viewDidLoad
@@ -36,6 +40,7 @@
 
 - (void)loadVideos
 {
+    
   [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSString *url = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=%@&key=%@", self.playlistID, YOUTUBE_API_KEY];

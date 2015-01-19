@@ -19,6 +19,8 @@
 @implementation YPVideosPlaylistTableViewController
 
 #define CHANNEL_ID @"UC4EY_qnSeAP1xGsh61eOoJA"
+//Adding temporarily
+#define YOUTUBE_API_KEY @"abc"
 
 - (void)viewDidLoad
 {

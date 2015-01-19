@@ -50,7 +50,14 @@
                                         barMetrics:UIBarMetricsDefault];
   
   [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+  
   self.title = @"Home";
+  
+  //BackButton
+  UIBarButtonItem* backItem = [[UIBarButtonItem alloc] init];
+  backItem.title = self.title;
+  self.navigationItem.backBarButtonItem = backItem;
+  
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle{
