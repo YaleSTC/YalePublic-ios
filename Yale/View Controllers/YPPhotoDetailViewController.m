@@ -197,7 +197,7 @@
 {
   NSString* alertTitle;
   if (_error) {
-    alertTitle = @"Saving Failed";
+    alertTitle = @"Failed to Save";
   }else {
     alertTitle = @"Photo Saved Successfully!";
   }
@@ -209,6 +209,19 @@
   [self presentViewController:alert animated:YES completion:nil];
 }
 
+//UIImageView image transition crossfade
+void crossfade(UIImageView* view, UIImage* image, bool isRightSwiped)
+{
+  //bool isRightSwiped -> YES: kCATransitionFromLeft
+  CATransition* transition = [CATransition animation];
+  transition.duration = 0.5f;
+  transition.subtype = isRightSwiped ? kCATransitionFromLeft: kCATransitionFromRight;
+  transition.type = kCATransitionReveal;
+  
+  [view.layer addAnimation:transition forKey:nil];
+  
+  view.image = image;
+}
 
 -(void)fullScreenImageViewLeftSwiped:(UIGestureRecognizer *)gestureRecognizer
 {
@@ -220,11 +233,13 @@
     NSLog(@"new indexPath.orw %ld", (long)newIndex.row);
     selectedIndexPath = newIndex;
     
-    fullscreenImageView.image = _photoSet[newIndex.row][@"image"];
+    crossfade(fullscreenImageView, _photoSet[newIndex.row][@"image"], NO);
+    //fullscreenImageView.image = _photoSet[newIndex.row][@"image"];
     [title setText:_photoSet[newIndex.row][@"title"]];
   }
   
 }
+
 
 -(void)fullScreenImageViewRightSwiped:(UIGestureRecognizer *)gestureRecognizer
 {
@@ -234,8 +249,10 @@
     NSIndexPath *newIndex = [NSIndexPath indexPathForRow:selectedIndexPath.row-1 inSection:selectedIndexPath.section];
     NSLog(@"new indexPath.orw %ld", (long)newIndex.row);
     selectedIndexPath = newIndex;
-    
+    crossfade(fullscreenImageView, _photoSet[newIndex.row][@"image"], YES);
+   /*
     fullscreenImageView.image = _photoSet[newIndex.row][@"image"];
+    */
     [title setText:_photoSet[newIndex.row][@"title"]];
   }
 }
