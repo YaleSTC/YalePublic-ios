@@ -38,11 +38,11 @@
   self.navigationItem.titleView = titleLabel;
   //self.navigationItem.title = self.albumTitle;
   
-     //BackButton
+  //BackButton
   UIBarButtonItem* backItem = [[UIBarButtonItem alloc] init];
   backItem.title = @" ";
   self.navigationItem.backBarButtonItem = backItem;
- 
+  
   NSLog(@"backButtonTitle: %@",backItem.title);
   
   [self loadPhotos];
@@ -89,6 +89,7 @@
   
   
   cell.photoImageView.image = _photoSet[indexPath.row][@"image"];
+  cell.photoImageView.contentMode = UIViewContentModeScaleAspectFill;
   cell.photoTitle = _photoSet[indexPath.row][@"title"];
   return cell;
 }
@@ -105,7 +106,7 @@
   UIImage *image = [thumbnailImageView image];
   fullscreenImageView = [[UIImageView alloc] initWithImage:image];
   [fullscreenImageView setContentMode:UIViewContentModeScaleAspectFit];
- 
+  
   CGRect tempPoint = CGRectMake(thumbnailImageView.center.x, thumbnailImageView.center.y, 0, 0);
   CGRect startingPoint = [self.view convertRect:tempPoint fromView:[self.collectionView cellForItemAtIndexPath:indexPath]];
   
@@ -201,8 +202,8 @@
     alertTitle = @"Photo Saved Successfully!";
   }
   UIAlertController* alert = [UIAlertController alertControllerWithTitle:alertTitle
-                                                                            message:nil
-                                                                     preferredStyle:UIAlertControllerStyleAlert];
+                                                                 message:nil
+                                                          preferredStyle:UIAlertControllerStyleAlert];
   UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
   [alert addAction:okAction];
   [self presentViewController:alert animated:YES completion:nil];
