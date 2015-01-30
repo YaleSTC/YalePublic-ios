@@ -9,6 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface YPNewsTopicsTableViewController : UITableViewController
-@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @end
