@@ -57,24 +57,27 @@
     
     NSLog(@"%@", response);
     
-    // Get a list of URLs
-    NSMutableArray *photoURLs = [NSMutableArray array];
-    for (NSDictionary *photoDictionary in [response valueForKeyPath:@"photoset.photo"]) {
-      NSURL *url = [flickr urlForImageFromDictionary:photoDictionary];
-      //[photoURLs addObject:url];
-      [photoURLs addObject:@{@"url": url, @"title": photoDictionary[@"title"]}];
-    }
+      // Get a list of URLs
+      NSMutableArray *photoURLs = [NSMutableArray array];
+      for (NSDictionary *photoDictionary in [response valueForKeyPath:@"photoset.photo"]) {
+        NSURL *smallPhotoUrl = [flickr urlForImageFromDictionary:photoDictionary largeSize:NO];
+        NSURL *largePhotoUrl = [flickr urlForImageFromDictionary:photoDictionary largeSize:YES];
+        //[photoURLs addObject:url];
+        [photoURLs addObject:@{@"smallPhotoUrl": smallPhotoUrl, @"largePhotoUrl":largePhotoUrl, @"title": photoDictionary[@"title"]}];
+      }
     
-    // Download image for each URL
-    //for (NSURL *url in photoURLs) {
-    for (NSDictionary *photo in photoURLs) {
-      //NSLog(@"%@", url);
-      [flickr downloadImageForURL:photo[@"url"] completionBlock:^(UIImage *image) {
-        //NSLog(@"add image, %@", image);
-        [_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
-        [self.photoCollectionView reloadData];
-      }];
-    }
+      // Download image for each URL
+      //for (NSURL *url in photoURLs) {
+       for (NSDictionary *photo in photoURLs) {
+        //NSLog(@"%@", url);
+        [flickr downloadImageForURL:photo[@"smallPhotoUrl"] completionBlock:^(UIImage *image) {
+          //NSLog(@"add image, %@", image);
+          [_photoSet addObject:@{@"smallImage":image, @"title": photo[@"title"], @"largePhotoUrl":photo[@"largePhotoUrl"]}];
+
+          [self.photoCollectionView reloadData];
+          }
+         ];
+      }
     [YPGlobalHelper hideNotificationView];
   }];
 }
@@ -88,7 +91,7 @@
                                      forIndexPath:indexPath];
   
   
-  cell.photoImageView.image = _photoSet[indexPath.row][@"image"];
+  cell.photoImageView.image = _photoSet[indexPath.row][@"smallImage"];
   cell.photoImageView.contentMode = UIViewContentModeScaleAspectFill;
   cell.photoTitle = _photoSet[indexPath.row][@"title"];
   return cell;
@@ -103,12 +106,12 @@
   overlayView = [[UIView alloc] init];
   
   thumbnailImageView = selectedCell.photoImageView;
-  UIImage *image = [thumbnailImageView image];
-  fullscreenImageView = [[UIImageView alloc] initWithImage:image];
+  fullscreenImageView = [[UIImageView alloc] initWithImage:[self photoForSelectedIndex]];
   [fullscreenImageView setContentMode:UIViewContentModeScaleAspectFit];
   
   CGRect tempPoint = CGRectMake(thumbnailImageView.center.x, thumbnailImageView.center.y, 0, 0);
-  CGRect startingPoint = [self.view convertRect:tempPoint fromView:[self.collectionView cellForItemAtIndexPath:indexPath]];
+  CGRect startingPoint = [self.view convertRect:tempPoint
+                                       fromView:[self.collectionView cellForItemAtIndexPath:indexPath]];
   
   [overlayView setFrame:startingPoint];
   [fullscreenImageView setFrame:startingPoint];
@@ -199,13 +202,14 @@
   if (_error) {
     alertTitle = @"Failed to Save";
   }else {
-    alertTitle = @"Photo Saved Successfully!";
+    alertTitle = @"Photo Saved Successfully";
   }
   UIAlertController* alert = [UIAlertController alertControllerWithTitle:alertTitle
                                                                  message:nil
                                                           preferredStyle:UIAlertControllerStyleAlert];
   UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
   [alert addAction:okAction];
+  NSLog(@"%@", alertTitle);
   [self presentViewController:alert animated:YES completion:nil];
 }
 
@@ -249,15 +253,40 @@ void crossfade(UIImageView* view, UIImage* image, bool isRightSwiped)
     NSIndexPath *newIndex = [NSIndexPath indexPathForRow:selectedIndexPath.row-1 inSection:selectedIndexPath.section];
     NSLog(@"new indexPath.orw %ld", (long)newIndex.row);
     selectedIndexPath = newIndex;
-    crossfade(fullscreenImageView, _photoSet[newIndex.row][@"image"], YES);
-   /*
-    fullscreenImageView.image = _photoSet[newIndex.row][@"image"];
-    */
-    [title setText:_photoSet[newIndex.row][@"title"]];
+    crossfade(fullscreenImageView,[self photoForSelectedIndex], YES);
+    [title setText:_photoSet[selectedIndexPath.row][@"title"]];
+  }
+}
+
+-(UIImage *)photoForSelectedIndex
+{
+  if(_photoSet[selectedIndexPath.row][@"largeImage"]){
+    NSLog(@"returning large image");
+    return _photoSet[selectedIndexPath.row][@"largeImage"];
+  } else {
+    NSLog(@"returning small image");
+    // reload large image
+    YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
+    [flickr downloadImageForURL:_photoSet[selectedIndexPath.row][@"largePhotoUrl"] completionBlock:^(UIImage *image) {
+      
+      NSLog(@"downloaded large image: %@", image);
+      [fullscreenImageView setImage:image];
+      NSMutableDictionary *tempWithLargeImage = [[NSMutableDictionary alloc] initWithDictionary:_photoSet[selectedIndexPath.row]];
+      tempWithLargeImage[@"largeImage"] = image;
+      _photoSet[selectedIndexPath.row] = tempWithLargeImage;
+#warning error handling necessary
+    }
+     ];
+    return _photoSet[selectedIndexPath.row][@"smallImage"];
   }
 }
 
 - (void)fullScreenImageViewTapped:(UIGestureRecognizer *)gestureRecognizer {
+  NSLog(@"starting fullScreenImageViewTapped");
+  //CGRect point=[self.view convertRect:thumbnailImageView.bounds fromView:thumbnailImageView];
+  
+  YPPhotoCollectionViewCell *selectedCell = (YPPhotoCollectionViewCell *) [self.photoCollectionView cellForItemAtIndexPath:selectedIndexPath];
+  thumbnailImageView = selectedCell.photoImageView;
   
   CGRect point=[self.view convertRect:thumbnailImageView.bounds fromView:thumbnailImageView];
   

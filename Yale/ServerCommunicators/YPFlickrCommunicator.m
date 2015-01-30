@@ -63,9 +63,11 @@
                          }];
 }
 
--(NSURL *)urlForImageFromDictionary:(NSDictionary *)photoDictionary
+-(NSURL *)urlForImageFromDictionary:(NSDictionary *)photoDictionary largeSize:(BOOL)largeSize
 {
-  return [[FlickrKit sharedFlickrKit] photoURLForSize:FKPhotoSizeSmall240 fromPhotoDictionary:photoDictionary];
+  int size = (largeSize) ? FKPhotoSizeLarge1024 : FKPhotoSizeSmall240;
+  
+  return [[FlickrKit sharedFlickrKit] photoURLForSize:size fromPhotoDictionary:photoDictionary];
 }
 
 -(void)downloadImageForURL:(NSURL *)url completionBlock:(void (^)(UIImage *))completionBlock
