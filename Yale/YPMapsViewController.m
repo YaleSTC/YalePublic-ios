@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) MKUserTrackingBarButtonItem *trackingItem;
+@property (strong, nonatomic) NSDictionary *buildings;
 
 @end
 
@@ -26,15 +27,25 @@
   
   self.locationManager = [[CLLocationManager alloc] init];
   self.locationManager.delegate = self;
+  
+  self.tableView.opaque = NO;
+  
+  NSString *filePath = [[NSBundle mainBundle] pathForResource:@"buildings" ofType:@"json"];
+  NSLog(@"FILEPATH IS");
+  NSLog(filePath);
+  NSData* data = [NSData dataWithContentsOfFile:filePath];
+  NSLog(@"%@", data);
+  NSError* error = nil;
+  self.buildings = [NSJSONSerialization JSONObjectWithData:data
+                                              options:NSJSONReadingMutableContainers error:&error];
+  
+  NSLog(@"%@", self.buildings);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   CLLocationCoordinate2D location = CLLocationCoordinate2DMake(41.3111, -72.9267);
   MKCoordinateSpan span = MKCoordinateSpanMake(0.02, 0.02);
   [self.mapView setRegion:MKCoordinateRegionMake(location, span)];
-  
-  
-  
 }
 
 // MKMapViewDelegate Methods
@@ -78,5 +89,35 @@
                                           otherButtonTitles:@"Settings", nil];
     [alert show];
   }
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+ 
+  NSLog(@"SEARCH BAR did begin editing");
+  
+}
+
+//Method to handle the UISearchBar "Search",
+- (void) searchBarSearchButtonClicked:(UISearchBar *)theSearchBar {
+  //Perform the JSON query.
+  
+  
+  
+//  [self searchCoordinatesForAddress:[searchBar text]];
+  NSLog(@"Detected search");
+  //Hide the keyboard.
+ // [searchBar resignFirstResponder];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+  return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  UITableViewCell * cell = [self.tableView dequeueReusableCellWithIdentifier:@"buildingCell"];
+  cell.textLabel.text = @"asdf";
+  return cell;
+  
+  
 }
 @end

@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 @import CoreLocation;
 
-@interface YPMapsViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate, UIAlertViewDelegate>
+@interface YPMapsViewController : UITableViewController <MKMapViewDelegate, CLLocationManagerDelegate, UIAlertViewDelegate, UISearchBarDelegate>
 
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;

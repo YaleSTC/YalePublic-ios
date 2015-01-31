@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1386AE3719F1A66F00CA203F /* YPAthleticsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1386AE3619F1A66F00CA203F /* YPAthleticsViewController.storyboard */; };
+		33D3F19E1A7D71DD00464E47 /* YPMapsSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 33D3F19D1A7D71DD00464E47 /* YPMapsSearchController.m */; };
+		33D3F19F1A7D7E6C00464E47 /* buildings.json in Resources */ = {isa = PBXBuildFile; fileRef = 33D3F1971A7D6EB600464E47 /* buildings.json */; };
 		9B18DA6419DE161200CB900C /* YPAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B18DA6319DE161200CB900C /* YPAppDelegate.m */; };
 		9B18DA6619DE173D00CB900C /* YPMainViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B18DA6519DE173D00CB900C /* YPMainViewController.storyboard */; };
 		9B18DA6919DE17E500CB900C /* YPMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B18DA6819DE17E500CB900C /* YPMainViewController.m */; };
@@ -84,6 +86,9 @@
 		1386AE3619F1A66F00CA203F /* YPAthleticsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPAthleticsViewController.storyboard; sourceTree = "<group>"; };
 		1386AE3D19F1A6E100CA203F /* ConfigPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigPrivate.h; sourceTree = "<group>"; };
 		1D18846582394F449BE058FB /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		33D3F1971A7D6EB600464E47 /* buildings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = buildings.json; sourceTree = "<group>"; };
+		33D3F19C1A7D71DD00464E47 /* YPMapsSearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPMapsSearchController.h; path = "View Controllers/YPMapsSearchController.h"; sourceTree = "<group>"; };
+		33D3F19D1A7D71DD00464E47 /* YPMapsSearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPMapsSearchController.m; path = "View Controllers/YPMapsSearchController.m"; sourceTree = "<group>"; };
 		8109631B08B5F638A8E23FA0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		9B18DA6219DE161200CB900C /* YPAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPAppDelegate.h; sourceTree = "<group>"; };
 		9B18DA6319DE161200CB900C /* YPAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPAppDelegate.m; sourceTree = "<group>"; };
@@ -448,6 +453,9 @@
 			children = (
 				AB8AB5BF1A5D347800149B4B /* YPMapsViewController.h */,
 				AB8AB5C01A5D347800149B4B /* YPMapsViewController.m */,
+				33D3F19C1A7D71DD00464E47 /* YPMapsSearchController.h */,
+				33D3F19D1A7D71DD00464E47 /* YPMapsSearchController.m */,
+				33D3F1971A7D6EB600464E47 /* buildings.json */,
 			);
 			name = Maps;
 			sourceTree = "<group>";
@@ -632,6 +640,7 @@
 				1386AE3719F1A66F00CA203F /* YPAthleticsViewController.storyboard in Resources */,
 				9B8BE2A519DE153D00CFE39A /* Images.xcassets in Resources */,
 				EA54231919E4CEE000E75859 /* (null) in Resources */,
+				33D3F19F1A7D7E6C00464E47 /* buildings.json in Resources */,
 				AB39E7811A2D8B840071C684 /* YPDirectoryViewController.storyboard in Resources */,
 				EAB6861619DF34690006C06F /* YPPhotoViewController.storyboard in Resources */,
 				9B18DA6619DE173D00CB900C /* YPMainViewController.storyboard in Resources */,
@@ -722,6 +731,7 @@
 				9B8BE29A19DE153D00CFE39A /* main.m in Sources */,
 				EA54232119E58BB900E75859 /* YPStandardTableView.m in Sources */,
 				ABB117C11A64A87C009743E2 /* RSDFDatePickerCollectionView.m in Sources */,
+				33D3F19E1A7D71DD00464E47 /* YPMapsSearchController.m in Sources */,
 				9BEDA9FC1A2E66AD0095EF2C /* TFHpple.m in Sources */,
 				ABB117C51A64A87C009743E2 /* RSDFDatePickerMonthHeader.m in Sources */,
 				EAB6861319DF2FDF0006C06F /* YPFlickrCommunicator.m in Sources */,
