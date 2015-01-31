@@ -34,6 +34,8 @@
 		AB39E78B1A2D94F60071C684 /* YPGlobalHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E78A1A2D94F60071C684 /* YPGlobalHelper.m */; };
 		AB39E7991A2DAB5D0071C684 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB39E7981A2DAB5D0071C684 /* libxml2.dylib */; };
 		AB3EB6681A5E911C0029EEFF /* YPEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3EB6671A5E911C0029EEFF /* YPEventsViewController.m */; };
+		AB5931B61A7D666000ED5A41 /* YPEventsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB5931B51A7D666000ED5A41 /* YPEventsViewController.storyboard */; };
+		AB5931B91A7D671B00ED5A41 /* YPEventsCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB5931B81A7D671B00ED5A41 /* YPEventsCategoriesViewController.m */; };
 		AB6F832E1A04081700F3FBD7 /* YPInfoViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */; };
 		AB6F83301A0408A500F3FBD7 /* YPInfoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB6F832F1A0408A500F3FBD7 /* YPInfoViewController.storyboard */; };
 		AB6F83321A041BE000F3FBD7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB6F83311A041BE000F3FBD7 /* QuartzCore.framework */; };
@@ -136,6 +138,9 @@
 		AB39E7981A2DAB5D0071C684 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		AB3EB6661A5E911C0029EEFF /* YPEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPEventsViewController.h; sourceTree = "<group>"; };
 		AB3EB6671A5E911C0029EEFF /* YPEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPEventsViewController.m; sourceTree = "<group>"; };
+		AB5931B51A7D666000ED5A41 /* YPEventsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPEventsViewController.storyboard; sourceTree = "<group>"; };
+		AB5931B71A7D671B00ED5A41 /* YPEventsCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPEventsCategoriesViewController.h; sourceTree = "<group>"; };
+		AB5931B81A7D671B00ED5A41 /* YPEventsCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPEventsCategoriesViewController.m; sourceTree = "<group>"; };
 		AB6F832C1A04081700F3FBD7 /* YPInfoViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPInfoViewViewController.h; sourceTree = "<group>"; };
 		AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPInfoViewViewController.m; sourceTree = "<group>"; };
 		AB6F832F1A0408A500F3FBD7 /* YPInfoViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPInfoViewController.storyboard; sourceTree = "<group>"; };
@@ -298,6 +303,7 @@
 			isa = PBXGroup;
 			children = (
 				AB8AB5C51A5D354300149B4B /* YPMapsViewController.storyboard */,
+				AB5931B51A7D666000ED5A41 /* YPEventsViewController.storyboard */,
 				AB99B3441A16AE480003F752 /* YPOrientationViewController.storyboard */,
 				AB99B34E1A16B0ED0003F752 /* YPTransitViewController.storyboard */,
 				AB0071DC19E4D14B00ABF52D /* YPNewsViewController.storyboard */,
@@ -433,6 +439,8 @@
 				AB3EB6671A5E911C0029EEFF /* YPEventsViewController.m */,
 				ABB117C81A64B733009743E2 /* YPEventsDetailViewController.h */,
 				ABB117C91A64B733009743E2 /* YPEventsDetailViewController.m */,
+				AB5931B71A7D671B00ED5A41 /* YPEventsCategoriesViewController.h */,
+				AB5931B81A7D671B00ED5A41 /* YPEventsCategoriesViewController.m */,
 			);
 			name = Events;
 			sourceTree = "<group>";
@@ -639,6 +647,7 @@
 				AB8AB5C61A5D354300149B4B /* YPMapsViewController.storyboard in Resources */,
 				1386AE3719F1A66F00CA203F /* YPAthleticsViewController.storyboard in Resources */,
 				9B8BE2A519DE153D00CFE39A /* Images.xcassets in Resources */,
+				AB5931B61A7D666000ED5A41 /* YPEventsViewController.storyboard in Resources */,
 				EA54231919E4CEE000E75859 /* (null) in Resources */,
 				33D3F19F1A7D7E6C00464E47 /* buildings.json in Resources */,
 				AB39E7811A2D8B840071C684 /* YPDirectoryViewController.storyboard in Resources */,
@@ -704,6 +713,7 @@
 				ABB117C61A64A87C009743E2 /* RSDFDatePickerView.m in Sources */,
 				ABD3212719EB059F009D9281 /* YPVideoEmbeddedViewViewController.m in Sources */,
 				AB0071D719E4C90300ABF52D /* YPNewsArticlesTableViewController.m in Sources */,
+				AB5931B91A7D671B00ED5A41 /* YPEventsCategoriesViewController.m in Sources */,
 				ABD3212419EB056F009D9281 /* YPVideoListTableViewController.m in Sources */,
 				9B18DA6419DE161200CB900C /* YPAppDelegate.m in Sources */,
 				AB39E7881A2D8EA70071C684 /* YPDirectoryDetailViewController.m in Sources */,

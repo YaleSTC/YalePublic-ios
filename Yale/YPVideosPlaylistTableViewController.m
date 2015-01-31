@@ -55,7 +55,10 @@
                                        error:&error];
       
       self.playlistArray = playlistsObject[@"items"];
-      [self.tableView reloadData];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+      });
+      
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
       dispatch_async(dispatch_get_main_queue(), ^{
         [YPGlobalHelper hideNotificationView];

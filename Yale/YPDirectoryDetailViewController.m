@@ -22,8 +22,10 @@
   self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
   
   [YPGlobalHelper showNotificationInViewController:self message:@"loading" style:JGProgressHUDStyleDark];
-
-  
+  if (self.data) {
+    [self loadData];
+    NSLog(@"have data");
+  }
 }
 
 - (void)loadData {
@@ -64,6 +66,8 @@
     index = [index stringByReplacingOccurrencesOfString:@"Office Phone" withString:@"Phone"];
     index = [index stringByReplacingOccurrencesOfString:@"Organization" withString:@"Org"];
     index = [index stringByReplacingOccurrencesOfString:@"Home Org ID" withString:@"Org ID"];
+    index = [index stringByReplacingOccurrencesOfString:@"US Mailing Address" withString:@"Address"];
+    index = [index stringByReplacingOccurrencesOfString:@"Campus Location" withString:@"Location"];
     [result setObject:[self.data objectForKey:raw] forKey:index];
   }
   self.data = result;
