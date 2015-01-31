@@ -16,12 +16,17 @@
 #import <GAIDictionaryBuilder.h>
 
 @interface YPPhotoViewController () {
-  NSArray *_photoSets;
+  NSMutableArray *_photoSets;
 }
 @end
 
 
 @implementation YPPhotoViewController
+
+/* Provides Instagram and Flickr pictures
+ * First row links to Instagram pictures
+ * Subsequent rows link to Flickr albums
+ */
 
 - (void)viewDidLoad
 {
@@ -45,13 +50,22 @@
 
 - (void)displaySets
 {
+  _photoSets = [[NSMutableArray alloc] init];
+  /* Step one: create Instagram row */
+    NSArray *instagramRow = @[@{@"title": @{@"_content": @"Instagram"}, @"id": @"000"}];
+    [_photoSets addObjectsFromArray:instagramRow];
+    
+    
+  /* Step two: download and add Flickr albums as rows */
+    
   YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
   [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     [flickr getSets:^(NSDictionary *response) {
       NSLog(@"%@", response);
       
-      _photoSets = response[@"photosets"][@"photoset"];
+      //_photoSets = response[@"photosets"][@"photoset"];
+      [_photoSets addObjectsFromArray:response[@"photosets"][@"photoset"]];
       dispatch_async(dispatch_get_main_queue(), ^{
         [YPGlobalHelper hideNotificationView];
         [self.photoSetTableView reloadData];
