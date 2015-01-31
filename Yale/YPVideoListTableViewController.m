@@ -52,7 +52,10 @@
                                     error:&error];
       
       self.videosArray = videosObject[@"items"];
-      [self.tableView reloadData];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+      });
+      
       
       
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -100,7 +103,10 @@
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     UIImage *img = [self imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:imgURL]]
                            scaledToSize:cell.imageContainer.bounds.size];
-    [cell.imageContainer setImage:img];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [cell.imageContainer setImage:img];
+    });
+    
   });
   NSString *dateString = [snippet[@"publishedAt"] substringToIndex:10];
   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
