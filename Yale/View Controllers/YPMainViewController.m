@@ -63,7 +63,9 @@
   
   UIImage *backgroundImage;
   
-  if (screenHeight == 568) {
+  if (screenHeight < 568) {
+    backgroundImage = [UIImage imageNamed:@"background4"];
+  } else if (screenHeight == 568) {
     backgroundImage = [UIImage imageNamed:@"background5"];
   } else if (screenHeight == 667) {
     backgroundImage = [UIImage imageNamed:@"background6"];
