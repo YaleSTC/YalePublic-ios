@@ -27,13 +27,28 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  NSLog(@"set album title");
+
   self.navigationItem.title = self.albumTitle;
   [self loadPhotos];
 }
 
 -(void)loadPhotos {
   _photoSet = [NSMutableArray array];
+  
+  if([self.photoSetId  isEqualToString: @"INSTAGRAM"]){
+    
+    [self loadPhotosFromInstagram];
+  } else {
+    
+    [self loadPhotosFromFlickr];
+  }
+}
+
+-(void)loadPhotosFromInstagram {
+  
+}
+
+-(void)loadPhotosFromFlickr {
   
   YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
   [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
@@ -45,7 +60,6 @@
     NSMutableArray *photoURLs = [NSMutableArray array];
     for (NSDictionary *photoDictionary in [response valueForKeyPath:@"photoset.photo"]) {
       NSURL *url = [flickr urlForImageFromDictionary:photoDictionary];
-      //[photoURLs addObject:url];
       [photoURLs addObject:@{@"url": url, @"title": photoDictionary[@"title"]}];
     }
     

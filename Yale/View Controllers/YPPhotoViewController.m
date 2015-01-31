@@ -50,9 +50,9 @@
 
 - (void)displaySets
 {
-  _photoSets = [[NSMutableArray alloc] init];
+  _photoSets = [NSMutableArray array];
   /* Step one: create Instagram row */
-    NSArray *instagramRow = @[@{@"title": @{@"_content": @"Instagram"}, @"id": @"000"}];
+    NSArray *instagramRow = @[@{@"title": @{@"_content": @"Instagram"}, @"id": @"INSTAGRAM"}];
     [_photoSets addObjectsFromArray:instagramRow];
     
     
@@ -90,17 +90,19 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  
-  UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPPhotoViewController"
-                                                       bundle:[NSBundle mainBundle]];
-  YPPhotoDetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"PhotoDetailVC"];
-  
-  // Have to provide album title and photoSetId
-  detailViewController.albumTitle = _photoSets[indexPath.row][@"title"][@"_content"];
-  detailViewController.photoSetId = _photoSets[indexPath.row][@"id"];
-  [self.photoSetTableView deselectRowAtIndexPath:indexPath animated:YES];
-  [self.navigationController pushViewController:detailViewController animated:YES];
+
+    /* Flickr */
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPPhotoViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    YPPhotoDetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"PhotoDetailVC"];
+    
+    // Have to provide album title and photoSetId
+    detailViewController.albumTitle = _photoSets[indexPath.row][@"title"][@"_content"];
+    detailViewController.photoSetId = _photoSets[indexPath.row][@"id"];
+    [self.photoSetTableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self.navigationController pushViewController:detailViewController animated:YES];
 }
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
