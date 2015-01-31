@@ -7,94 +7,143 @@
 //
 
 #import "YPNewsArticlesTableViewController.h"
+#import "YPNewsEmbeddedViewController.h"
+#import "YPNewsArticleCell.h"
+#import "AFNetworking.h"
+#import "TTTTimeIntervalFormatter.h"
+#import "MWFeedParser/NSString+HTML.h"
+#import "YPGlobalHelper.h"
 
 @interface YPNewsArticlesTableViewController ()
-
+@property (nonatomic, strong) NSArray *articlesArray;
 @end
 
 @implementation YPNewsArticlesTableViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
   [super viewDidLoad];
+  [self getArticles];
+  self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
   
-  // Uncomment the following line to preserve selection between presentations.
-  // self.clearsSelectionOnViewWillAppear = NO;
-  
-  // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-  // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void)didReceiveMemoryWarning {
-  [super didReceiveMemoryWarning];
-  // Dispose of any resources that can be recreated.
+- (void)viewWillAppear:(BOOL)animated
+{
+  [super viewWillAppear:animated];
+  
 }
+
+
+- (void)getArticles
+{
+  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
+  
+  AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+  [manager GET:self.url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [YPGlobalHelper hideNotificationView];
+    NSData *responseData = operation.responseData;
+    NSError *error = nil;
+    NSDictionary *articlesObject = [NSJSONSerialization
+                                    JSONObjectWithData:responseData
+                                    options:NSJSONReadingMutableContainers
+                                    error:&error];
+    
+    self.articlesArray = articlesObject[@"news"];
+    [self.tableView reloadData];
+    
+    
+  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    [YPGlobalHelper hideNotificationView];
+    NSLog(@"Error: %@", error);
+    
+  }];
+  
+  
+  
+  
+}
+
+
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
-  // Return the number of sections.
-  return 0;
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+  return [self.articlesArray count];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
-  // Return the number of rows in the section.
-  return 0;
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  YPNewsArticleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"YPNewsArticleCell"];
+  if (cell == nil) {
+    // Load the top-level objects from the custom cell XIB.
+    NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"YPNewsArticleCell" owner:self options:nil];
+    cell = [topLevelObjects objectAtIndex:0];
+  }
+  NSDictionary *articleNode = self.articlesArray[indexPath.row][@"node"];
+  
+  cell.titleLabel.text = [[articleNode[@"title"] stringByDecodingHTMLEntities] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  cell.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+  cell.titleLabel.numberOfLines = 2;
+  
+  cell.snippetLabel.text = [[articleNode[@"description"] stringByDecodingHTMLEntities] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  cell.snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+  cell.snippetLabel.numberOfLines = 1;
+  
+  NSString *dateString = [articleNode[@"date"] substringFromIndex:5];
+  NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+  [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+  [dateFormatter setDateFormat:@"dd MMM yyyy HH:mm:ss zzz"];
+  NSDate *date = [dateFormatter dateFromString:dateString];
+  TTTTimeIntervalFormatter *timeIntervalFormatter = [[TTTTimeIntervalFormatter alloc] init];
+  cell.timeLabel.text = [timeIntervalFormatter stringForTimeInterval:[date timeIntervalSinceNow]];
+  
+  
+  return cell;
 }
 
-/*
- - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
- UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
- 
- // Configure the cell...
- 
- return cell;
- }
- */
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  if ([self.articlesArray count] == 0)
+    return 0;
+  NSDictionary *articleNode = self.articlesArray[indexPath.row][@"node"];
+  
+  NSString *text = [[articleNode[@"title"] stringByDecodingHTMLEntities] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  CGSize size = [text sizeWithAttributes: @{
+                                            NSFontAttributeName: [UIFont boldSystemFontOfSize:17.0]
+                                            }];
+  CGFloat disclosureIndicatorWidth = 58.0;
+  if (size.width > self.tableView.frame.size.width - disclosureIndicatorWidth)
+    return 100.0;
+  else
+    return 80.0;
+}
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
 
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- } else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
 
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
- }
- */
+#pragma mark - Navigation
 
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  [self performSegueWithIdentifier:@"showArticle" sender:nil];
+}
+
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+  if ([segue.identifier isEqualToString:@"showArticle"]) {
+    YPNewsEmbeddedViewController *articleVC = segue.destinationViewController;
+    NSDictionary *articleNode = self.articlesArray[[self.tableView indexPathForCell:sender].row][@"node"];
+    articleVC.url = articleNode[@"path"];
+    articleVC.title = [NSString stringWithFormat:@"YaleNews | %@", [articleNode[@"title"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
+    
+    
+  }
+}
+
 
 @end

@@ -9,6 +9,15 @@
 #import "YPMainViewController.h"
 #import "YPMainViewButtonCollectionViewCell.h"
 #import "YPNewsTopicsTableViewController.h"
+#import "YPVideosPlaylistTableViewController.h"
+#import "YPAthleticsViewController.h"
+#import "YPInfoViewViewController.h"
+#import "YPOrientationViewController.h"
+#import "YPDirectoryTableViewController.h"
+#import "YPMapsViewController.h"
+#import "YPEventsViewController.h"
+#import "YPTheme.h"
+#import "YPMainViewButton.h"
 #import <PureLayout/PureLayout.h>
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
@@ -28,12 +37,24 @@
 
 - (void)setupNavigationBar
 {
+  UINavigationBar *navigationBar = self.navigationController.navigationBar;
   UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
   self.infoButton = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
   self.navigationItem.rightBarButtonItem = self.infoButton;
-  self.navigationController.navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName : [UIColor whiteColor] };
-  self.navigationController.navigationBar.translucent = YES;
+  [infoButton addTarget:self action:@selector(viewInfo) forControlEvents:UIControlEventTouchUpInside];
+  navigationBar.barStyle = UIBarStyleBlack;
+  navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName : [UIColor whiteColor] };
+  navigationBar.translucent = NO;
+  [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
+                                    forBarPosition:UIBarPositionAny
+                                        barMetrics:UIBarMetricsDefault];
+  
+  [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
   self.title = @"Home";
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle{
+  return UIStatusBarStyleLightContent;
 }
 
 - (void)setupBackgroundImage
@@ -59,8 +80,9 @@
 - (void)setupButtonCollectionView
 {
   UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-  flowLayout.minimumInteritemSpacing = 20;
-  flowLayout.minimumLineSpacing      = 20;
+  // 57 is the button width, 20 is the left margin to edge of screen
+  flowLayout.minimumInteritemSpacing = ([UIScreen mainScreen].bounds.size.width - 57*3 - 20*2) / 2;
+  flowLayout.minimumLineSpacing      = flowLayout.minimumInteritemSpacing - 20;
   
   self.automaticallyAdjustsScrollViewInsets = NO;
   
@@ -75,10 +97,9 @@
   
   [self.view addSubview:self.buttonCollectionView];
   
-  CGFloat navBarHeight    = [self.navigationController.navigationBar frame].size.height;
-  CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+
   
-  [self.buttonCollectionView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20 + navBarHeight + statusBarHeight];
+  [self.buttonCollectionView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20];
   [self.buttonCollectionView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:20];
   [self.buttonCollectionView autoAlignAxisToSuperviewAxis:ALAxisVertical];
   [self.buttonCollectionView layoutIfNeeded];
@@ -93,8 +114,10 @@
 {
   [super viewDidLoad];
   
+  self.screenName = @"Main View";
+  
   self.buttonUnderTexts = @[@"News", @"Directory", @"Maps", @"Videos", @"Photos",
-                            @"Events", @"Transit", @"Atheletics", @"Orientation"];
+                            @"Events", @"Transit", @"Athletics", @"Orientation"];
   
   [self setupNavigationBar];
   [self setupBackgroundImage];
@@ -128,7 +151,37 @@
 {
   YPMainViewButtonCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:COLLECTIONVIEW_REUSE_IDENTIFIER
                                                                                        forIndexPath:indexPath];
-  cell.button.icon = [UIImage imageNamed:@"TestButtonImage"];
+  
+  switch (indexPath.row) {
+    case 0:
+      cell.button.icon = [UIImage imageNamed:@"NewsIcon"];
+      break;
+    case 1:
+      cell.button.icon = [UIImage imageNamed:@"DirectoryIcon"];
+      break;
+    case 2:
+      cell.button.icon = [UIImage imageNamed:@"MapsIcon"];
+      break;
+    case 3:
+      cell.button.icon = [UIImage imageNamed:@"VideosIcon"];
+      break;
+    case 4:
+      cell.button.icon = [UIImage imageNamed:@"PhotosIcon"];
+      break;
+    case 5:
+      cell.button.icon = [UIImage imageNamed:@"EventsIcon"];
+      break;
+    case 6:
+      cell.button.icon = [UIImage imageNamed:@"TransitIcon"];
+      break;
+    case 7:
+      cell.button.icon = [UIImage imageNamed:@"AthleticsIcon"];
+      break;
+    case 8:
+      cell.button.icon = [UIImage imageNamed:@"OrientationIcon"];
+      break;
+
+  }
   cell.button.underText = self.buttonUnderTexts[indexPath.row];
   [cell.button addTarget:self action:@selector(pushViewController:) forControlEvents:UIControlEventTouchUpInside];
   return cell;
@@ -172,8 +225,53 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                          bundle:[NSBundle mainBundle]];
     UINavigationController *newsVC = [storyboard instantiateViewControllerWithIdentifier:@"NewsVC"];
     [self.navigationController pushViewController:newsVC animated:YES];
+  } else if ([underText isEqualToString:@"Videos"]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPVideosViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *videosVC = [storyboard instantiateViewControllerWithIdentifier:@"VideosVC"];
+    [self.navigationController pushViewController:videosVC animated:YES];
+  } else if ([underText isEqualToString:@"Photos"]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPPhotoViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *newsVC = [storyboard instantiateViewControllerWithIdentifier:@"PhotoVC"];
+    [self.navigationController pushViewController:newsVC animated:YES];
+  } else if ([underText isEqualToString:@"Athletics"]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPAthleticsViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *athleticsVC = [storyboard instantiateViewControllerWithIdentifier:@"AthleticsVC"];
+    [self.navigationController pushViewController:athleticsVC animated:YES];
+  } else if ([underText isEqualToString:@"Orientation"]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPOrientationViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *orientationVC = [storyboard instantiateViewControllerWithIdentifier:@"OrientationVC"];
+    [self.navigationController pushViewController:orientationVC animated:YES];
+  } else if ([underText isEqualToString:@"Transit"]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPTransitViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *transitVC = [storyboard instantiateViewControllerWithIdentifier:@"TransitVC"];
+    [self.navigationController pushViewController:transitVC animated:YES];
+  } else if ([underText isEqualToString:@"Directory"]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPDirectoryViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *directoryVC = [storyboard instantiateViewControllerWithIdentifier:@"DirectoryVC"];
+    [self.navigationController pushViewController:directoryVC animated:YES];
+  } else if ([underText isEqualToString:@"Maps"]) {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPMapsViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *mapsVC = [storyboard instantiateViewControllerWithIdentifier:@"MapsVC"];
+    [self.navigationController pushViewController:mapsVC animated:YES];
+  } else if ([underText isEqualToString:@"Events"]) {
+    YPEventsViewController *eventsVC = [[YPEventsViewController alloc] init];
+    [self.navigationController pushViewController:eventsVC animated:YES];
   }
-  
+}
+
+- (void)viewInfo
+{
+  UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPInfoViewController"
+                                                       bundle:[NSBundle mainBundle]];
+  UINavigationController *infoVC = [storyboard instantiateViewControllerWithIdentifier:@"InfoVC Root"];
+  [self.navigationController presentViewController:infoVC animated:YES completion:nil];
 }
 
 

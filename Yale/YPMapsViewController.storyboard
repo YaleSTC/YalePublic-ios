@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C81f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <scenes>
+        <!--Maps-->
+        <scene sceneID="fA9-tN-c32">
+            <objects>
+                <viewController storyboardIdentifier="MapsVC" title="Maps" id="Fgr-Uo-BGr" customClass="YPMapsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="8rB-8Z-LX0"/>
+                        <viewControllerLayoutGuide type="bottom" id="ali-A5-5BP"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fZa-Go-Xep">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" placeholder="Search Buildings" translatesAutoresizingMaskIntoConstraints="NO" id="krD-az-w8L">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Fgr-Uo-BGr" id="BbO-0E-LEf"/>
+                                </connections>
+                            </searchBar>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rVY-Sh-z4d">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <items/>
+                            </toolbar>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="EoZ-sd-en0">
+                                <rect key="frame" x="0.0" y="44" width="600" height="512"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="556" id="dJP-Ad-Ozj"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="dJP-Ad-Ozj"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <outlet property="delegate" destination="Fgr-Uo-BGr" id="0IX-ze-RDn"/>
+                                </connections>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="EoZ-sd-en0" firstAttribute="bottom" secondItem="ali-A5-5BP" secondAttribute="top" constant="-44" id="2Oc-QI-PCH"/>
+                            <constraint firstItem="EoZ-sd-en0" firstAttribute="top" secondItem="krD-az-w8L" secondAttribute="bottom" id="3iH-a7-vrr"/>
+                            <constraint firstItem="rVY-Sh-z4d" firstAttribute="leading" secondItem="EoZ-sd-en0" secondAttribute="leading" id="779-FW-rbe"/>
+                            <constraint firstItem="rVY-Sh-z4d" firstAttribute="trailing" secondItem="EoZ-sd-en0" secondAttribute="trailing" id="JXa-ap-L1J"/>
+                            <constraint firstItem="EoZ-sd-en0" firstAttribute="leading" secondItem="fZa-Go-Xep" secondAttribute="leading" id="emY-Mg-Wz9"/>
+                            <constraint firstAttribute="trailing" secondItem="EoZ-sd-en0" secondAttribute="trailing" id="kHl-Yg-Qbe"/>
+                            <constraint firstItem="krD-az-w8L" firstAttribute="top" secondItem="fZa-Go-Xep" secondAttribute="top" id="kdA-DY-1YK"/>
+                            <constraint firstItem="EoZ-sd-en0" firstAttribute="leading" secondItem="krD-az-w8L" secondAttribute="leading" id="n0R-Jw-Fd9"/>
+                            <constraint firstItem="EoZ-sd-en0" firstAttribute="trailing" secondItem="krD-az-w8L" secondAttribute="trailing" id="to0-X4-lHo"/>
+                            <constraint firstItem="rVY-Sh-z4d" firstAttribute="top" secondItem="EoZ-sd-en0" secondAttribute="bottom" id="wBe-xm-6Oq"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mapView" destination="EoZ-sd-en0" id="sdb-1i-ia7"/>
+                        <outlet property="searchBar" destination="krD-az-w8L" id="3rR-sl-fSU"/>
+                        <outlet property="toolbar" destination="rVY-Sh-z4d" id="tGl-Xe-xXe"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hwF-rX-pKk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="186" y="164"/>
+        </scene>
+    </scenes>
+</document>

@@ -7,11 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 
 
-@interface YPFlickrCommunicator : NSObject 
+@interface YPFlickrCommunicator : NSObject
 
+-(NSURL *)urlForImageFromDictionary:(NSDictionary *)photoDictionary;
+-(void)downloadImageForURL:(NSURL *)url completionBlock:(void (^)(UIImage *))completionBlock;
 -(void)getSets:(void (^)(NSDictionary *))completionBlock;
+-(void)getPhotosForSet:(NSString *)photoSetId completionBlock:(void (^)(NSDictionary *))completionBlock;
+
+
 
 @end

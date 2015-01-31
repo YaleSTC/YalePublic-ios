@@ -10,15 +10,28 @@
 	<string>Yale</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>052f66bb-8366-e9ed-b056-95094e25c79e++505</key>
+		<string>http://google-api-objectivec-client.googlecode.com/svn/trunk</string>
 		<key>2026A95716A5CF67242A130B163447F50D1F6F24</key>
 		<string>github.com:YaleSTC/YalePublic-ios.git</string>
+		<key>AB1ACB7A52526127A7E81A26CB3B3AD10CC8EF25</key>
+		<string>github.com:YaleSTC/YaleMobile.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Yale.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>052f66bb-8366-e9ed-b056-95094e25c79e++505</key>
+		<string>../../google-api-objectivec-client-read-only</string>
 		<key>2026A95716A5CF67242A130B163447F50D1F6F24</key>
 		<string>..</string>
+		<key>AB1ACB7A52526127A7E81A26CB3B3AD10CC8EF25</key>
+		<string>..Mobile</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>052f66bb-8366-e9ed-b056-95094e25c79e++505</key>
+		<string>http://google-api-objectivec-client.googlecode.com/svn</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>github.com:YaleSTC/YalePublic-ios.git</string>
@@ -30,11 +43,27 @@
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>052f66bb-8366-e9ed-b056-95094e25c79e++505</string>
+			<key>IDESourceControlWCCName</key>
+			<string>google-api-objectivec-client-read-only</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>2026A95716A5CF67242A130B163447F50D1F6F24</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Yale</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>AB1ACB7A52526127A7E81A26CB3B3AD10CC8EF25</string>
+			<key>IDESourceControlWCCName</key>
+			<string>YaleMobile</string>
 		</dict>
 	</array>
 </dict>

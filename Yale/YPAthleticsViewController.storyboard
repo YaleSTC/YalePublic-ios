@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B23" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Athletics View Controller-->
+        <scene sceneID="m7V-GJ-NWA">
+            <objects>
+                <viewController storyboardIdentifier="AthleticsVC" id="D3D-ic-bDK" customClass="YPAthleticsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7Qh-Kl-2JH"/>
+                        <viewControllerLayoutGuide type="bottom" id="Q9E-Bg-cmI"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Sjw-ay-gxT">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uCH-MX-afs">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <items>
+                                    <barButtonItem systemItem="rewind" id="TSF-Ym-1c4">
+                                        <connections>
+                                            <action selector="touchBack:" destination="D3D-ic-bDK" id="DKn-CQ-UyP"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="MSq-kq-s4x"/>
+                                    <barButtonItem systemItem="fastForward" id="gxM-rr-bDQ">
+                                        <connections>
+                                            <action selector="touchForward:" destination="D3D-ic-bDK" id="oNN-nZ-s6D"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="7Nb-tK-jBj"/>
+                                    <barButtonItem systemItem="refresh" id="YQk-h4-YZ3">
+                                        <connections>
+                                            <action selector="touchRefresh:" destination="D3D-ic-bDK" id="po6-CA-gUv"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Vah-be-ESe"/>
+                                    <barButtonItem systemItem="action" id="cYa-qb-6Yd">
+                                        <connections>
+                                            <action selector="openSafari:" destination="D3D-ic-bDK" id="9WW-6R-dzm"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="uCH-MX-afs" firstAttribute="leading" secondItem="Sjw-ay-gxT" secondAttribute="leadingMargin" constant="-25" id="Pc4-ga-IcX"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="uCH-MX-afs" secondAttribute="trailing" constant="-21" id="Vhr-f8-KLS"/>
+                            <constraint firstItem="uCH-MX-afs" firstAttribute="bottom" secondItem="Q9E-Bg-cmI" secondAttribute="top" id="wdm-6f-mWG"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="uCH-MX-afs"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="Pc4-ga-IcX"/>
+                                <exclude reference="Vhr-f8-KLS"/>
+                                <exclude reference="wdm-6f-mWG"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="uCH-MX-afs"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="Pc4-ga-IcX"/>
+                                <include reference="Vhr-f8-KLS"/>
+                                <include reference="wdm-6f-mWG"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <connections>
+                        <outlet property="back" destination="TSF-Ym-1c4" id="Kfd-8f-wXc"/>
+                        <outlet property="forward" destination="gxM-rr-bDQ" id="MC4-E2-HN0"/>
+                        <outlet property="openSafari" destination="cYa-qb-6Yd" id="e6V-ym-qwj"/>
+                        <outlet property="refresh" destination="YQk-h4-YZ3" id="oeR-qi-aam"/>
+                        <outlet property="toolbar" destination="uCH-MX-afs" id="N6H-ND-eGk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c9f-P1-Wds" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="516" y="407"/>
+        </scene>
+    </scenes>
+</document>

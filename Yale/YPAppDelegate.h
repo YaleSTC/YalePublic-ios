@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <JGProgressHUD/JGProgressHUD.h>
 
 @interface YPAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) JGProgressHUD     *sharedNotificationView;
 
 
 @end
