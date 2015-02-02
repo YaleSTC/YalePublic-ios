@@ -26,6 +26,8 @@
 		AB0071D719E4C90300ABF52D /* YPNewsArticlesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0071D619E4C90300ABF52D /* YPNewsArticlesTableViewController.m */; };
 		AB0071DA19E4C92300ABF52D /* YPNewsEmbeddedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0071D919E4C92300ABF52D /* YPNewsEmbeddedViewController.m */; };
 		AB0071DD19E4D14B00ABF52D /* YPNewsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB0071DC19E4D14B00ABF52D /* YPNewsViewController.storyboard */; };
+		AB1A5A731A80270D000484ED /* YPResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB1A5A721A80270D000484ED /* YPResultsTableViewController.m */; };
+		AB1A5A751A802831000484ED /* buildings.json in Resources */ = {isa = PBXBuildFile; fileRef = AB1A5A741A802831000484ED /* buildings.json */; };
 		AB39E7811A2D8B840071C684 /* YPDirectoryViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB39E7801A2D8B840071C684 /* YPDirectoryViewController.storyboard */; };
 		AB39E7841A2D8BA90071C684 /* YPDirectoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E7831A2D8BA90071C684 /* YPDirectoryTableViewController.m */; };
 		AB39E7881A2D8EA70071C684 /* YPDirectoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E7871A2D8EA70071C684 /* YPDirectoryDetailViewController.m */; };
@@ -123,6 +125,9 @@
 		AB0071D819E4C92300ABF52D /* YPNewsEmbeddedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsEmbeddedViewController.h; sourceTree = "<group>"; };
 		AB0071D919E4C92300ABF52D /* YPNewsEmbeddedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPNewsEmbeddedViewController.m; sourceTree = "<group>"; };
 		AB0071DC19E4D14B00ABF52D /* YPNewsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPNewsViewController.storyboard; sourceTree = "<group>"; };
+		AB1A5A711A80270D000484ED /* YPResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPResultsTableViewController.h; sourceTree = "<group>"; };
+		AB1A5A721A80270D000484ED /* YPResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPResultsTableViewController.m; sourceTree = "<group>"; };
+		AB1A5A741A802831000484ED /* buildings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = buildings.json; sourceTree = "<group>"; };
 		AB39E7801A2D8B840071C684 /* YPDirectoryViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPDirectoryViewController.storyboard; sourceTree = "<group>"; };
 		AB39E7821A2D8BA90071C684 /* YPDirectoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPDirectoryTableViewController.h; sourceTree = "<group>"; };
 		AB39E7831A2D8BA90071C684 /* YPDirectoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPDirectoryTableViewController.m; sourceTree = "<group>"; };
@@ -454,8 +459,11 @@
 		AB8AB5C21A5D348000149B4B /* Maps */ = {
 			isa = PBXGroup;
 			children = (
+				AB1A5A711A80270D000484ED /* YPResultsTableViewController.h */,
+				AB1A5A721A80270D000484ED /* YPResultsTableViewController.m */,
 				AB8AB5BF1A5D347800149B4B /* YPMapsViewController.h */,
 				AB8AB5C01A5D347800149B4B /* YPMapsViewController.m */,
+				AB1A5A741A802831000484ED /* buildings.json */,
 			);
 			name = Maps;
 			sourceTree = "<group>";
@@ -638,6 +646,7 @@
 				AB99B3451A16AE480003F752 /* YPOrientationViewController.storyboard in Resources */,
 				AB8AB5C61A5D354300149B4B /* YPMapsViewController.storyboard in Resources */,
 				1386AE3719F1A66F00CA203F /* YPAthleticsViewController.storyboard in Resources */,
+				AB1A5A751A802831000484ED /* buildings.json in Resources */,
 				9B8BE2A519DE153D00CFE39A /* Images.xcassets in Resources */,
 				AB5931B61A7D666000ED5A41 /* YPEventsViewController.storyboard in Resources */,
 				EA54231919E4CEE000E75859 /* (null) in Resources */,
@@ -726,6 +735,7 @@
 				ABB117CA1A64B733009743E2 /* YPEventsDetailViewController.m in Sources */,
 				AB8AB5C11A5D347800149B4B /* YPMapsViewController.m in Sources */,
 				AB3EB6681A5E911C0029EEFF /* YPEventsViewController.m in Sources */,
+				AB1A5A731A80270D000484ED /* YPResultsTableViewController.m in Sources */,
 				EA54231E19E4E63B00E75859 /* YPPhotoCollectionViewCell.m in Sources */,
 				ABB117C31A64A87C009743E2 /* RSDFDatePickerDayCell.m in Sources */,
 				AB0071DA19E4C92300ABF52D /* YPNewsEmbeddedViewController.m in Sources */,

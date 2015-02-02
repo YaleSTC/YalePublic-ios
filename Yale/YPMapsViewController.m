@@ -7,8 +7,16 @@
 //
 
 #import "YPMapsViewController.h"
+#import "YPResultsTableViewController.h"
 
-@interface YPMapsViewController ()
+@interface YPMapsViewController () <UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, UITableViewDataSource, UITableViewDelegate>
+
+@property (nonatomic, strong) UISearchController *searchController;
+@property (nonatomic, strong) UITableViewController *resultsTableController;
+@property (nonatomic, strong) UITableView *tableView;
+
+@property (nonatomic, strong) NSDictionary *buildings;
+@property (nonatomic, strong) NSArray *buildingsArray;
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) MKUserTrackingBarButtonItem *trackingItem;
@@ -26,6 +34,51 @@
   
   self.locationManager = [[CLLocationManager alloc] init];
   self.locationManager.delegate = self;
+  [self setupBuildings];
+  [self setupSearch];
+  
+  self.tableView.hidden = YES;
+}
+
+- (void)setupBuildings {
+  NSString *filePath = [[NSBundle mainBundle] pathForResource:@"buildings" ofType:@"json"];
+  NSData* data = [NSData dataWithContentsOfFile:filePath];
+  NSError* error = nil;
+  self.buildings = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+  self.buildingsArray = [self.buildings allKeys];
+  NSLog(@"%@", self.buildingsArray);
+}
+
+- (void)setupSearch {
+  self.tableView = [[UITableView alloc] initWithFrame:self.view.frame];
+  self.tableView.delegate = self;
+  self.tableView.dataSource = self;
+  [self.view addSubview:self.tableView];
+  
+  self.resultsTableController = [[YPResultsTableViewController alloc] init];
+  self.searchController = [[UISearchController alloc] initWithSearchResultsController:self.resultsTableController];
+  self.searchController.searchResultsUpdater = self;
+  self.tableView.tableHeaderView = self.searchController.searchBar;
+  [self.searchController.searchBar sizeToFit];
+  
+  
+  UIBarButtonItem *searchButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchButtonPressed)];
+  
+  self.navigationItem.rightBarButtonItem = searchButton;
+  
+  
+  // we want to be the delegate for our filtered table so didSelectRowAtIndexPath is called for both tables
+  self.resultsTableController.tableView.delegate = self;
+  self.searchController.delegate = self;
+  self.searchController.dimsBackgroundDuringPresentation = NO; // default is YES
+  self.searchController.searchBar.delegate = self; // so we can monitor text changes + others
+  
+  // Search is now just presenting a view controller. As such, normal view controller
+  // presentation semantics apply. Namely that presentation will walk up the view controller
+  // hierarchy until it finds the root view controller or one that defines a presentation context.
+  //
+  self.definesPresentationContext = YES;  // know where you want UISearchController to be displayed
+  
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -34,7 +87,10 @@
   [self.mapView setRegion:MKCoordinateRegionMake(location, span)];
   
   
-  
+}
+
+- (void) searchButtonPressed {
+  self.tableView.hidden = NO;
 }
 
 // MKMapViewDelegate Methods
@@ -58,7 +114,7 @@
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
   if (status == kCLAuthorizationStatusDenied)
     [self.mapView setUserTrackingMode:MKUserTrackingModeNone];
-
+  
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -79,4 +135,84 @@
     [alert show];
   }
 }
+
+#pragma mark TableView Data Source
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+  return [self.buildings count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"buildingCell"];
+  if (cell == nil) {
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"buildingCell"];
+  }
+  
+  cell.textLabel.text = [self.buildingsArray objectAtIndex:indexPath.row];
+  return cell;
+}
+
+#pragma mark TableView Delegate
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+  [searchBar resignFirstResponder];
+}
+
+
+#pragma mark - UISearchControllerDelegate
+
+// Called after the search controller's search bar has agreed to begin editing or when
+// 'active' is set to YES.
+// If you choose not to present the controller yourself or do not implement this method,
+// a default presentation is performed on your behalf.
+//
+// Implement this method if the default presentation is not adequate for your purposes.
+//
+- (void)presentSearchController:(UISearchController *)searchController {
+  
+}
+
+- (void)willPresentSearchController:(UISearchController *)searchController {
+  // do something before the search controller is presented
+}
+
+- (void)didPresentSearchController:(UISearchController *)searchController {
+  // do something after the search controller is presented
+}
+
+- (void)willDismissSearchController:(UISearchController *)searchController {
+  // do something before the search controller is dismissed
+}
+
+- (void)didDismissSearchController:(UISearchController *)searchController {
+  // do something after the search controller is dismissed
+}
+
+
+
+#pragma mark - UISearchResultsUpdating
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+  // update the filtered array based on the search text
+  NSString *searchString = searchController.searchBar.text;
+  NSMutableArray *searchResults = [NSMutableArray array];
+  
+  
+  for (NSString *tempStr in self.buildingsArray) {
+    NSComparisonResult result = [tempStr compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
+    if (result == NSOrderedSame) {
+      [searchResults addObject:tempStr];
+    }
+  }
+  // hand over the filtered results to our search results table
+  YPResultsTableViewController *tableController = (YPResultsTableViewController *)self.searchController.searchResultsController;
+  tableController.filteredBuildings = searchResults;
+  NSLog(@"%@", searchResults);
+  [tableController.tableView reloadData];
+}
+
+
+
 @end
