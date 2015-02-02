@@ -63,7 +63,9 @@
   
   UIImage *backgroundImage;
   
-  if (screenHeight == 568) {
+  if (screenHeight < 568) {
+    backgroundImage = [UIImage imageNamed:@"background4"];
+  } else if (screenHeight == 568) {
     backgroundImage = [UIImage imageNamed:@"background5"];
   } else if (screenHeight == 667) {
     backgroundImage = [UIImage imageNamed:@"background6"];
@@ -261,7 +263,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
     UINavigationController *mapsVC = [storyboard instantiateViewControllerWithIdentifier:@"MapsVC"];
     [self.navigationController pushViewController:mapsVC animated:YES];
   } else if ([underText isEqualToString:@"Events"]) {
-    YPEventsViewController *eventsVC = [[YPEventsViewController alloc] init];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPEventsViewController"
+                                                         bundle:[NSBundle mainBundle]];
+    UINavigationController *eventsVC = [storyboard instantiateViewControllerWithIdentifier:@"EventsVC"];
     [self.navigationController pushViewController:eventsVC animated:YES];
   }
 }

@@ -253,7 +253,7 @@ static NSString * const RSDFDatePickerViewDayCellIdentifier = @"RSDFDatePickerVi
     
     _fromDate = [self pickerDateFromDate:[self.calendar dateByAddingComponents:((^{
         NSDateComponents *components = [NSDateComponents new];
-        components.month = -6;
+        components.month = 0;
         return components;
     })()) toDate:month options:0]];
     
