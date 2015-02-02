@@ -11,6 +11,8 @@
 #import "YPPhotoCollectionViewCell.h"
 #import "YPGlobalHelper.h"
 
+//for debugging, can show border around cells
+#import <QuartzCore/QuartzCore.h>
 
 @interface YPPhotoDetailViewController () {
   __block NSMutableArray *_photoSet;
@@ -19,6 +21,7 @@
   UIImageView *fullscreenImageView;
   UILabel *title;
   NSIndexPath *selectedIndexPath;
+  CGFloat imageHeight;
 }
 
 @end
@@ -30,6 +33,9 @@
   NSLog(@"set album title");
   self.navigationItem.title = self.albumTitle;
   [self loadPhotos];
+  //get the min height of a photo. this should be the height of all photos
+  imageHeight=1000;
+  //[(UICollectionViewFlowLayout *)self.collectionViewLayout setMinimumInteritemSpacing:0];
 }
 
 -(void)loadPhotos {
@@ -45,7 +51,6 @@
     NSMutableArray *photoURLs = [NSMutableArray array];
     for (NSDictionary *photoDictionary in [response valueForKeyPath:@"photoset.photo"]) {
       NSURL *url = [flickr urlForImageFromDictionary:photoDictionary];
-      //[photoURLs addObject:url];
       [photoURLs addObject:@{@"url": url, @"title": photoDictionary[@"title"]}];
     }
     
@@ -55,8 +60,13 @@
       //NSLog(@"%@", url);
       [flickr downloadImageForURL:photo[@"url"] completionBlock:^(UIImage *image) {
         //NSLog(@"add image, %@", image);
-        [_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
-        [self.photoCollectionView reloadData];
+        //this threw an exception when image was nil or when photo["title"] was nil
+        if (image && photo[@"title"]) {
+          [_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
+          CGFloat imageWidth = self.view.bounds.size.width/2-2; //two per row, with some padding
+          imageHeight = MIN(imageHeight, imageWidth/image.size.width*image.size.height);
+          [self.photoCollectionView reloadData];
+        }
       }];
     }
     [YPGlobalHelper hideNotificationView];
@@ -71,10 +81,32 @@
                                      dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCell"
                                      forIndexPath:indexPath];
   
-  
-  cell.photoImageView.image = _photoSet[indexPath.row][@"image"];
+  UIImage *image = _photoSet[indexPath.row][@"image"];
+  cell.photoImageView.image = image;
   cell.photoTitle = _photoSet[indexPath.row][@"title"];
+  [cell.photoImageView setContentMode:UIViewContentModeScaleAspectFit];
+  /*
+  [cell.layer setBorderColor:[UIColor colorWithRed:213.0/255.0f green:210.0/255.0f blue:199.0/255.0f alpha:1.0f].CGColor];
+  [cell.layer setBorderWidth:1.0f];
+  cell.photoImageView.layer.borderColor=[UIColor blackColor].CGColor;
+  cell.photoImageView.layer.borderWidth=2;
+  */
+  [cell removeConstraints:cell.constraints];
+  UIView *imageViewSuperview = cell.photoImageView.superview;
+  [imageViewSuperview addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:imageViewSuperview attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];
+  [imageViewSuperview addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:imageViewSuperview attribute:NSLayoutAttributeTop multiplier:1.0 constant:0]];
+  [imageViewSuperview addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:imageViewSuperview attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0]];
+  [imageViewSuperview addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:imageViewSuperview attribute:NSLayoutAttributeRight multiplier:1.0 constant:0]];
+  //[cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0]];
+  //cell.photoImageView.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+  //cell.photoImageView.translatesAutoresizingMaskIntoConstraints=YES;
   return cell;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+  UIImage *image = _photoSet[indexPath.row][@"image"];
+  return CGSizeMake(imageHeight*image.size.width/image.size.height, imageHeight);
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
