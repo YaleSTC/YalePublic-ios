@@ -38,6 +38,17 @@
   self.collectionView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height);
 }
 
+//there is a bug where the images are too small. call this to fix it. Can call this many times in succession and only the last time will register.
+- (void)resizeImages {
+  //want to reload the collection view after all the photos have been downloaded, otherwise some of them will be too small (to test, look at Yale Fencing with these lines commented
+  //[NSObject cancelPreviousPerformRequestsWithTarget:self.photoCollectionView selector:@selector(reloadData) object:nil];//only call once
+  //[self.photoCollectionView performSelector:@selector(reloadData) withObject:nil afterDelay:0.1];//after a short delay
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+  [self resizeImages];
+}
+
 -(void)loadPhotos {
   _photoSet = [NSMutableArray array];
   rowHeights = [NSMutableArray array];
@@ -77,6 +88,7 @@
           while (rowHeights.count<indexForRow+1) [rowHeights addObject:@(0)];
           rowHeights[indexForRow]=@(totalWidthDestination/totalWidthWithHeight1);
           [self.photoCollectionView reloadData];
+          [self resizeImages];
         }
       }];
     }
@@ -96,21 +108,22 @@
   cell.photoImageView.image = image;
   cell.photoTitle = _photoSet[indexPath.row][@"title"];
   [cell.photoImageView setContentMode:UIViewContentModeScaleAspectFit];
-  /*
+  
   [cell.layer setBorderColor:[UIColor colorWithRed:213.0/255.0f green:210.0/255.0f blue:199.0/255.0f alpha:1.0f].CGColor];
   [cell.layer setBorderWidth:1.0f];
   cell.photoImageView.layer.borderColor=[UIColor blackColor].CGColor;
   cell.photoImageView.layer.borderWidth=2;
-  */
+  
   [cell removeConstraints:cell.constraints];
+  //cell.translatesAutoresizingMaskIntoConstraints = NO;
+  //cell.photoImageView.translatesAutoresizingMaskIntoConstraints = NO;
   UIView *imageViewSuperview = cell.photoImageView.superview;
   [imageViewSuperview addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:imageViewSuperview attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];
   [imageViewSuperview addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:imageViewSuperview attribute:NSLayoutAttributeTop multiplier:1.0 constant:0]];
   [imageViewSuperview addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:imageViewSuperview attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0]];
   [imageViewSuperview addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:imageViewSuperview attribute:NSLayoutAttributeRight multiplier:1.0 constant:0]];
-  //[cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0]];
-  //cell.photoImageView.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-  //cell.photoImageView.translatesAutoresizingMaskIntoConstraints=YES;
+  //CGSize photoSize = [self collectionView:collectionView layout:self.collectionViewLayout sizeForItemAtIndexPath:indexPath];
+  //cell.photoImageView.frame = CGRectMake(0, 0, photoSize.width, photoSize.height);
   return cell;
 }
 

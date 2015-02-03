@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface YPPhotoDetailViewController : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface YPPhotoDetailViewController : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
 
 @property (strong, nonatomic) NSString *albumTitle;
 @property (strong, nonatomic) NSString *photoSetId;
