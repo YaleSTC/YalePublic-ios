@@ -35,6 +35,7 @@
   NSLog(@"set album title");
   self.navigationItem.title = self.albumTitle;
   [self loadPhotos];
+  self.collectionView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height);
 }
 
 -(void)loadPhotos {
