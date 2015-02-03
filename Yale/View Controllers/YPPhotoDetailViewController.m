@@ -14,7 +14,7 @@
 #define IMAGES_PER_ROW (2)
 
 //for debugging, can show border around cells
-#import <QuartzCore/QuartzCore.h>
+//#import <QuartzCore/QuartzCore.h>
 
 @interface YPPhotoDetailViewController () {
   __block NSMutableArray *_photoSet;
@@ -28,6 +28,9 @@
 
 @end
 
+//if there is less than this amount of seconds between photo loads, don't update the view multiple times in succession. Wait for a pause, then update the view.
+#define LOAD_WAIT 0.1
+
 @implementation YPPhotoDetailViewController
 
 - (void)viewDidLoad {
@@ -36,17 +39,6 @@
   self.navigationItem.title = self.albumTitle;
   [self loadPhotos];
   self.collectionView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height);
-}
-
-//there is a bug where the images are too small. call this to fix it. Can call this many times in succession and only the last time will register.
-- (void)resizeImages {
-  //want to reload the collection view after all the photos have been downloaded, otherwise some of them will be too small (to test, look at Yale Fencing with these lines commented
-  //[NSObject cancelPreviousPerformRequestsWithTarget:self.photoCollectionView selector:@selector(reloadData) object:nil];//only call once
-  //[self.photoCollectionView performSelector:@selector(reloadData) withObject:nil afterDelay:0.1];//after a short delay
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-  [self resizeImages];
 }
 
 -(void)loadPhotos {
@@ -69,7 +61,6 @@
     // Download image for each URL
     //for (NSURL *url in photoURLs) {
     for (NSDictionary *photo in photoURLs) {
-      //NSLog(@"%@", url);
       [flickr downloadImageForURL:photo[@"url"] completionBlock:^(UIImage *image) {
         //NSLog(@"add image, %@", image);
         //this threw an exception when image was nil or when photo["title"] was nil
@@ -87,12 +78,18 @@
           CGFloat totalWidthDestination = self.view.bounds.size.width-2*IMAGES_PER_ROW;//with some space in between
           while (rowHeights.count<indexForRow+1) [rowHeights addObject:@(0)];
           rowHeights[indexForRow]=@(totalWidthDestination/totalWidthWithHeight1);
-          [self.photoCollectionView reloadData];
-          [self resizeImages];
+          //don't reload the data too quickly, it looks flashy.
+          [NSObject cancelPreviousPerformRequestsWithTarget:self.photoCollectionView selector:@selector(reloadData) object:nil];
+          if (_photoSet.count==photoURLs.count) {
+            //this is the last photo downloaded.
+            [self.photoCollectionView reloadData];
+            [YPGlobalHelper hideNotificationView];
+          } else {
+            [self.photoCollectionView performSelector:@selector(reloadData) withObject:nil afterDelay:LOAD_WAIT];
+          }
         }
       }];
     }
-    [YPGlobalHelper hideNotificationView];
   }];
 }
 
@@ -108,12 +105,12 @@
   cell.photoImageView.image = image;
   cell.photoTitle = _photoSet[indexPath.row][@"title"];
   [cell.photoImageView setContentMode:UIViewContentModeScaleAspectFit];
-  
+  /*
   [cell.layer setBorderColor:[UIColor colorWithRed:213.0/255.0f green:210.0/255.0f blue:199.0/255.0f alpha:1.0f].CGColor];
   [cell.layer setBorderWidth:1.0f];
   cell.photoImageView.layer.borderColor=[UIColor blackColor].CGColor;
   cell.photoImageView.layer.borderWidth=2;
-  
+  */
   [cell removeConstraints:cell.constraints];
   //cell.translatesAutoresizingMaskIntoConstraints = NO;
   //cell.photoImageView.translatesAutoresizingMaskIntoConstraints = NO;
