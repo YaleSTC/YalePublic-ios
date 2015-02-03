@@ -9,6 +9,8 @@
 #import "YPResultsTableViewController.h"
 
 @implementation YPResultsTableViewController
+
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   return self.filteredBuildings.count;
 }

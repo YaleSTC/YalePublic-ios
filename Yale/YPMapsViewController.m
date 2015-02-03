@@ -8,11 +8,12 @@
 
 #import "YPMapsViewController.h"
 #import "YPResultsTableViewController.h"
+#import "YPTheme.h"
 
 @interface YPMapsViewController () <UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UISearchController *searchController;
-@property (nonatomic, strong) UITableViewController *resultsTableController;
+@property (nonatomic, strong) YPResultsTableViewController *resultsTableController;
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) NSDictionary *buildings;
@@ -20,6 +21,7 @@
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) MKUserTrackingBarButtonItem *trackingItem;
+@property (nonatomic, strong) MKPointAnnotation *currentAnnotation;
 
 @end
 
@@ -27,7 +29,8 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  
+  self.navigationController.view.backgroundColor = [YPTheme navigationBarColor];
+  self.navigationController.navigationBar.translucent = NO;
   self.trackingItem = [[MKUserTrackingBarButtonItem alloc] initWithMapView:self.mapView];
   
   [self.toolbar setItems:@[self.trackingItem]];
@@ -38,6 +41,13 @@
   [self setupSearch];
   
   self.tableView.hidden = YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+  CLLocationCoordinate2D location = CLLocationCoordinate2DMake(41.3111, -72.9267);
+  MKCoordinateSpan span = MKCoordinateSpanMake(0.02, 0.02);
+  [self.mapView setRegion:MKCoordinateRegionMake(location, span)];
+  
 }
 
 - (void)setupBuildings {
@@ -61,7 +71,6 @@
   self.tableView.tableHeaderView = self.searchController.searchBar;
   [self.searchController.searchBar sizeToFit];
   
-  
   UIBarButtonItem *searchButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchButtonPressed)];
   
   self.navigationItem.rightBarButtonItem = searchButton;
@@ -81,16 +90,10 @@
   
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-  CLLocationCoordinate2D location = CLLocationCoordinate2DMake(41.3111, -72.9267);
-  MKCoordinateSpan span = MKCoordinateSpanMake(0.02, 0.02);
-  [self.mapView setRegion:MKCoordinateRegionMake(location, span)];
-  
-  
-}
+
 
 - (void) searchButtonPressed {
-  self.tableView.hidden = NO;
+  self.tableView.hidden = !self.tableView.hidden;
 }
 
 // MKMapViewDelegate Methods
@@ -154,6 +157,50 @@
 
 #pragma mark TableView Delegate
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  [tableView deselectRowAtIndexPath:indexPath animated:NO];
+  self.tableView.hidden = YES;
+  tableView.hidden = YES;
+  
+  NSString *selectedBuilding = (tableView == self.tableView) ?
+  self.buildingsArray[indexPath.row] : self.resultsTableController.filteredBuildings[indexPath.row];
+  NSLog(@"selected; %@", selectedBuilding);
+  self.searchController.active = NO;
+
+  NSDictionary *locationDict = self.buildings[selectedBuilding];
+  
+  CLLocationCoordinate2D location = CLLocationCoordinate2DMake([locationDict[@"Latitude"] floatValue], [locationDict[@"Longitude"] floatValue]);
+  MKCoordinateSpan span = MKCoordinateSpanMake(0.01, 0.01);
+  [self.mapView setRegion:MKCoordinateRegionMake(location, span)];
+  
+  if (self.currentAnnotation)
+      [self.mapView removeAnnotation:self.currentAnnotation];
+  self.currentAnnotation = [[MKPointAnnotation alloc] init];
+  self.currentAnnotation.coordinate = location;
+  self.currentAnnotation.title = selectedBuilding;
+  
+  
+  [self.mapView addAnnotation:self.currentAnnotation];
+  [self.mapView selectAnnotation:self.currentAnnotation animated:YES];
+  
+  
+}
+
+
+
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+  MKPinAnnotationView *view = (MKPinAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:@"annotationView"];
+  if (view == nil) {
+    view = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"annotationView"];
+  }
+  view.animatesDrop = YES;
+  view.canShowCallout = YES;
+
+  return view;
+}
+
+
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
@@ -195,21 +242,21 @@
 #pragma mark - UISearchResultsUpdating
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+
   // update the filtered array based on the search text
   NSString *searchString = searchController.searchBar.text;
   NSMutableArray *searchResults = [NSMutableArray array];
   
   
   for (NSString *tempStr in self.buildingsArray) {
-    NSComparisonResult result = [tempStr compare:searchString options:(NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) range:NSMakeRange(0, [searchString length])];
-    if (result == NSOrderedSame) {
+    
+    if ([[tempStr lowercaseString] rangeOfString:[searchString lowercaseString]].location != NSNotFound) {
       [searchResults addObject:tempStr];
     }
   }
   // hand over the filtered results to our search results table
   YPResultsTableViewController *tableController = (YPResultsTableViewController *)self.searchController.searchResultsController;
   tableController.filteredBuildings = searchResults;
-  NSLog(@"%@", searchResults);
   [tableController.tableView reloadData];
 }
 

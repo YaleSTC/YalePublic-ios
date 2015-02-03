@@ -16,13 +16,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rVY-Sh-z4d">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rVY-Sh-z4d">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <items/>
                             </toolbar>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="EoZ-sd-en0">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="EoZ-sd-en0">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <constraints>
+                                    <constraint firstAttribute="height" constant="556" id="Ix1-a0-stS"/>
                                     <constraint firstAttribute="height" constant="556" id="dJP-Ad-Ozj"/>
                                 </constraints>
                                 <variation key="default">
@@ -36,6 +37,14 @@
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="EoZ-sd-en0" firstAttribute="leading" secondItem="rVY-Sh-z4d" secondAttribute="leading" id="Ew7-u7-eC8"/>
+                            <constraint firstItem="EoZ-sd-en0" firstAttribute="bottom" secondItem="rVY-Sh-z4d" secondAttribute="top" id="gqH-LH-ibm"/>
+                            <constraint firstAttribute="trailing" secondItem="EoZ-sd-en0" secondAttribute="trailing" id="kuR-Fz-P7v"/>
+                            <constraint firstItem="EoZ-sd-en0" firstAttribute="trailing" secondItem="rVY-Sh-z4d" secondAttribute="trailing" id="mB6-Vm-cWs"/>
+                            <constraint firstItem="EoZ-sd-en0" firstAttribute="leading" secondItem="fZa-Go-Xep" secondAttribute="leading" id="v3L-V0-X51"/>
+                            <constraint firstItem="EoZ-sd-en0" firstAttribute="top" secondItem="fZa-Go-Xep" secondAttribute="top" id="x47-I7-8NK"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="mapView" destination="EoZ-sd-en0" id="sdb-1i-ia7"/>
