@@ -13,7 +13,7 @@
 @interface YPMapsViewController () <UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UISearchController *searchController;
-@property (nonatomic, strong) YPResultsTableViewController *resultsTableController;
+@property (nonatomic, strong) YPResultsTableViewController *resultsTableController; 
 @property (nonatomic, strong) UITableView *tableView;
 
 @property (nonatomic, strong) NSDictionary *buildings;
