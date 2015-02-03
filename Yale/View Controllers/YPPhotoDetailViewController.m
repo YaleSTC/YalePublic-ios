@@ -11,6 +11,8 @@
 #import "YPPhotoCollectionViewCell.h"
 #import "YPGlobalHelper.h"
 
+#define IMAGES_PER_ROW (2)
+
 //for debugging, can show border around cells
 #import <QuartzCore/QuartzCore.h>
 
@@ -21,7 +23,7 @@
   UIImageView *fullscreenImageView;
   UILabel *title;
   NSIndexPath *selectedIndexPath;
-  CGFloat imageHeight;
+  NSMutableArray *rowHeights; //array of NSNumbers.
 }
 
 @end
@@ -33,13 +35,11 @@
   NSLog(@"set album title");
   self.navigationItem.title = self.albumTitle;
   [self loadPhotos];
-  //get the min height of a photo. this should be the height of all photos
-  imageHeight=1000;
-  //[(UICollectionViewFlowLayout *)self.collectionViewLayout setMinimumInteritemSpacing:0];
 }
 
 -(void)loadPhotos {
   _photoSet = [NSMutableArray array];
+  rowHeights = [NSMutableArray array];
   
   YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
   [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
@@ -62,9 +62,19 @@
         //NSLog(@"add image, %@", image);
         //this threw an exception when image was nil or when photo["title"] was nil
         if (image && photo[@"title"]) {
+          NSUInteger indexForRow = _photoSet.count/IMAGES_PER_ROW; //this is the index of the last row
           [_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
-          CGFloat imageWidth = self.view.bounds.size.width/2-2; //two per row, with some padding
-          imageHeight = MIN(imageHeight, imageWidth/image.size.width*image.size.height);
+          NSMutableArray *imagesInRow = [NSMutableArray array]; //to find the size, consider all images in row
+          for (NSUInteger i=indexForRow*IMAGES_PER_ROW; i<_photoSet.count; i++) {
+            [imagesInRow addObject:_photoSet[i][@"image"]];
+          }
+          CGFloat totalWidthWithHeight1 = 0;
+          for (UIImage *img in imagesInRow) {
+            totalWidthWithHeight1 += img.size.width / img.size.height;
+          }
+          CGFloat totalWidthDestination = self.view.bounds.size.width-2*IMAGES_PER_ROW;//with some space in between
+          while (rowHeights.count<indexForRow+1) [rowHeights addObject:@(0)];
+          rowHeights[indexForRow]=@(totalWidthDestination/totalWidthWithHeight1);
           [self.photoCollectionView reloadData];
         }
       }];
@@ -106,7 +116,8 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
   UIImage *image = _photoSet[indexPath.row][@"image"];
-  return CGSizeMake(imageHeight*image.size.width/image.size.height, imageHeight);
+  NSUInteger row = indexPath.row/IMAGES_PER_ROW;
+  return CGSizeMake([rowHeights[row] doubleValue]*image.size.width/image.size.height, [rowHeights[row] doubleValue]);
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
