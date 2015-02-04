@@ -11,6 +11,10 @@
 #import "YPPhotoCollectionViewCell.h"
 #import "YPGlobalHelper.h"
 
+#define IMAGES_PER_ROW (2)
+
+//for debugging, can show border around cells
+//#import <QuartzCore/QuartzCore.h>
 
 @interface YPPhotoDetailViewController () {
   __block NSMutableArray *_photoSet;
@@ -19,9 +23,13 @@
   UIImageView *fullscreenImageView;
   UILabel *title;
   NSIndexPath *selectedIndexPath;
+  NSMutableArray *rowHeights; //array of NSNumbers.
 }
 
 @end
+
+//if there is less than this amount of seconds between photo loads, don't update the view multiple times in succession. Wait for a pause, then update the view.
+#define LOAD_WAIT 0.1
 
 @implementation YPPhotoDetailViewController
 
@@ -30,10 +38,12 @@
   NSLog(@"set album title");
   self.navigationItem.title = self.albumTitle;
   [self loadPhotos];
+  self.collectionView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height);
 }
 
 -(void)loadPhotos {
   _photoSet = [NSMutableArray array];
+  rowHeights = [NSMutableArray array];
   
   YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
   [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
@@ -45,21 +55,41 @@
     NSMutableArray *photoURLs = [NSMutableArray array];
     for (NSDictionary *photoDictionary in [response valueForKeyPath:@"photoset.photo"]) {
       NSURL *url = [flickr urlForImageFromDictionary:photoDictionary];
-      //[photoURLs addObject:url];
       [photoURLs addObject:@{@"url": url, @"title": photoDictionary[@"title"]}];
     }
     
     // Download image for each URL
     //for (NSURL *url in photoURLs) {
     for (NSDictionary *photo in photoURLs) {
-      //NSLog(@"%@", url);
       [flickr downloadImageForURL:photo[@"url"] completionBlock:^(UIImage *image) {
         //NSLog(@"add image, %@", image);
-        [_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
-        [self.photoCollectionView reloadData];
+        //this threw an exception when image was nil or when photo["title"] was nil
+        if (image && photo[@"title"]) {
+          NSUInteger indexForRow = _photoSet.count/IMAGES_PER_ROW; //this is the index of the last row
+          [_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
+          NSMutableArray *imagesInRow = [NSMutableArray array]; //to find the size, consider all images in row
+          for (NSUInteger i=indexForRow*IMAGES_PER_ROW; i<_photoSet.count; i++) {
+            [imagesInRow addObject:_photoSet[i][@"image"]];
+          }
+          CGFloat totalWidthWithHeight1 = 0;
+          for (UIImage *img in imagesInRow) {
+            totalWidthWithHeight1 += img.size.width / img.size.height;
+          }
+          CGFloat totalWidthDestination = self.view.bounds.size.width-2*IMAGES_PER_ROW;//with some space in between
+          while (rowHeights.count<indexForRow+1) [rowHeights addObject:@(0)];
+          rowHeights[indexForRow]=@(totalWidthDestination/totalWidthWithHeight1);
+          //don't reload the data too quickly, it looks flashy.
+          [NSObject cancelPreviousPerformRequestsWithTarget:self.photoCollectionView selector:@selector(reloadData) object:nil];
+          if (_photoSet.count==photoURLs.count) {
+            //this is the last photo downloaded.
+            [self.photoCollectionView reloadData];
+            [YPGlobalHelper hideNotificationView];
+          } else {
+            [self.photoCollectionView performSelector:@selector(reloadData) withObject:nil afterDelay:LOAD_WAIT];
+          }
+        }
       }];
     }
-    [YPGlobalHelper hideNotificationView];
   }];
 }
 
@@ -71,10 +101,34 @@
                                      dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCell"
                                      forIndexPath:indexPath];
   
-  
-  cell.photoImageView.image = _photoSet[indexPath.row][@"image"];
+  UIImage *image = _photoSet[indexPath.row][@"image"];
+  cell.photoImageView.image = image;
   cell.photoTitle = _photoSet[indexPath.row][@"title"];
+  [cell.photoImageView setContentMode:UIViewContentModeScaleAspectFit];
+  /*
+  [cell.layer setBorderColor:[UIColor colorWithRed:213.0/255.0f green:210.0/255.0f blue:199.0/255.0f alpha:1.0f].CGColor];
+  [cell.layer setBorderWidth:1.0f];
+  cell.photoImageView.layer.borderColor=[UIColor blackColor].CGColor;
+  cell.photoImageView.layer.borderWidth=2;
+  */
+  [cell removeConstraints:cell.constraints];
+  //cell.translatesAutoresizingMaskIntoConstraints = NO;
+  //cell.photoImageView.translatesAutoresizingMaskIntoConstraints = NO;
+  UIView *imageViewSuperview = cell.photoImageView.superview;
+  [imageViewSuperview addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:imageViewSuperview attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];
+  [imageViewSuperview addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:imageViewSuperview attribute:NSLayoutAttributeTop multiplier:1.0 constant:0]];
+  [imageViewSuperview addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:imageViewSuperview attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0]];
+  [imageViewSuperview addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:imageViewSuperview attribute:NSLayoutAttributeRight multiplier:1.0 constant:0]];
+  //CGSize photoSize = [self collectionView:collectionView layout:self.collectionViewLayout sizeForItemAtIndexPath:indexPath];
+  //cell.photoImageView.frame = CGRectMake(0, 0, photoSize.width, photoSize.height);
   return cell;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+  UIImage *image = _photoSet[indexPath.row][@"image"];
+  NSUInteger row = indexPath.row/IMAGES_PER_ROW;
+  return CGSizeMake([rowHeights[row] doubleValue]*image.size.width/image.size.height, [rowHeights[row] doubleValue]);
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
