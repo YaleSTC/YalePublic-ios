@@ -60,6 +60,7 @@
     
     // Download image for each URL
     //for (NSURL *url in photoURLs) {
+    [YPGlobalHelper hideNotificationView];
     for (NSDictionary *photo in photoURLs) {
       [flickr downloadImageForURL:photo[@"url"] completionBlock:^(UIImage *image) {
         //NSLog(@"add image, %@", image);
@@ -75,7 +76,7 @@
           for (UIImage *img in imagesInRow) {
             totalWidthWithHeight1 += img.size.width / img.size.height;
           }
-          CGFloat totalWidthDestination = self.view.bounds.size.width-2*IMAGES_PER_ROW;//with some space in between
+          CGFloat totalWidthDestination = self.view.bounds.size.width-1*IMAGES_PER_ROW;//with some space in between
           while (rowHeights.count<indexForRow+1) [rowHeights addObject:@(0)];
           rowHeights[indexForRow]=@(totalWidthDestination/totalWidthWithHeight1);
           //don't reload the data too quickly, it looks flashy.
@@ -83,7 +84,7 @@
           if (_photoSet.count==photoURLs.count) {
             //this is the last photo downloaded.
             [self.photoCollectionView reloadData];
-            [YPGlobalHelper hideNotificationView];
+            
           } else {
             [self.photoCollectionView performSelector:@selector(reloadData) withObject:nil afterDelay:LOAD_WAIT];
           }
