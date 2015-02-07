@@ -77,7 +77,7 @@
       }
     
     // Download image for each URL
-    //for (NSURL *url in photoURLs) {
+    //for (NSURL *url
     for (NSDictionary *photo in photoURLs) {
       [flickr downloadImageForURL:photo[@"smallPhotoUrl"] completionBlock:^(UIImage *image) {
         //NSLog(@"add image, %@", image);
@@ -108,6 +108,7 @@
         }
       }];
     }
+    //[YPGlobalHelper hideNotificationView];
   }];
 }
 
@@ -158,8 +159,7 @@
   overlayView = [[UIView alloc] init];
   
   thumbnailImageView = selectedCell.photoImageView;
-  UIImage *image = [thumbnailImageView image];
-  fullscreenImageView = [[UIImageView alloc] initWithImage:image];
+  fullscreenImageView = [[UIImageView alloc] initWithImage:[self photoForSelectedIndex]];
   [fullscreenImageView setContentMode:UIViewContentModeScaleAspectFit];
   
   CGRect tempPoint = CGRectMake(thumbnailImageView.center.x, thumbnailImageView.center.y, 0, 0);
