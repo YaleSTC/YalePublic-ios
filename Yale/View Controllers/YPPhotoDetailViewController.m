@@ -67,25 +67,27 @@
     
     NSLog(@"%@", response);
     
-    // Get a list of URLs
-    NSMutableArray *photoURLs = [NSMutableArray array];
-    for (NSDictionary *photoDictionary in [response valueForKeyPath:@"photoset.photo"]) {
-      NSURL *url = [flickr urlForImageFromDictionary:photoDictionary];
-      [photoURLs addObject:@{@"url": url, @"title": photoDictionary[@"title"]}];
-    }
+      // Get a list of URLs
+      NSMutableArray *photoURLs = [NSMutableArray array];
+      for (NSDictionary *photoDictionary in [response valueForKeyPath:@"photoset.photo"]) {
+        NSURL *smallPhotoUrl = [flickr urlForImageFromDictionary:photoDictionary largeSize:NO];
+        NSURL *largePhotoUrl = [flickr urlForImageFromDictionary:photoDictionary largeSize:YES];
+        //[photoURLs addObject:url];
+        [photoURLs addObject:@{@"smallPhotoUrl": smallPhotoUrl, @"largePhotoUrl":largePhotoUrl, @"title": photoDictionary[@"title"]}];
+      }
     
     // Download image for each URL
     //for (NSURL *url in photoURLs) {
     for (NSDictionary *photo in photoURLs) {
-      [flickr downloadImageForURL:photo[@"url"] completionBlock:^(UIImage *image) {
+      [flickr downloadImageForURL:photo[@"smallPhotoUrl"] completionBlock:^(UIImage *image) {
         //NSLog(@"add image, %@", image);
         //this threw an exception when image was nil or when photo["title"] was nil
         if (image && photo[@"title"]) {
           NSUInteger indexForRow = _photoSet.count/IMAGES_PER_ROW; //this is the index of the last row
-          [_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
+          [_photoSet addObject:@{@"smallImage":image, @"title": photo[@"title"], @"largePhotoUrl":photo[@"largePhotoUrl"]}];
           NSMutableArray *imagesInRow = [NSMutableArray array]; //to find the size, consider all images in row
           for (NSUInteger i=indexForRow*IMAGES_PER_ROW; i<_photoSet.count; i++) {
-            [imagesInRow addObject:_photoSet[i][@"image"]];
+            [imagesInRow addObject:_photoSet[i][@"smallImage"]];
           }
           CGFloat totalWidthWithHeight1 = 0;
           for (UIImage *img in imagesInRow) {
@@ -117,8 +119,8 @@
                                      dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCell"
                                      forIndexPath:indexPath];
   
-  UIImage *image = _photoSet[indexPath.row][@"image"];
-  cell.photoImageView.image = image;
+  UIImage *smallImage = _photoSet[indexPath.row][@"smallImage"];
+  cell.photoImageView.image = smallImage;
   cell.photoTitle = _photoSet[indexPath.row][@"title"];
   [cell.photoImageView setContentMode:UIViewContentModeScaleAspectFit];
   /*
@@ -142,7 +144,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-  UIImage *image = _photoSet[indexPath.row][@"image"];
+  UIImage *image = _photoSet[indexPath.row][@"smallImage"];
   NSUInteger row = indexPath.row/IMAGES_PER_ROW;
   return CGSizeMake([rowHeights[row] doubleValue]*image.size.width/image.size.height, [rowHeights[row] doubleValue]);
 }
@@ -161,7 +163,8 @@
   [fullscreenImageView setContentMode:UIViewContentModeScaleAspectFit];
   
   CGRect tempPoint = CGRectMake(thumbnailImageView.center.x, thumbnailImageView.center.y, 0, 0);
-  CGRect startingPoint = [self.view convertRect:tempPoint fromView:[self.collectionView cellForItemAtIndexPath:indexPath]];
+  CGRect startingPoint = [self.view convertRect:tempPoint
+                                       fromView:[self.collectionView cellForItemAtIndexPath:indexPath]];
   
   [overlayView setFrame:startingPoint];
   [fullscreenImageView setFrame:startingPoint];
@@ -262,6 +265,20 @@
   [self presentViewController:alert animated:YES completion:nil];
 }
 
+//UIImageView image transition crossfade
+void crossfade(UIImageView* view, UIImage* image, bool isRightSwiped)
+{
+  //bool isRightSwiped -> YES: kCATransitionFromLeft
+  CATransition* transition = [CATransition animation];
+  transition.duration = 0.5f;
+  transition.subtype = isRightSwiped ? kCATransitionFromLeft: kCATransitionFromRight;
+  transition.type = kCATransitionReveal;
+  
+  [view.layer addAnimation:transition forKey:nil];
+  
+  view.image = image;
+}
+
 -(void)fullScreenImageViewLeftSwiped:(UIGestureRecognizer *)gestureRecognizer
 {
   
@@ -272,7 +289,8 @@
     NSLog(@"new indexPath.orw %ld", (long)newIndex.row);
     selectedIndexPath = newIndex;
     
-    fullscreenImageView.image = _photoSet[newIndex.row][@"image"];
+    crossfade(fullscreenImageView, [self photoForSelectedIndex], NO);
+    //fullscreenImageView.image = _photoSet[newIndex.row][@"image"];
     [title setText:_photoSet[newIndex.row][@"title"]];
   }
   
@@ -286,9 +304,31 @@
     NSIndexPath *newIndex = [NSIndexPath indexPathForRow:selectedIndexPath.row-1 inSection:selectedIndexPath.section];
     NSLog(@"new indexPath.orw %ld", (long)newIndex.row);
     selectedIndexPath = newIndex;
-    
-    fullscreenImageView.image = _photoSet[newIndex.row][@"image"];
-    [title setText:_photoSet[newIndex.row][@"title"]];
+    crossfade(fullscreenImageView,[self photoForSelectedIndex], YES);
+    [title setText:_photoSet[selectedIndexPath.row][@"title"]];
+  }
+}
+
+-(UIImage *)photoForSelectedIndex
+{
+  if(_photoSet[selectedIndexPath.row][@"largeImage"]){
+    NSLog(@"returning large image");
+    return _photoSet[selectedIndexPath.row][@"largeImage"];
+  } else {
+    NSLog(@"returning small image");
+    // reload large image
+    YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
+    [flickr downloadImageForURL:_photoSet[selectedIndexPath.row][@"largePhotoUrl"] completionBlock:^(UIImage *image) {
+      
+      NSLog(@"downloaded large image: %@", image);
+      [fullscreenImageView setImage:image];
+      NSMutableDictionary *tempWithLargeImage = [[NSMutableDictionary alloc] initWithDictionary:_photoSet[selectedIndexPath.row]];
+      tempWithLargeImage[@"largeImage"] = image;
+      _photoSet[selectedIndexPath.row] = tempWithLargeImage;
+#warning error handling necessary
+    }
+     ];
+    return _photoSet[selectedIndexPath.row][@"smallImage"];
   }
 }
 
