@@ -35,8 +35,24 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  NSLog(@"set album title");
-  self.navigationItem.title = self.albumTitle;
+  NSLog(@"set album title: %@",self.albumTitle);
+  
+  //NavigationBar title
+  UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+  titleLabel.font = [UIFont boldSystemFontOfSize:16.0];
+  titleLabel.textColor = [UIColor whiteColor];
+  titleLabel.text = self.albumTitle;
+  [titleLabel sizeToFit];
+  self.navigationItem.titleView = titleLabel;
+  //self.navigationItem.title = self.albumTitle;
+  
+  //BackButton
+  UIBarButtonItem* backItem = [[UIBarButtonItem alloc] init];
+  backItem.title = @" ";
+  self.navigationItem.backBarButtonItem = backItem;
+  
+  NSLog(@"backButtonTitle: %@",backItem.title);
+  
   [self loadPhotos];
   self.collectionView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height);
 }
