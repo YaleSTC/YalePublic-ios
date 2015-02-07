@@ -93,7 +93,7 @@
           for (UIImage *img in imagesInRow) {
             totalWidthWithHeight1 += img.size.width / img.size.height;
           }
-          CGFloat totalWidthDestination = self.view.bounds.size.width-2*IMAGES_PER_ROW;//with some space in between
+          CGFloat totalWidthDestination = self.view.bounds.size.width-IMAGES_PER_ROW;//with some space in between
           while (rowHeights.count<indexForRow+1) [rowHeights addObject:@(0)];
           rowHeights[indexForRow]=@(totalWidthDestination/totalWidthWithHeight1);
           //don't reload the data too quickly, it looks flashy.
@@ -158,7 +158,6 @@
   
   overlayView = [[UIView alloc] init];
   
-  thumbnailImageView = selectedCell.photoImageView;
   fullscreenImageView = [[UIImageView alloc] initWithImage:[self photoForSelectedIndex]];
   [fullscreenImageView setContentMode:UIViewContentModeScaleAspectFit];
   
@@ -205,6 +204,7 @@
    ];
   
   
+  thumbnailImageView = selectedCell.photoImageView;
   
   UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewTapped:)];
   singleTap.numberOfTapsRequired = 1;
@@ -266,8 +266,7 @@
 }
 
 //UIImageView image transition crossfade
-void crossfade(UIImageView* view, UIImage* image, bool isRightSwiped)
-{
+- (void) crossfade:(UIImageView*)view image:(UIImage*) image isRightSwiped:(BOOL) isRightSwiped{
   //bool isRightSwiped -> YES: kCATransitionFromLeft
   CATransition* transition = [CATransition animation];
   transition.duration = 0.5f;
@@ -275,8 +274,8 @@ void crossfade(UIImageView* view, UIImage* image, bool isRightSwiped)
   transition.type = kCATransitionReveal;
   
   [view.layer addAnimation:transition forKey:nil];
-  
   view.image = image;
+  
 }
 
 -(void)fullScreenImageViewLeftSwiped:(UIGestureRecognizer *)gestureRecognizer
@@ -289,9 +288,14 @@ void crossfade(UIImageView* view, UIImage* image, bool isRightSwiped)
     NSLog(@"new indexPath.orw %ld", (long)newIndex.row);
     selectedIndexPath = newIndex;
     
-    crossfade(fullscreenImageView, [self photoForSelectedIndex], NO);
+    [self crossfade:fullscreenImageView image:[self photoForSelectedIndex] isRightSwiped:NO];
     //fullscreenImageView.image = _photoSet[newIndex.row][@"image"];
     [title setText:_photoSet[newIndex.row][@"title"]];
+    if (![[self.photoCollectionView indexPathsForVisibleItems] containsObject:newIndex]) {
+      [self.photoCollectionView scrollToItemAtIndexPath:newIndex atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+      
+    }
+    [self performSelector:@selector(updateThumbnail:) withObject:newIndex afterDelay:0.2f];
   }
   
 }
@@ -304,10 +308,22 @@ void crossfade(UIImageView* view, UIImage* image, bool isRightSwiped)
     NSIndexPath *newIndex = [NSIndexPath indexPathForRow:selectedIndexPath.row-1 inSection:selectedIndexPath.section];
     NSLog(@"new indexPath.orw %ld", (long)newIndex.row);
     selectedIndexPath = newIndex;
-    crossfade(fullscreenImageView,[self photoForSelectedIndex], YES);
+    [self crossfade:fullscreenImageView image:[self photoForSelectedIndex] isRightSwiped:YES];
     [title setText:_photoSet[selectedIndexPath.row][@"title"]];
+    if (![[self.photoCollectionView indexPathsForVisibleItems] containsObject:newIndex]) {
+      [self.photoCollectionView scrollToItemAtIndexPath:newIndex atScrollPosition:UICollectionViewScrollPositionBottom animated:YES];
+    }
+    [self performSelector:@selector(updateThumbnail:) withObject:newIndex afterDelay:0.2f];
+    
   }
 }
+
+- (void)updateThumbnail:(NSIndexPath*)newIndex {
+    YPPhotoCollectionViewCell *newSelectedCell = (YPPhotoCollectionViewCell *)[self.photoCollectionView cellForItemAtIndexPath:newIndex];
+    thumbnailImageView = newSelectedCell.photoImageView;
+}
+
+
 
 -(UIImage *)photoForSelectedIndex
 {
@@ -341,6 +357,7 @@ void crossfade(UIImageView* view, UIImage* image, bool isRightSwiped)
   [title removeFromSuperview];
   title = nil;
   
+  //[self.photoCollectionView scrollToItemAtIndexPath:selectedIndexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
   [UIView animateWithDuration:0.5
                    animations:^{
                      [fullscreenImageView setFrame:point];
