@@ -95,8 +95,35 @@
       //NSLog(@"%@", url);
       [instagram downloadImageForURL:photo[@"url"] completionBlock:^(UIImage *image) {
         //NSLog(@"add image, %@", image);
-        [_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
-        [self.photoCollectionView reloadData];
+        //[_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
+        //[self.photoCollectionView reloadData];
+        
+        //NSLog(@"add image, %@", image);
+        //this threw an exception when image was nil or when photo["title"] was nil
+        if (image && photo[@"title"]) {
+          NSUInteger indexForRow = _photoSet.count/IMAGES_PER_ROW; //this is the index of the last row
+          [_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
+          NSMutableArray *imagesInRow = [NSMutableArray array]; //to find the size, consider all images in row
+          for (NSUInteger i=indexForRow*IMAGES_PER_ROW; i<_photoSet.count; i++) {
+            [imagesInRow addObject:_photoSet[i][@"image"]];
+          }
+          CGFloat totalWidthWithHeight1 = 0;
+          for (UIImage *img in imagesInRow) {
+            totalWidthWithHeight1 += img.size.width / img.size.height;
+          }
+          CGFloat totalWidthDestination = self.view.bounds.size.width-IMAGES_PER_ROW;//with some space in between
+          while (rowHeights.count<indexForRow+1) [rowHeights addObject:@(0)];
+          rowHeights[indexForRow]=@(totalWidthDestination/totalWidthWithHeight1);
+          //don't reload the data too quickly, it looks flashy.
+          [NSObject cancelPreviousPerformRequestsWithTarget:self.photoCollectionView selector:@selector(reloadData) object:nil];
+          if (_photoSet.count==photoURLs.count) {
+            //this is the last photo downloaded.
+            [self.photoCollectionView reloadData];
+            [YPGlobalHelper hideNotificationView];
+          } else {
+            [self.photoCollectionView performSelector:@selector(reloadData) withObject:nil afterDelay:LOAD_WAIT];
+          }
+        }
       }];
     }
 
@@ -166,7 +193,12 @@
                                      dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCell"
                                      forIndexPath:indexPath];
   
-  UIImage *smallImage = _photoSet[indexPath.row][@"smallImage"];
+  UIImage *smallImage;
+  if ([self.photoSetId isEqualToString:@"INSTAGRAM"]) {
+    smallImage = _photoSet[indexPath.row][@"image"];
+  }else {
+    smallImage = _photoSet[indexPath.row][@"smallImage"];
+  }
   cell.photoImageView.image = smallImage;
   cell.photoTitle = _photoSet[indexPath.row][@"title"];
   [cell.photoImageView setContentMode:UIViewContentModeScaleAspectFit];
@@ -191,7 +223,12 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-  UIImage *image = _photoSet[indexPath.row][@"smallImage"];
+  UIImage *image;
+  if ([self.photoSetId isEqualToString:@"INSTAGRAM"]) {
+    image = _photoSet[indexPath.row][@"image"];
+  }else {
+    image = _photoSet[indexPath.row][@"smallImage"];
+  }
   NSUInteger row = indexPath.row/IMAGES_PER_ROW;
   return CGSizeMake([rowHeights[row] doubleValue]*image.size.width/image.size.height, [rowHeights[row] doubleValue]);
 }
@@ -373,24 +410,28 @@
 
 -(UIImage *)photoForSelectedIndex
 {
-  if(_photoSet[selectedIndexPath.row][@"largeImage"]){
-    NSLog(@"returning large image");
-    return _photoSet[selectedIndexPath.row][@"largeImage"];
-  } else {
-    NSLog(@"returning small image");
-    // reload large image
-    YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
-    [flickr downloadImageForURL:_photoSet[selectedIndexPath.row][@"largePhotoUrl"] completionBlock:^(UIImage *image) {
-      
-      NSLog(@"downloaded large image: %@", image);
-      [fullscreenImageView setImage:image];
-      NSMutableDictionary *tempWithLargeImage = [[NSMutableDictionary alloc] initWithDictionary:_photoSet[selectedIndexPath.row]];
-      tempWithLargeImage[@"largeImage"] = image;
-      _photoSet[selectedIndexPath.row] = tempWithLargeImage;
+  if ([self.photoSetId isEqualToString:@"INSTAGRAM"]) {
+    return _photoSet[selectedIndexPath.row][@"image"];
+  }else {       //flickr
+    if(_photoSet[selectedIndexPath.row][@"largeImage"]){
+      NSLog(@"returning large image");
+      return _photoSet[selectedIndexPath.row][@"largeImage"];
+    } else {
+      NSLog(@"returning small image");
+      // reload large image
+      YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
+      [flickr downloadImageForURL:_photoSet[selectedIndexPath.row][@"largePhotoUrl"] completionBlock:^(UIImage *image) {
+        
+        NSLog(@"downloaded large image: %@", image);
+        [fullscreenImageView setImage:image];
+        NSMutableDictionary *tempWithLargeImage = [[NSMutableDictionary alloc] initWithDictionary:_photoSet[selectedIndexPath.row]];
+        tempWithLargeImage[@"largeImage"] = image;
+        _photoSet[selectedIndexPath.row] = tempWithLargeImage;
 #warning error handling necessary
+      }
+       ];
+      return _photoSet[selectedIndexPath.row][@"smallImage"];
     }
-     ];
-    return _photoSet[selectedIndexPath.row][@"smallImage"];
   }
 }
 

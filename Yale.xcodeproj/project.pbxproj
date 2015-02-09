@@ -67,7 +67,8 @@
 		ABD3212719EB059F009D9281 /* YPVideoEmbeddedViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD3212619EB059F009D9281 /* YPVideoEmbeddedViewViewController.m */; };
 		ABD3212B19EB0B48009D9281 /* YPVideoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD3212919EB0B48009D9281 /* YPVideoTableViewCell.m */; };
 		ABD3212C19EB0B48009D9281 /* YPVideoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABD3212A19EB0B48009D9281 /* YPVideoTableViewCell.xib */; };
-		DC72D6F84DC8499796A7F96A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D18846582394F449BE058FB /* libPods.a */; settings = {ATTRIBUTES = (Required, ); }; };
+		DC72D6F84DC8499796A7F96A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D18846582394F449BE058FB /* libPods.a */; };
+		EA4456691A7D7DC300473D5E /* YPInstagramCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4456681A7D7DC300473D5E /* YPInstagramCommunicator.m */; };
 		EA54231919E4CEE000E75859 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		EA54231E19E4E63B00E75859 /* YPPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA54231D19E4E63B00E75859 /* YPPhotoCollectionViewCell.m */; };
 		EA54232119E58BB900E75859 /* YPStandardTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA54232019E58BB900E75859 /* YPStandardTableView.m */; };
