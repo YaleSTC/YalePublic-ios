@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YPWebViewController.h"
 
-@interface YPTransitViewController : UIViewController
+@interface YPTransitViewController : YPWebViewController
 
 @end

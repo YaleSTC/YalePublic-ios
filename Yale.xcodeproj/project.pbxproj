@@ -24,6 +24,7 @@
 		9BC369991A040F9A00B63FF8 /* YPAthleticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC369981A040F9A00B63FF8 /* YPAthleticsViewController.m */; };
 		9BC369D31A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC369D21A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m */; };
 		9BCB4AD419DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCB4AD319DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m */; };
+		9BED8DD81A895B0F002E87AD /* YPWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BED8DD71A895B0F002E87AD /* YPWebViewController.m */; };
 		9BEDA9FC1A2E66AD0095EF2C /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDA9F71A2E66AD0095EF2C /* TFHpple.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9BEDA9FD1A2E66AD0095EF2C /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDA9F91A2E66AD0095EF2C /* TFHppleElement.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9BEDA9FE1A2E66AD0095EF2C /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDA9FB1A2E66AD0095EF2C /* XPathQuery.m */; };
@@ -121,6 +122,8 @@
 		9BC369D21A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPCalendarEventsServerCommunicator.m; path = ServerCommunicators/YPCalendarEventsServerCommunicator.m; sourceTree = "<group>"; };
 		9BCB4AD219DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPMainViewButtonCollectionViewCell.h; path = "Custom Views/YPMainViewButtonCollectionViewCell.h"; sourceTree = "<group>"; };
 		9BCB4AD319DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPMainViewButtonCollectionViewCell.m; path = "Custom Views/YPMainViewButtonCollectionViewCell.m"; sourceTree = "<group>"; };
+		9BED8DD61A895B0F002E87AD /* YPWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPWebViewController.h; sourceTree = "<group>"; };
+		9BED8DD71A895B0F002E87AD /* YPWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPWebViewController.m; sourceTree = "<group>"; };
 		9BEDA9F61A2E66AD0095EF2C /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
 		9BEDA9F71A2E66AD0095EF2C /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
 		9BEDA9F81A2E66AD0095EF2C /* TFHppleElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHppleElement.h; sourceTree = "<group>"; };
@@ -294,6 +297,8 @@
 				9B2249FC19E4C96E0064C188 /* MainView */,
 				EAB6862019E1189B0006C06F /* Photo */,
 				AB39E7851A2D8BAE0071C684 /* Directory */,
+				9BED8DD61A895B0F002E87AD /* YPWebViewController.h */,
+				9BED8DD71A895B0F002E87AD /* YPWebViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -731,6 +736,7 @@
 				9B18DA6C19DE1A6700CB900C /* YPTheme.m in Sources */,
 				AB0071D419E4C8F000ABF52D /* YPNewsTopicsTableViewController.m in Sources */,
 				ABB117C61A64A87C009743E2 /* RSDFDatePickerView.m in Sources */,
+				9BED8DD81A895B0F002E87AD /* YPWebViewController.m in Sources */,
 				ABD3212719EB059F009D9281 /* YPVideoEmbeddedViewViewController.m in Sources */,
 				AB0071D719E4C90300ABF52D /* YPNewsArticlesTableViewController.m in Sources */,
 				AB5931B91A7D671B00ED5A41 /* YPEventsCategoriesViewController.m in Sources */,

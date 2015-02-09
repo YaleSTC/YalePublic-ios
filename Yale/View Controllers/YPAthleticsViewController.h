@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 @import WebKit;
+#import "YPWebViewController.h"
 
-@interface YPAthleticsViewController : UIViewController <WKNavigationDelegate>
+@interface YPAthleticsViewController : YPWebViewController
 
 @end
