@@ -8,6 +8,7 @@
 
 #import "YPPhotoDetailViewController.h"
 #import "YPFlickrCommunicator.h"
+#import "YPInstagramCommunicator.h"
 #import "YPPhotoCollectionViewCell.h"
 #import "YPGlobalHelper.h"
 
@@ -60,6 +61,51 @@
 -(void)loadPhotos {
   _photoSet = [NSMutableArray array];
   rowHeights = [NSMutableArray array];
+  
+  if([self.photoSetId  isEqualToString: @"INSTAGRAM"]){
+    
+    [self loadPhotosFromInstagram];
+  } else {
+    
+    [self loadPhotosFromFlickr];
+  }
+}
+
+-(void)loadPhotosFromInstagram {
+  YPInstagramCommunicator *instagram = [[YPInstagramCommunicator alloc] init];
+  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
+  
+  [instagram getPhotos:^(NSDictionary *response) {
+    // Received photos
+    
+    // Get a list of URLs
+    NSMutableArray *photoURLs = [NSMutableArray array];
+    for (NSDictionary *photoDictionary in [response valueForKeyPath:@"data"]) {
+      NSLog(@"parsing photo");
+      NSLog(@"%@", photoDictionary);
+      
+      NSURL *url = [NSURL URLWithString:photoDictionary[@"images"][@"standard_resolution"][@"url"]];
+      
+      [photoURLs addObject:@{@"url": url,
+                             @"title": photoDictionary[@"caption"][@"text"]}];
+    }
+    
+    // Download image for each URL
+    for (NSDictionary *photo in photoURLs) {
+      //NSLog(@"%@", url);
+      [instagram downloadImageForURL:photo[@"url"] completionBlock:^(UIImage *image) {
+        //NSLog(@"add image, %@", image);
+        [_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
+        [self.photoCollectionView reloadData];
+      }];
+    }
+
+    
+   [YPGlobalHelper hideNotificationView];
+  }];
+}
+
+-(void)loadPhotosFromFlickr {
   
   YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
   [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];

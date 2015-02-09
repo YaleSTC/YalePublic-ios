@@ -196,6 +196,8 @@
 		ABD3212919EB0B48009D9281 /* YPVideoTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPVideoTableViewCell.m; sourceTree = "<group>"; };
 		ABD3212A19EB0B48009D9281 /* YPVideoTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = YPVideoTableViewCell.xib; sourceTree = "<group>"; };
 		D36213B97DEAFA85FA3F3799 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		EA4456671A7D7DC300473D5E /* YPInstagramCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPInstagramCommunicator.h; path = ServerCommunicators/YPInstagramCommunicator.h; sourceTree = "<group>"; };
+		EA4456681A7D7DC300473D5E /* YPInstagramCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPInstagramCommunicator.m; path = ServerCommunicators/YPInstagramCommunicator.m; sourceTree = "<group>"; };
 		EA54231C19E4E63B00E75859 /* YPPhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPPhotoCollectionViewCell.h; path = "Custom Views/YPPhotoCollectionViewCell.h"; sourceTree = "<group>"; };
 		EA54231D19E4E63B00E75859 /* YPPhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPPhotoCollectionViewCell.m; path = "Custom Views/YPPhotoCollectionViewCell.m"; sourceTree = "<group>"; };
 		EA54231F19E58BB900E75859 /* YPStandardTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPStandardTableView.h; path = "Custom Views/YPStandardTableView.h"; sourceTree = "<group>"; };
@@ -549,6 +551,8 @@
 				9BC369D21A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m */,
 				EAB6861119DF2FDF0006C06F /* YPFlickrCommunicator.h */,
 				EAB6861219DF2FDF0006C06F /* YPFlickrCommunicator.m */,
+				EA4456671A7D7DC300473D5E /* YPInstagramCommunicator.h */,
+				EA4456681A7D7DC300473D5E /* YPInstagramCommunicator.m */,
 			);
 			name = ServerCommunicators;
 			sourceTree = "<group>";
@@ -756,6 +760,7 @@
 				ABB117C51A64A87C009743E2 /* RSDFDatePickerMonthHeader.m in Sources */,
 				EAB6861319DF2FDF0006C06F /* YPFlickrCommunicator.m in Sources */,
 				9B18DA6F19DE254400CB900C /* YPMainViewButton.m in Sources */,
+				EA4456691A7D7DC300473D5E /* YPInstagramCommunicator.m in Sources */,
 				AB39E78B1A2D94F60071C684 /* YPGlobalHelper.m in Sources */,
 				AB99B3481A16AE890003F752 /* YPOrientationViewController.m in Sources */,
 			);
