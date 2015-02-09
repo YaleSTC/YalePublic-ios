@@ -29,7 +29,7 @@
   NSLog(@"loadedTitle Should be overriden in subclass");
   return nil;
 }
-+ (NSString *)initialURL
+- (NSString *)initialURL
 {
   NSLog(@"initialURL Should be overriden in subclass");
   return nil;
@@ -42,7 +42,7 @@
 
 - (void)viewDidLoad
 {
-  self.title = [self.class loadedTitle];
+  if (!self.title.length) self.title = [self.class loadedTitle];
   [super viewDidLoad];
 }
 
@@ -86,7 +86,7 @@ didStartProvisionalNavigation: (WKNavigation *)navigation
 didFinishNavigation: (WKNavigation *)navigation
 {
   [self updateButtons];
-  self.title = [self.class loadedTitle];
+  if (!self.title.length) self.title = [self.class loadedTitle]; //could do webView.title, but for videos that's just YouTube, which is not specific. this way, only the initial video's title is displayed.
   self.navigationItem.rightBarButtonItem = nil;
 }
 
@@ -155,7 +155,7 @@ didFinishNavigation: (WKNavigation *)navigation
   webViewFrame.size.height-=self.toolbar.bounds.size.height/*+self.navigationController.navigationBar.bounds.size.height*/;
   self.webView = [[WKWebView alloc] initWithFrame:webViewFrame];
   
-  NSString *url= [self.class initialURL];
+  NSString *url= [self initialURL];
   NSURL *nsurl = [NSURL URLWithString:url];
   NSURLRequest *req = [NSURLRequest requestWithURL:nsurl];
   [self.webView loadRequest:req];

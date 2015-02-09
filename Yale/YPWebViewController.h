@@ -11,8 +11,8 @@
 
 @interface YPWebViewController : UIViewController <WKNavigationDelegate>
 
-+ (NSString *)loadedTitle; //override this method to provide a loaded title, like ATHLETICS_TITLE
-+ (NSString *)initialURL; //override this method
++ (NSString *)loadedTitle; //override this method to provide a loaded title, like ATHLETICS_TITLE, unless title is set externally
+- (NSString *)initialURL; //override this method
 
 - (NSURL *)currentURL;
 

@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YPWebViewController.h"
 
-@interface YPVideoEmbeddedViewViewController : UIViewController
+@interface YPVideoEmbeddedViewViewController : YPWebViewController
 @property (nonatomic, strong) NSString *videoId;
 @end

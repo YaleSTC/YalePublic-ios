@@ -28,7 +28,7 @@
   return ATHLETICS_TITLE;
 }
 
-+ (NSString *)initialURL
+- (NSString *)initialURL
 {
   return ATHLETICS_URL;
 }

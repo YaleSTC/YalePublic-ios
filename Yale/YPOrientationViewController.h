@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YPWebViewController.h"
 
-@interface YPOrientationViewController : UIViewController
+@interface YPOrientationViewController : YPWebViewController
 
 @end

@@ -16,11 +16,15 @@
 
 @implementation YPNewsEmbeddedViewController
 
+- (NSString *)initialURL
+{
+  return self.url;
+}
+
 - (void)viewDidLoad
 {
-  [super viewDidLoad];
-  [self setUpWebView];
   [self setUpTitle];
+  [super viewDidLoad];
 }
 
 - (void) setUpTitle
@@ -34,32 +38,6 @@
   navLabel.numberOfLines = 1;
   navLabel.clipsToBounds = YES;
   [self.navigationItem.titleView addSubview:navLabel];
-}
-\
-#pragma mark Set Up Web View
-
-- (void)setUpWebView
-{
-  NSURL *url = [NSURL URLWithString:self.url];
-  NSURLRequest *request = [NSURLRequest requestWithURL:url];
-  
-  WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
-  webView.allowsBackForwardNavigationGestures = YES;
-  
-  
-  [webView loadRequest:request];
-  [self.view addSubview:webView];
-  
-  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
-  dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    while (webView.loading)
-      ;
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [YPGlobalHelper hideNotificationView];
-    });
-  });
-  
-  
 }
 
 - (void)didReceiveMemoryWarning
