@@ -8,6 +8,7 @@
 
 #import "YPPhotoDetailViewController.h"
 #import "YPFlickrCommunicator.h"
+#import "YPInstagramCommunicator.h"
 #import "YPPhotoCollectionViewCell.h"
 #import "YPGlobalHelper.h"
 
@@ -35,8 +36,24 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  NSLog(@"set album title");
-  self.navigationItem.title = self.albumTitle;
+  NSLog(@"set album title: %@",self.albumTitle);
+  
+  //NavigationBar title
+  UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+  titleLabel.font = [UIFont boldSystemFontOfSize:16.0];
+  titleLabel.textColor = [UIColor whiteColor];
+  titleLabel.text = self.albumTitle;
+  [titleLabel sizeToFit];
+  self.navigationItem.titleView = titleLabel;
+  //self.navigationItem.title = self.albumTitle;
+  
+  //BackButton
+  UIBarButtonItem* backItem = [[UIBarButtonItem alloc] init];
+  backItem.title = @" ";
+  self.navigationItem.backBarButtonItem = backItem;
+  
+  NSLog(@"backButtonTitle: %@",backItem.title);
+  
   [self loadPhotos];
   self.collectionView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height);
 }
@@ -45,23 +62,42 @@
   _photoSet = [NSMutableArray array];
   rowHeights = [NSMutableArray array];
   
-  YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
-  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
-  [flickr getPhotosForSet:self.photoSetId completionBlock:^(NSDictionary *response) {
+  if([self.photoSetId  isEqualToString: @"INSTAGRAM"]){
     
-    NSLog(@"%@", response);
+    [self loadPhotosFromInstagram];
+  } else {
+    
+    [self loadPhotosFromFlickr];
+  }
+}
+
+-(void)loadPhotosFromInstagram {
+  YPInstagramCommunicator *instagram = [[YPInstagramCommunicator alloc] init];
+  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
+  
+  [instagram getPhotos:^(NSDictionary *response) {
+    // Received photos
     
     // Get a list of URLs
     NSMutableArray *photoURLs = [NSMutableArray array];
-    for (NSDictionary *photoDictionary in [response valueForKeyPath:@"photoset.photo"]) {
-      NSURL *url = [flickr urlForImageFromDictionary:photoDictionary];
-      [photoURLs addObject:@{@"url": url, @"title": photoDictionary[@"title"]}];
+    for (NSDictionary *photoDictionary in [response valueForKeyPath:@"data"]) {
+      NSLog(@"parsing photo");
+      NSLog(@"%@", photoDictionary);
+      
+      NSURL *url = [NSURL URLWithString:photoDictionary[@"images"][@"standard_resolution"][@"url"]];
+      
+      [photoURLs addObject:@{@"url": url,
+                             @"title": photoDictionary[@"caption"][@"text"]}];
     }
     
     // Download image for each URL
-    //for (NSURL *url in photoURLs) {
     for (NSDictionary *photo in photoURLs) {
-      [flickr downloadImageForURL:photo[@"url"] completionBlock:^(UIImage *image) {
+      //NSLog(@"%@", url);
+      [instagram downloadImageForURL:photo[@"url"] completionBlock:^(UIImage *image) {
+        //NSLog(@"add image, %@", image);
+        //[_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
+        //[self.photoCollectionView reloadData];
+        
         //NSLog(@"add image, %@", image);
         //this threw an exception when image was nil or when photo["title"] was nil
         if (image && photo[@"title"]) {
@@ -75,7 +111,7 @@
           for (UIImage *img in imagesInRow) {
             totalWidthWithHeight1 += img.size.width / img.size.height;
           }
-          CGFloat totalWidthDestination = self.view.bounds.size.width-2*IMAGES_PER_ROW;//with some space in between
+          CGFloat totalWidthDestination = self.view.bounds.size.width-IMAGES_PER_ROW;//with some space in between
           while (rowHeights.count<indexForRow+1) [rowHeights addObject:@(0)];
           rowHeights[indexForRow]=@(totalWidthDestination/totalWidthWithHeight1);
           //don't reload the data too quickly, it looks flashy.
@@ -90,6 +126,62 @@
         }
       }];
     }
+
+    
+   [YPGlobalHelper hideNotificationView];
+  }];
+}
+
+-(void)loadPhotosFromFlickr {
+  
+  YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
+  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
+  [flickr getPhotosForSet:self.photoSetId completionBlock:^(NSDictionary *response) {
+    
+    NSLog(@"%@", response);
+    
+      // Get a list of URLs
+      NSMutableArray *photoURLs = [NSMutableArray array];
+      for (NSDictionary *photoDictionary in [response valueForKeyPath:@"photoset.photo"]) {
+        NSURL *smallPhotoUrl = [flickr urlForImageFromDictionary:photoDictionary largeSize:NO];
+        NSURL *largePhotoUrl = [flickr urlForImageFromDictionary:photoDictionary largeSize:YES];
+        //[photoURLs addObject:url];
+        [photoURLs addObject:@{@"smallPhotoUrl": smallPhotoUrl, @"largePhotoUrl":largePhotoUrl, @"title": photoDictionary[@"title"]}];
+      }
+    
+    // Download image for each URL
+    //for (NSURL *url
+    for (NSDictionary *photo in photoURLs) {
+      [flickr downloadImageForURL:photo[@"smallPhotoUrl"] completionBlock:^(UIImage *image) {
+        //NSLog(@"add image, %@", image);
+        //this threw an exception when image was nil or when photo["title"] was nil
+        if (image && photo[@"title"]) {
+          NSUInteger indexForRow = _photoSet.count/IMAGES_PER_ROW; //this is the index of the last row
+          [_photoSet addObject:@{@"smallImage":image, @"title": photo[@"title"], @"largePhotoUrl":photo[@"largePhotoUrl"]}];
+          NSMutableArray *imagesInRow = [NSMutableArray array]; //to find the size, consider all images in row
+          for (NSUInteger i=indexForRow*IMAGES_PER_ROW; i<_photoSet.count; i++) {
+            [imagesInRow addObject:_photoSet[i][@"smallImage"]];
+          }
+          CGFloat totalWidthWithHeight1 = 0;
+          for (UIImage *img in imagesInRow) {
+            totalWidthWithHeight1 += img.size.width / img.size.height;
+          }
+          CGFloat totalWidthDestination = self.view.bounds.size.width-IMAGES_PER_ROW;//with some space in between
+          while (rowHeights.count<indexForRow+1) [rowHeights addObject:@(0)];
+          rowHeights[indexForRow]=@(totalWidthDestination/totalWidthWithHeight1);
+          //don't reload the data too quickly, it looks flashy.
+          [NSObject cancelPreviousPerformRequestsWithTarget:self.photoCollectionView selector:@selector(reloadData) object:nil];
+          if (_photoSet.count==photoURLs.count) {
+            //this is the last photo downloaded.
+            [self.photoCollectionView reloadData];
+            [YPGlobalHelper hideNotificationView];
+          } else {
+            [self.photoCollectionView performSelector:@selector(reloadData) withObject:nil afterDelay:LOAD_WAIT];
+          }
+        }
+      }];
+    }
+    //[YPGlobalHelper hideNotificationView];
   }];
 }
 
@@ -101,8 +193,13 @@
                                      dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCell"
                                      forIndexPath:indexPath];
   
-  UIImage *image = _photoSet[indexPath.row][@"image"];
-  cell.photoImageView.image = image;
+  UIImage *smallImage;
+  if ([self.photoSetId isEqualToString:@"INSTAGRAM"]) {
+    smallImage = _photoSet[indexPath.row][@"image"];
+  }else {
+    smallImage = _photoSet[indexPath.row][@"smallImage"];
+  }
+  cell.photoImageView.image = smallImage;
   cell.photoTitle = _photoSet[indexPath.row][@"title"];
   [cell.photoImageView setContentMode:UIViewContentModeScaleAspectFit];
   /*
@@ -126,7 +223,12 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-  UIImage *image = _photoSet[indexPath.row][@"image"];
+  UIImage *image;
+  if ([self.photoSetId isEqualToString:@"INSTAGRAM"]) {
+    image = _photoSet[indexPath.row][@"image"];
+  }else {
+    image = _photoSet[indexPath.row][@"smallImage"];
+  }
   NSUInteger row = indexPath.row/IMAGES_PER_ROW;
   return CGSizeMake([rowHeights[row] doubleValue]*image.size.width/image.size.height, [rowHeights[row] doubleValue]);
 }
@@ -139,13 +241,12 @@
   
   overlayView = [[UIView alloc] init];
   
-  thumbnailImageView = selectedCell.photoImageView;
-  UIImage *image = [thumbnailImageView image];
-  fullscreenImageView = [[UIImageView alloc] initWithImage:image];
+  fullscreenImageView = [[UIImageView alloc] initWithImage:[self photoForSelectedIndex]];
   [fullscreenImageView setContentMode:UIViewContentModeScaleAspectFit];
   
   CGRect tempPoint = CGRectMake(thumbnailImageView.center.x, thumbnailImageView.center.y, 0, 0);
-  CGRect startingPoint = [self.view convertRect:tempPoint fromView:[self.collectionView cellForItemAtIndexPath:indexPath]];
+  CGRect startingPoint = [self.view convertRect:tempPoint
+                                       fromView:[self.collectionView cellForItemAtIndexPath:indexPath]];
   
   [overlayView setFrame:startingPoint];
   [fullscreenImageView setFrame:startingPoint];
@@ -186,6 +287,7 @@
    ];
   
   
+  thumbnailImageView = selectedCell.photoImageView;
   
   UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewTapped:)];
   singleTap.numberOfTapsRequired = 1;
@@ -201,6 +303,61 @@
   [rightSwipe setDirection:UISwipeGestureRecognizerDirectionRight];
   [overlayView addGestureRecognizer:rightSwipe];
   
+  //For saving a photo
+  UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewLongPressed:)];
+  [overlayView addGestureRecognizer:longPress];
+  
+}
+
+-(void)fullScreenImageViewLongPressed:(UIGestureRecognizer *)gestureRecognizer
+{
+  //Show a dialog to download the photo
+  UIAlertController* downloadSheet = [UIAlertController alertControllerWithTitle:@"Saving This Photo"
+                                                                         message:nil
+                                                                  preferredStyle:UIAlertControllerStyleActionSheet];
+  UIAlertAction* downloadingAction = [UIAlertAction actionWithTitle:@"Save"
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction *action) {
+                                                              //Saving Code here
+                                                              UIImageWriteToSavedPhotosAlbum(fullscreenImageView.image, self, @selector(savingImageIsFinished:didFinishSavingWithError:contextInfo:), nil);
+                                                            }];
+  UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                         style:UIAlertActionStyleDestructive
+                                                       handler:^(UIAlertAction *action) {
+                                                         //cancel
+                                                       }];
+  [downloadSheet addAction:downloadingAction];
+  [downloadSheet addAction:cancelAction];
+  [self presentViewController:downloadSheet animated:YES completion:nil];
+}
+
+-(void)savingImageIsFinished:(UIImage*)_image didFinishSavingWithError:(NSError*)_error contextInfo:(void*)_contextInfo
+{
+  NSString* alertTitle;
+  if (_error) {
+    alertTitle = @"Failed to Save";
+  }else {
+    alertTitle = @"Photo Saved Successfully";
+  }
+  UIAlertController* alert = [UIAlertController alertControllerWithTitle:alertTitle
+                                                                 message:nil
+                                                          preferredStyle:UIAlertControllerStyleAlert];
+  UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+  [alert addAction:okAction];
+  NSLog(@"%@", alertTitle);
+  [self presentViewController:alert animated:YES completion:nil];
+}
+
+//UIImageView image transition crossfade
+- (void) crossfade:(UIImageView*)view image:(UIImage*) image isRightSwiped:(BOOL) isRightSwiped{
+  //bool isRightSwiped -> YES: kCATransitionFromLeft
+  CATransition* transition = [CATransition animation];
+  transition.duration = 0.5f;
+  transition.subtype = isRightSwiped ? kCATransitionFromLeft: kCATransitionFromRight;
+  transition.type = kCATransitionReveal;
+  
+  [view.layer addAnimation:transition forKey:nil];
+  view.image = image;
   
 }
 
@@ -214,8 +371,14 @@
     NSLog(@"new indexPath.orw %ld", (long)newIndex.row);
     selectedIndexPath = newIndex;
     
-    fullscreenImageView.image = _photoSet[newIndex.row][@"image"];
+    [self crossfade:fullscreenImageView image:[self photoForSelectedIndex] isRightSwiped:NO];
+    //fullscreenImageView.image = _photoSet[newIndex.row][@"image"];
     [title setText:_photoSet[newIndex.row][@"title"]];
+    if (![[self.photoCollectionView indexPathsForVisibleItems] containsObject:newIndex]) {
+      [self.photoCollectionView scrollToItemAtIndexPath:newIndex atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
+      
+    }
+    [self performSelector:@selector(updateThumbnail:) withObject:newIndex afterDelay:0.2f];
   }
   
 }
@@ -228,9 +391,47 @@
     NSIndexPath *newIndex = [NSIndexPath indexPathForRow:selectedIndexPath.row-1 inSection:selectedIndexPath.section];
     NSLog(@"new indexPath.orw %ld", (long)newIndex.row);
     selectedIndexPath = newIndex;
+    [self crossfade:fullscreenImageView image:[self photoForSelectedIndex] isRightSwiped:YES];
+    [title setText:_photoSet[selectedIndexPath.row][@"title"]];
+    if (![[self.photoCollectionView indexPathsForVisibleItems] containsObject:newIndex]) {
+      [self.photoCollectionView scrollToItemAtIndexPath:newIndex atScrollPosition:UICollectionViewScrollPositionBottom animated:YES];
+    }
+    [self performSelector:@selector(updateThumbnail:) withObject:newIndex afterDelay:0.2f];
     
-    fullscreenImageView.image = _photoSet[newIndex.row][@"image"];
-    [title setText:_photoSet[newIndex.row][@"title"]];
+  }
+}
+
+- (void)updateThumbnail:(NSIndexPath*)newIndex {
+    YPPhotoCollectionViewCell *newSelectedCell = (YPPhotoCollectionViewCell *)[self.photoCollectionView cellForItemAtIndexPath:newIndex];
+    thumbnailImageView = newSelectedCell.photoImageView;
+}
+
+
+
+-(UIImage *)photoForSelectedIndex
+{
+  if ([self.photoSetId isEqualToString:@"INSTAGRAM"]) {
+    return _photoSet[selectedIndexPath.row][@"image"];
+  }else {       //flickr
+    if(_photoSet[selectedIndexPath.row][@"largeImage"]){
+      NSLog(@"returning large image");
+      return _photoSet[selectedIndexPath.row][@"largeImage"];
+    } else {
+      NSLog(@"returning small image");
+      // reload large image
+      YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
+      [flickr downloadImageForURL:_photoSet[selectedIndexPath.row][@"largePhotoUrl"] completionBlock:^(UIImage *image) {
+        
+        NSLog(@"downloaded large image: %@", image);
+        [fullscreenImageView setImage:image];
+        NSMutableDictionary *tempWithLargeImage = [[NSMutableDictionary alloc] initWithDictionary:_photoSet[selectedIndexPath.row]];
+        tempWithLargeImage[@"largeImage"] = image;
+        _photoSet[selectedIndexPath.row] = tempWithLargeImage;
+#warning error handling necessary
+      }
+       ];
+      return _photoSet[selectedIndexPath.row][@"smallImage"];
+    }
   }
 }
 
@@ -243,6 +444,7 @@
   [title removeFromSuperview];
   title = nil;
   
+  //[self.photoCollectionView scrollToItemAtIndexPath:selectedIndexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
   [UIView animateWithDuration:0.5
                    animations:^{
                      [fullscreenImageView setFrame:point];
