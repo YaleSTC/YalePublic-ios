@@ -17,4 +17,5 @@
 #define ATHLETICS_URL @"http://www.yalebulldogs.com"
 #define ATHLETICS_TITLE @"Athletics"
 #define APP_RELEASE_VERSION @"1.0"
+
 #endif
