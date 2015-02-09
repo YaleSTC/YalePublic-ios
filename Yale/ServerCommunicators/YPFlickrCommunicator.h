@@ -13,7 +13,7 @@
 
 @interface YPFlickrCommunicator : NSObject
 
--(NSURL *)urlForImageFromDictionary:(NSDictionary *)photoDictionary;
+-(NSURL *)urlForImageFromDictionary:(NSDictionary *)photoDictionary largeSize:(BOOL)largeSize;
 -(void)downloadImageForURL:(NSURL *)url completionBlock:(void (^)(UIImage *))completionBlock;
 -(void)getSets:(void (^)(NSDictionary *))completionBlock;
 -(void)getPhotosForSet:(NSString *)photoSetId completionBlock:(void (^)(NSDictionary *))completionBlock;

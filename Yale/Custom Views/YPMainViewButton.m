@@ -9,7 +9,6 @@
 #import "YPMainViewButton.h"
 #import <PureLayout/PureLayout.h>
 
-#define IMAGE_TEXT_MARGIN 10
 #define FONT [UIFont systemFontOfSize:10]
 
 @interface YPMainViewButton() {
@@ -17,7 +16,6 @@
 }
 
 @property (nonatomic, strong) UIImageView *iconView;
-@property (nonatomic, strong) UILabel     *underTextLabel;
 
 @end
 
@@ -94,7 +92,7 @@
 
 - (void)_resizeUnderTextLabel
 {
-  CGSize size = [self _textLabelSize];
+  CGSize size = [self textLabelSize];
   size.height = ceil(size.height);
   size.width  = ceil(size.width);
   [self.underTextLabel autoSetDimensionsToSize:size];
@@ -102,7 +100,7 @@
 }
 
 
-- (CGSize)_textLabelSize
+- (CGSize)textLabelSize
 {
   CGRect size = [self.underText boundingRectWithSize:CGSizeMake(self.bounds.size.width, 20)
                                              options:NSStringDrawingUsesLineFragmentOrigin
@@ -135,7 +133,8 @@
 - (CGSize)intrinsicContentSize
 {
   CGFloat width = self.icon.size.width;
-  return CGSizeMake(width, width + IMAGE_TEXT_MARGIN + [self _textLabelSize].height);
+  NSLog(@"%f", width);
+  return CGSizeMake(width, width + IMAGE_TEXT_MARGIN + [self textLabelSize].height);
 }
 
 #pragma mark - View update

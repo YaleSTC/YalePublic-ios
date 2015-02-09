@@ -28,6 +28,7 @@
 @property (nonatomic, strong) UICollectionView *buttonCollectionView;
 @property (nonatomic, strong) UIBarButtonItem *infoButton;
 @property (nonatomic, strong) NSArray *buttonUnderTexts;
+@property CGSize iconSize;
 
 @end
 
@@ -82,8 +83,8 @@
 - (void)setupButtonCollectionView
 {
   UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-  // 57 is the button width, 20 is the left margin to edge of screen
-  flowLayout.minimumInteritemSpacing = ([UIScreen mainScreen].bounds.size.width - 57*3 - 20*2) / 2;
+  CGFloat margin = (self.iconSize.height == 57) ? 20 : 30;
+  flowLayout.minimumInteritemSpacing = ([UIScreen mainScreen].bounds.size.width - self.iconSize.height*3 - margin*2) / 2;
   flowLayout.minimumLineSpacing      = flowLayout.minimumInteritemSpacing - 20;
   
   self.automaticallyAdjustsScrollViewInsets = NO;
@@ -101,8 +102,8 @@
   
 
   
-  [self.buttonCollectionView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20];
-  [self.buttonCollectionView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:20];
+  [self.buttonCollectionView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:margin];
+  [self.buttonCollectionView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:margin];
   [self.buttonCollectionView autoAlignAxisToSuperviewAxis:ALAxisVertical];
   [self.buttonCollectionView layoutIfNeeded];
   
@@ -115,12 +116,18 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  
+  if (self.view.frame.size.height <= 568) {
+    self.iconSize = CGSizeMake(57, 57);
+  } else if (self.view.frame.size.height <= 667) {
+    self.iconSize = CGSizeMake(66, 66);
+  } else {
+    self.iconSize = CGSizeMake(73, 73);
+  }
   self.screenName = @"Main View";
   
   self.buttonUnderTexts = @[@"News", @"Directory", @"Maps", @"Videos", @"Photos",
                             @"Events", @"Transit", @"Athletics", @"Orientation"];
-  
+
   [self setupNavigationBar];
   [self setupBackgroundImage];
   [self setupButtonCollectionView];
@@ -156,31 +163,31 @@
   
   switch (indexPath.row) {
     case 0:
-      cell.button.icon = [UIImage imageNamed:@"NewsIcon"];
+      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"NewsIcon"] scaledToSize:self.iconSize];
       break;
     case 1:
-      cell.button.icon = [UIImage imageNamed:@"DirectoryIcon"];
+      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"DirectoryIcon"] scaledToSize:self.iconSize];
       break;
     case 2:
-      cell.button.icon = [UIImage imageNamed:@"MapsIcon"];
+      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"MapsIcon"] scaledToSize:self.iconSize];
       break;
     case 3:
-      cell.button.icon = [UIImage imageNamed:@"VideosIcon"];
+      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"VideosIcon"] scaledToSize:self.iconSize];
       break;
     case 4:
-      cell.button.icon = [UIImage imageNamed:@"PhotosIcon"];
+      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"PhotosIcon"] scaledToSize:self.iconSize];
       break;
     case 5:
-      cell.button.icon = [UIImage imageNamed:@"EventsIcon"];
+      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"EventsIcon"] scaledToSize:self.iconSize];
       break;
     case 6:
-      cell.button.icon = [UIImage imageNamed:@"TransitIcon"];
+      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"TransitIcon"] scaledToSize:self.iconSize];
       break;
     case 7:
-      cell.button.icon = [UIImage imageNamed:@"AthleticsIcon"];
+      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"AthleticsIcon"] scaledToSize:self.iconSize];
       break;
     case 8:
-      cell.button.icon = [UIImage imageNamed:@"OrientationIcon"];
+      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"OrientationIcon"] scaledToSize:self.iconSize];
       break;
 
   }
@@ -201,7 +208,8 @@
   [button autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
   button.underText = self.buttonUnderTexts[indexPath.row];
   button.icon      = [UIImage imageNamed:@"TestButtonImage"];
-  return button.intrinsicContentSize;
+  return CGSizeMake(self.iconSize.width, self.iconSize.height + IMAGE_TEXT_MARGIN + [button textLabelSize].height);
+
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -278,5 +286,15 @@ referenceSizeForHeaderInSection:(NSInteger)section
   [self.navigationController presentViewController:infoVC animated:YES completion:nil];
 }
 
++ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
+  //UIGraphicsBeginImageContext(newSize);
+  // In next line, pass 0.0 to use the current device's pixel scaling factor (and thus account for Retina resolution).
+  // Pass 1.0 to force exact pixel size.
+  UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+  [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+  UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+  UIGraphicsEndImageContext();
+  return newImage;
+}
 
 @end
