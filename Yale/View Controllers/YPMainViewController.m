@@ -246,10 +246,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
     UINavigationController *newsVC = [storyboard instantiateViewControllerWithIdentifier:@"PhotoVC"];
     [self.navigationController pushViewController:newsVC animated:YES];
   } else if ([underText isEqualToString:@"Athletics"]) {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPAthleticsViewController"
-                                                         bundle:[NSBundle mainBundle]];
-    UINavigationController *athleticsVC = [storyboard instantiateViewControllerWithIdentifier:@"AthleticsVC"];
-    [self.navigationController pushViewController:athleticsVC animated:YES];
+    //UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPAthleticsViewController" bundle:[NSBundle mainBundle]];
+    //UINavigationController *athleticsVC = [storyboard instantiateViewControllerWithIdentifier:@"AthleticsVC"];
+    [self.navigationController pushViewController:[[YPAthleticsViewController alloc] init] animated:YES];
   } else if ([underText isEqualToString:@"Orientation"]) {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPOrientationViewController"
                                                          bundle:[NSBundle mainBundle]];
