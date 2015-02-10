@@ -13,7 +13,7 @@
 
 @implementation YPTransitViewController
 
-+ (NSString *)initialURL
+- (NSString *)initialURL
 {
   return @"http://yale.transloc.com";
 }
