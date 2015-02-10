@@ -10,6 +10,12 @@
 
 @implementation YPResultsTableViewController
 
+- (void)viewDidLoad
+{
+  self.extendedLayoutIncludesOpaqueBars = YES;
+  self.edgesForExtendedLayout = UIRectEdgeBottom | UIRectEdgeTop;
+  [super viewDidLoad];
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
   return self.filteredBuildings.count;

@@ -38,9 +38,8 @@
   self.locationManager = [[CLLocationManager alloc] init];
   self.locationManager.delegate = self;
   [self setupBuildings];
-  [self setupSearch];
-  
-  self.tableView.hidden = YES;
+  self.extendedLayoutIncludesOpaqueBars = YES;
+  self.edgesForExtendedLayout = UIRectEdgeTop;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -48,6 +47,16 @@
   MKCoordinateSpan span = MKCoordinateSpanMake(0.02, 0.02);
   [self.mapView setRegion:MKCoordinateRegionMake(location, span)];
   
+  [self setupSearch];
+  
+  self.tableView.hidden = YES;
+  self.tableView.clipsToBounds=YES;
+  CGRect tableViewFrame = self.tableView.frame;
+  CGRect navBarFrame = self.navigationController.navigationBar.frame;
+  tableViewFrame.origin.y=navBarFrame.origin.y+navBarFrame.size.height;
+  tableViewFrame.size.height = self.view.bounds.size.height - tableViewFrame.origin.y;
+  self.tableView.frame = tableViewFrame;
+  [super viewWillAppear:animated];
 }
 
 - (void)setupBuildings {
@@ -60,7 +69,7 @@
 }
 
 - (void)setupSearch {
-  self.tableView = [[UITableView alloc] initWithFrame:self.view.frame];
+  self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
   self.tableView.delegate = self;
   self.tableView.dataSource = self;
   [self.view addSubview:self.tableView];
@@ -81,6 +90,7 @@
   self.searchController.delegate = self;
   self.searchController.dimsBackgroundDuringPresentation = NO; // default is YES
   self.searchController.searchBar.delegate = self; // so we can monitor text changes + others
+  self.searchController.hidesNavigationBarDuringPresentation = NO;
   
   // Search is now just presenting a view controller. As such, normal view controller
   // presentation semantics apply. Namely that presentation will walk up the view controller
@@ -236,8 +246,6 @@
 - (void)didDismissSearchController:(UISearchController *)searchController {
   // do something after the search controller is dismissed
 }
-
-
 
 #pragma mark - UISearchResultsUpdating
 
