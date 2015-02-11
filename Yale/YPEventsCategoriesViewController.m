@@ -27,7 +27,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-  return 13;
+  return 14;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -35,42 +35,45 @@
   
   switch (indexPath.row) {
     case 0:
-      eventsVC.tags = @[@"class", @"workshop", @"community", @"conferences", @"exhibitions", @"familyfriendly", @"films", @"groupmeetings", @"performances", @"spiritual", @"worship", @"sports", @"recreation", @"talks", @"readings", @"tours"];
+      eventsVC.tags = @[@"class", @"arts", @"workshop", @"community", @"conferences", @"exhibitions", @"familyfriendly", @"films", @"groupmeetings", @"performances", @"spiritual", @"worship", @"sports", @"recreation", @"talks", @"readings", @"tours"];
       break;
     case 1:
-      eventsVC.tags = @[@"class", @"workshop"];
+      eventsVC.tags = @[@"arts"];
       break;
     case 2:
-      eventsVC.tags = @[@"community"];
+      eventsVC.tags = @[@"class", @"workshop"];
       break;
     case 3:
-      eventsVC.tags = @[@"conferences"];
+      eventsVC.tags = @[@"community"];
       break;
     case 4:
-      eventsVC.tags = @[@"exhibitions"];
+      eventsVC.tags = @[@"conferences"];
       break;
     case 5:
-      eventsVC.tags = @[@"familyfriendly"];
+      eventsVC.tags = @[@"exhibitions"];
       break;
     case 6:
-      eventsVC.tags = @[@"films"];
+      eventsVC.tags = @[@"familyfriendly"];
       break;
     case 7:
-      eventsVC.tags = @[@"groupmeetings"];
+      eventsVC.tags = @[@"films"];
       break;
     case 8:
-      eventsVC.tags = @[@"performances"];
+      eventsVC.tags = @[@"groupmeetings"];
       break;
     case 9:
-      eventsVC.tags = @[@"spiritual", @"worship"];
+      eventsVC.tags = @[@"performances"];
       break;
     case 10:
-      eventsVC.tags = @[@"sports", @"recreation"];
+      eventsVC.tags = @[@"spiritual", @"worship"];
       break;
     case 11:
-      eventsVC.tags = @[@"talks", @"readings"];
+      eventsVC.tags = @[@"sports", @"recreation"];
       break;
     case 12:
+      eventsVC.tags = @[@"talks", @"readings"];
+      break;
+    case 13:
       eventsVC.tags = @[@"tours"];
       break;
     default:
@@ -86,39 +89,42 @@
       cell.textLabel.text = @"All";
       break;
     case 1:
-      cell.textLabel.text = @"Classes & Workshops";
+      cell.textLabel.text = @"Arts";
       break;
     case 2:
-      cell.textLabel.text = @"Community";
+      cell.textLabel.text = @"Classes & Workshops";
       break;
     case 3:
-      cell.textLabel.text = @"Conferences";
+      cell.textLabel.text = @"Community";
       break;
     case 4:
-      cell.textLabel.text = @"Exhibitions";
+      cell.textLabel.text = @"Conferences";
       break;
     case 5:
-      cell.textLabel.text = @"Family Friendly";
+      cell.textLabel.text = @"Exhibitions";
       break;
     case 6:
-      cell.textLabel.text = @"Films";
+      cell.textLabel.text = @"Family Friendly";
       break;
     case 7:
-      cell.textLabel.text = @"Group Meetings";
+      cell.textLabel.text = @"Films";
       break;
     case 8:
-      cell.textLabel.text = @"Performances";
+      cell.textLabel.text = @"Group Meetings";
       break;
     case 9:
-      cell.textLabel.text = @"Spiritual and Worship";
+      cell.textLabel.text = @"Performances";
       break;
     case 10:
-      cell.textLabel.text = @"Sports and Recreation";
+      cell.textLabel.text = @"Spiritual and Worship";
       break;
     case 11:
-      cell.textLabel.text = @"Talks and Readings";
+      cell.textLabel.text = @"Sports and Recreation";
       break;
     case 12:
+      cell.textLabel.text = @"Talks and Readings";
+      break;
+    case 13:
       cell.textLabel.text = @"Tours";
       break;
     default:
