@@ -20,6 +20,10 @@
 
 @property (strong, nonatomic) WKWebView *webView;
 
+//set only in initializer.
+@property (strong) NSString *startTitle;
+@property (strong) NSString *startURL;
+
 @end
 
 @implementation YPWebViewController
@@ -42,7 +46,7 @@
 
 - (void)viewDidLoad
 {
-  if (!self.title.length) self.title = [self.class loadedTitle];
+  if (!self.title.length) self.title = self.startTitle ? self.startTitle : [self.class loadedTitle];
   [super viewDidLoad];
 }
 
@@ -86,7 +90,7 @@ didStartProvisionalNavigation: (WKNavigation *)navigation
 didFinishNavigation: (WKNavigation *)navigation
 {
   [self updateButtons];
-  if (!self.title.length) self.title = [self.class loadedTitle]; //could do webView.title, but for videos that's just YouTube, which is not specific. this way, only the initial video's title is displayed.
+  //could set title to webView.title, but for videos that's just YouTube, which is not specific. this way, only the initial video's title is displayed, which in some cases may look odd.
   self.navigationItem.rightBarButtonItem = nil;
 }
 
@@ -155,7 +159,7 @@ didFinishNavigation: (WKNavigation *)navigation
   webViewFrame.size.height-=self.toolbar.bounds.size.height/*+self.navigationController.navigationBar.bounds.size.height*/;
   self.webView = [[WKWebView alloc] initWithFrame:webViewFrame];
   
-  NSString *url= [self initialURL];
+  NSString *url= self.startURL ? self.startURL : [self initialURL];
   NSURL *nsurl = [NSURL URLWithString:url];
   NSURLRequest *req = [NSURLRequest requestWithURL:nsurl];
   [self.webView loadRequest:req];
@@ -173,14 +177,13 @@ didFinishNavigation: (WKNavigation *)navigation
   });
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (id)initWithTitle:(NSString *)title initialURL:(NSString *)url
+{
+  if (self=[super init]) {
+    self.startTitle = title;
+    self.startURL = url;
+  }
+  return self;
 }
-*/
 
 @end

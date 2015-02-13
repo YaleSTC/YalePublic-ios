@@ -19,8 +19,14 @@
 #import "YPTheme.h"
 #import "YPMainViewButton.h"
 #import <PureLayout/PureLayout.h>
+#include "Config.h"
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
+
+typedef enum {
+  YaleEventOrientation,
+  YaleEventCommencement
+} YaleEvent;
 
 @interface YPMainViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
@@ -125,8 +131,9 @@
   }
   self.screenName = @"Main View";
   
+#warning Should say "Commencement" instead of "Event", but the word is truncated.
   self.buttonUnderTexts = @[@"News", @"Directory", @"Maps", @"Videos", @"Photos",
-                            @"Events", @"Transit", @"Athletics", @"Orientation"];
+                            @"Events", @"Transit", @"Athletics", [self currentEvent]==YaleEventOrientation ? @"Orientation" : @"Event"];
 
   [self setupNavigationBar];
   [self setupBackgroundImage];
@@ -161,9 +168,8 @@
 #define COMMENCEMENT_START_DATE (4+10/30.)
 
 //uses the current date to find the icon name for the event, like Orientation or Commencement
-- (NSString *)currentEventImageName
+- (YaleEvent)currentEvent
 {
-  BOOL orientation; //just two possibilities, so use a BOOL.
   //get current month+day/monthlength of date.
   NSCalendar *calendar = [NSCalendar currentCalendar];
   NSDateComponents *dateComponents = [calendar components:NSCalendarUnitDay | NSCalendarUnitMonth fromDate:[NSDate date]];
@@ -174,12 +180,11 @@
   //don't make any assumptions about the dates, like which comes first in the year.
   if (ORIENTATION_START_DATE < COMMENCEMENT_START_DATE) {
     //in the year, orientation comes first
-    orientation = ORIENTATION_START_DATE < currentDate && currentDate < COMMENCEMENT_START_DATE;
+    return ORIENTATION_START_DATE < currentDate && currentDate < COMMENCEMENT_START_DATE ? YaleEventOrientation : YaleEventCommencement;
   } else {
     //in year, commencement comes first
-    orientation = ORIENTATION_START_DATE < currentDate || currentDate < COMMENCEMENT_START_DATE;
+    return ORIENTATION_START_DATE < currentDate || currentDate < COMMENCEMENT_START_DATE ? YaleEventOrientation : YaleEventCommencement;
   }
-  return orientation ? @"OrientationIcon" : @"Mobile-Icons-2014-09-18_23";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
@@ -187,7 +192,8 @@
 {
   YPMainViewButtonCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:COLLECTIONVIEW_REUSE_IDENTIFIER
                                                                                        forIndexPath:indexPath];
-  
+  //this is just temporary, so the underText knows how big to be
+  cell.button.bounds = CGRectMake(0, 0, self.iconSize.width, self.iconSize.height + IMAGE_TEXT_MARGIN + UNDER_TEXT_HEIGHT);
   switch (indexPath.row) {
     case 0:
       cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"NewsIcon"] scaledToSize:self.iconSize];
@@ -214,7 +220,7 @@
       cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"AthleticsIcon"] scaledToSize:self.iconSize];
       break;
     case 8:
-      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:[self currentEventImageName]] scaledToSize:self.iconSize];
+      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:[self currentEvent]==YaleEventOrientation ? @"OrientationIcon" : @"Mobile-Icons-2014-09-18_23"] scaledToSize:self.iconSize];
       break;
 
   }
@@ -228,15 +234,7 @@
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-  UICollectionViewCell *cell = [[UICollectionViewCell alloc] init];
-  YPMainViewButton *button   = [YPMainViewButton newAutoLayoutView];
-  [cell.contentView addSubview:button];
-  [button autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:0];
-  [button autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:0];
-  button.underText = self.buttonUnderTexts[indexPath.row];
-  button.icon      = [UIImage imageNamed:@"TestButtonImage"];
-  return CGSizeMake(self.iconSize.width, self.iconSize.height + IMAGE_TEXT_MARGIN + [button textLabelSize].height);
-
+  return CGSizeMake(self.iconSize.width, self.iconSize.height + IMAGE_TEXT_MARGIN + UNDER_TEXT_HEIGHT);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -281,6 +279,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                          bundle:[NSBundle mainBundle]];
     UINavigationController *orientationVC = [storyboard instantiateViewControllerWithIdentifier:@"OrientationVC"];
     [self.navigationController pushViewController:orientationVC animated:YES];
+  } else if ([underText isEqualToString:@"Commencement"]) {
+    [self.navigationController pushViewController:[[YPWebViewController alloc] initWithTitle:@"Commencement" initialURL:@"http://commencement.yale.edu/"] animated:YES];
   } else if ([underText isEqualToString:@"Transit"]) {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPTransitViewController"
                                                          bundle:[NSBundle mainBundle]];

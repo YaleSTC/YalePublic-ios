@@ -75,6 +75,7 @@
   self.underTextLabel.text      = underText;
   self.underTextLabel.font      = FONT;
   self.underTextLabel.textColor = [UIColor whiteColor];
+  self.underTextLabel.textAlignment = NSTextAlignmentCenter;
   
   [self.underTextLabel removeConstraints:self.underTextLabel.constraints];
   
@@ -102,11 +103,8 @@
 
 - (CGSize)textLabelSize
 {
-  CGRect size = [self.underText boundingRectWithSize:CGSizeMake(self.bounds.size.width, 20)
-                                             options:NSStringDrawingUsesLineFragmentOrigin
-                                          attributes:@{ NSFontAttributeName : FONT }
-                                             context:nil];
-  return size.size;
+  //not necessary to base this on the actual text, since now the text is centered.
+  return CGSizeMake(self.bounds.size.width, UNDER_TEXT_HEIGHT);
 }
 
 - (void)updateConstraints

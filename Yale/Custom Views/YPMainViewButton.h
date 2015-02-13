@@ -10,6 +10,7 @@
 
 @interface YPMainViewButton : UIControl
 #define IMAGE_TEXT_MARGIN 10
+#define UNDER_TEXT_HEIGHT 20
 
 /**
  *  The text that appears under the icon.
