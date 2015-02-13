@@ -155,6 +155,33 @@
   return 1;
 }
 
+#warning Find out when the icon should change
+//dates stored in month + day/monthlength format. Uniform distribution isn't necessary, just strict monotonicity
+#define ORIENTATION_START_DATE (8+1/31.)
+#define COMMENCEMENT_START_DATE (4+10/30.)
+
+//uses the current date to find the icon name for the event, like Orientation or Commencement
+- (NSString *)currentEventImageName
+{
+  BOOL orientation; //just two possibilities, so use a BOOL.
+  //get current month+day/monthlength of date.
+  NSCalendar *calendar = [NSCalendar currentCalendar];
+  NSDateComponents *dateComponents = [calendar components:NSCalendarUnitDay | NSCalendarUnitMonth fromDate:[NSDate date]];
+  double month = [dateComponents month];
+  double day = [dateComponents day];
+  NSRange rangeInMonth = [calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:[NSDate date]];
+  double currentDate = month + day / rangeInMonth.length;
+  //don't make any assumptions about the dates, like which comes first in the year.
+  if (ORIENTATION_START_DATE < COMMENCEMENT_START_DATE) {
+    //in the year, orientation comes first
+    orientation = ORIENTATION_START_DATE < currentDate && currentDate < COMMENCEMENT_START_DATE;
+  } else {
+    //in year, commencement comes first
+    orientation = ORIENTATION_START_DATE < currentDate || currentDate < COMMENCEMENT_START_DATE;
+  }
+  return orientation ? @"OrientationIcon" : @"Mobile-Icons-2014-09-18_23";
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -187,7 +214,7 @@
       cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"AthleticsIcon"] scaledToSize:self.iconSize];
       break;
     case 8:
-      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"OrientationIcon"] scaledToSize:self.iconSize];
+      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:[self currentEventImageName]] scaledToSize:self.iconSize];
       break;
 
   }
