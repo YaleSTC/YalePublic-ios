@@ -11,7 +11,12 @@
 
 @interface YPInstagramCommunicator : NSObject
 
+@property (atomic) BOOL lastPageLoaded;
+
+//call getPhotos: multiple times on the same instance to get successive pages of photos.
+//calling getPhotos: again before the completing block is handled will have no effect. (But it could actually be called from within completion block if necessary)
 -(void)getPhotos:(void (^)(NSDictionary *))completionBlock;
+
 -(void)downloadImageForURL:(NSURL *)url completionBlock:(void (^)(UIImage *))completionBlock;
 
 @end
