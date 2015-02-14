@@ -27,6 +27,9 @@
   NSMutableArray *rowHeights; //array of NSNumbers.
 }
 
+//to continue loading pages, have to keep this around. if photos are to be reloaded from scratch, should set this to nil.
+@property (strong) YPInstagramCommunicator *instagramCommunicator;
+
 @end
 
 //if there is less than this amount of seconds between photo loads, don't update the view multiple times in succession. Wait for a pause, then update the view.
@@ -58,6 +61,18 @@
   self.collectionView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height);
 }
 
+//when scroll to the bottom, do pagination with instagram photos.
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+  if (self.instagramCommunicator && !self.instagramCommunicator.lastPageLoaded) { //if viewing instagram photos
+    //if scrolled to bottom
+    if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height) {
+      NSLog(@"Paginate");
+      [self loadPhotosFromInstagram]; //bypass the loadPhotos step, which resets the photos already set.
+    }
+  }
+}
+
 -(void)loadPhotos {
   _photoSet = [NSMutableArray array];
   rowHeights = [NSMutableArray array];
@@ -72,55 +87,67 @@
 }
 
 -(void)loadPhotosFromInstagram {
-  YPInstagramCommunicator *instagram = [[YPInstagramCommunicator alloc] init];
+  if (!self.instagramCommunicator) self.instagramCommunicator = [[YPInstagramCommunicator alloc] init];
   [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
+  NSUInteger photosAlreadyLoaded = _photoSet.count;
 
-  [instagram getPhotos:^(NSDictionary *response) {
+  //will get the next page of photos
+  [self.instagramCommunicator getPhotos:^(NSDictionary *response) {
     // Received photos
+    
+    //from http://instagram.com/developer/endpoints/
+    //handle errors. this may be necessary if there have been >5000 requests per hour (over all users).
+    if ([response[@"meta"][@"code"] intValue] != 200) { //200 is "no error" I think.
+      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Instagram error %d: %@", [response[@"meta"][@"code"] intValue], response[@"meta"][@"error_type"]] message:response[@"meta"][@"error_message"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+      [alert show];
+    }
     
     // Get a list of URLs
     NSMutableArray *photoURLs = [NSMutableArray array];
-    for (NSDictionary *photoDictionary in [response valueForKeyPath:@"data"]) {
+    for (NSDictionary *photoDictionary in response[@"data"]) {
       NSLog(@"parsing photo");
       NSLog(@"%@", photoDictionary);
       
       NSURL *url = [NSURL URLWithString:photoDictionary[@"images"][@"standard_resolution"][@"url"]];
       
+      //the caption can be <null>, which caused this to crash. in this case the caption object is an NSNull object
+      id caption = photoDictionary[@"caption"];
+      if ([caption respondsToSelector:@selector(objectForKey:)] && [[caption objectForKey:@"text"] isKindOfClass:[NSString class]]) {
+        caption = caption[@"text"];
+      } else {
+        caption = @"";
+      }
       [photoURLs addObject:@{@"url": url,
-                             @"title": photoDictionary[@"caption"][@"text"]}];
+                             @"title": caption}];
     }
     [YPGlobalHelper hideNotificationView];
 
     // Download image for each URL
     for (NSDictionary *photo in photoURLs) {
-      //NSLog(@"%@", url);
 
-      [instagram downloadImageForURL:photo[@"url"] completionBlock:^(UIImage *image) {
-        //NSLog(@"add image, %@", image);
-        //[_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
+      [self.instagramCommunicator downloadImageForURL:photo[@"url"] completionBlock:^(UIImage *image) {
         //[self.photoCollectionView reloadData];
         
-        //NSLog(@"add image, %@", image);
         //this threw an exception when image was nil or when photo["title"] was nil
         if (image && photo[@"title"]) {
           NSUInteger indexForRow = _photoSet.count/IMAGES_PER_ROW; //this is the index of the last row
           [_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
-          NSMutableArray *imagesInRow = [NSMutableArray array]; //to find the size, consider all images in row
-          for (NSUInteger i=indexForRow*IMAGES_PER_ROW; i<_photoSet.count; i++) {
-            [imagesInRow addObject:_photoSet[i][@"image"]];
-          }
           CGFloat totalWidthWithHeight1 = 0;
-          for (UIImage *img in imagesInRow) {
-            totalWidthWithHeight1 += img.size.width / img.size.height;
+          //to find the size, consider all images in row
+          for (NSUInteger i=indexForRow*IMAGES_PER_ROW; i<_photoSet.count; i++) {
+            UIImage *imageInRow = _photoSet[i][@"image"];
+            totalWidthWithHeight1 += imageInRow.size.width / imageInRow.size.height;
           }
           CGFloat totalWidthDestination = self.view.bounds.size.width-IMAGES_PER_ROW;//with some space in between
           while (rowHeights.count<indexForRow+1) [rowHeights addObject:@(0)];
           rowHeights[indexForRow]=@(totalWidthDestination/totalWidthWithHeight1);
           //don't reload the data too quickly, it looks flashy.
           [NSObject cancelPreviousPerformRequestsWithTarget:self.photoCollectionView selector:@selector(reloadData) object:nil];
-          if (_photoSet.count==photoURLs.count) {
+          if (_photoSet.count==photosAlreadyLoaded + photoURLs.count) {
             //this is the last photo downloaded.
             [self.photoCollectionView reloadData];
+            //to indicate more photos have been loaded, flash scroll indicator. have to do after delay because otherwise it's in the wrong spot.
+            [self.photoCollectionView performSelector:@selector(flashScrollIndicators) withObject:nil afterDelay:0];
           } else {
             [self.photoCollectionView performSelector:@selector(reloadData) withObject:nil afterDelay:LOAD_WAIT];
           }
@@ -154,7 +181,6 @@
     //for (NSURL *url
     for (NSDictionary *photo in photoURLs) {
       [flickr downloadImageForURL:photo[@"smallPhotoUrl"] completionBlock:^(UIImage *image) {
-        //NSLog(@"add image, %@", image);
         //this threw an exception when image was nil or when photo["title"] was nil
         if (image && photo[@"title"]) {
           NSUInteger indexForRow = _photoSet.count/IMAGES_PER_ROW; //this is the index of the last row
