@@ -157,10 +157,10 @@ typedef enum {
   [super viewWillAppear:animated];
 }
 
-#warning Find out when the icon should change
+//commencement is 1 january till 1 june
 //dates stored in month + day/monthlength format. Uniform distribution isn't necessary, just strict monotonicity
-#define ORIENTATION_START_DATE (4+10/30.)
-#define COMMENCEMENT_START_DATE (8+1/31.)
+#define ORIENTATION_START_DATE (6+2/30.)
+#define COMMENCEMENT_START_DATE (1+1/31.)
 
 //uses the current date to find the icon name for the event, like Orientation or Commencement
 - (YaleEvent)currentEvent
@@ -175,10 +175,10 @@ typedef enum {
   //don't make any assumptions about the dates, like which comes first in the year.
   if (ORIENTATION_START_DATE < COMMENCEMENT_START_DATE) {
     //in the year, orientation comes first
-    return ORIENTATION_START_DATE < currentDate && currentDate < COMMENCEMENT_START_DATE ? YaleEventOrientation : YaleEventCommencement;
+    return ORIENTATION_START_DATE <= currentDate && currentDate < COMMENCEMENT_START_DATE ? YaleEventOrientation : YaleEventCommencement;
   } else {
     //in year, commencement comes first
-    return ORIENTATION_START_DATE < currentDate || currentDate < COMMENCEMENT_START_DATE ? YaleEventOrientation : YaleEventCommencement;
+    return ORIENTATION_START_DATE <= currentDate || currentDate < COMMENCEMENT_START_DATE ? YaleEventOrientation : YaleEventCommencement;
   }
 }
 
