@@ -16,4 +16,8 @@
 
 - (NSURL *)currentURL;
 
+//can create instance directly (not subclass) with this, which stores everything internally.
+//Do not call from subclass, because then the loadedTitle and initialURL customizations would be ignored.
+- (id)initWithTitle:(NSString *)title initialURL:(NSString *)url;
+
 @end
