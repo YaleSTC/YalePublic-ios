@@ -11,7 +11,6 @@
 		9B18DA6619DE173D00CB900C /* YPMainViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B18DA6519DE173D00CB900C /* YPMainViewController.storyboard */; };
 		9B18DA6919DE17E500CB900C /* YPMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B18DA6819DE17E500CB900C /* YPMainViewController.m */; };
 		9B18DA6C19DE1A6700CB900C /* YPTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B18DA6B19DE1A6700CB900C /* YPTheme.m */; };
-		9B18DA6F19DE254400CB900C /* YPMainViewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B18DA6E19DE254400CB900C /* YPMainViewButton.m */; };
 		9B1F41611A6D62EC0049FBB0 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B1F41601A6D62EC0049FBB0 /* CoreData.framework */; };
 		9B1F41631A6D62F90049FBB0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B1F41621A6D62F90049FBB0 /* SystemConfiguration.framework */; };
 		9B1F41651A6D63030049FBB0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B1F41641A6D63030049FBB0 /* Foundation.framework */; };
@@ -22,7 +21,6 @@
 		9B8BE2B419DE153D00CFE39A /* YaleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B8BE2B319DE153D00CFE39A /* YaleTests.m */; };
 		9BC369991A040F9A00B63FF8 /* YPAthleticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC369981A040F9A00B63FF8 /* YPAthleticsViewController.m */; };
 		9BC369D31A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC369D21A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m */; };
-		9BCB4AD419DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCB4AD319DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m */; };
 		9BED8DD81A895B0F002E87AD /* YPWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BED8DD71A895B0F002E87AD /* YPWebViewController.m */; };
 		9BEDA9FC1A2E66AD0095EF2C /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDA9F71A2E66AD0095EF2C /* TFHpple.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9BEDA9FD1A2E66AD0095EF2C /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDA9F91A2E66AD0095EF2C /* TFHppleElement.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -100,8 +98,6 @@
 		9B18DA6819DE17E500CB900C /* YPMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPMainViewController.m; path = "View Controllers/YPMainViewController.m"; sourceTree = "<group>"; };
 		9B18DA6A19DE1A6700CB900C /* YPTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPTheme.h; path = Theme/YPTheme.h; sourceTree = "<group>"; };
 		9B18DA6B19DE1A6700CB900C /* YPTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPTheme.m; path = Theme/YPTheme.m; sourceTree = "<group>"; };
-		9B18DA6D19DE254400CB900C /* YPMainViewButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPMainViewButton.h; path = "Custom Views/YPMainViewButton.h"; sourceTree = "<group>"; };
-		9B18DA6E19DE254400CB900C /* YPMainViewButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPMainViewButton.m; path = "Custom Views/YPMainViewButton.m"; sourceTree = "<group>"; };
 		9B1F415F1A6D61D50049FBB0 /* ConfigPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigPrivate.h; sourceTree = "<group>"; };
 		9B1F41601A6D62EC0049FBB0 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		9B1F41621A6D62F90049FBB0 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -119,8 +115,6 @@
 		9BC369981A040F9A00B63FF8 /* YPAthleticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPAthleticsViewController.m; path = "View Controllers/YPAthleticsViewController.m"; sourceTree = "<group>"; };
 		9BC369D11A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPCalendarEventsServerCommunicator.h; path = ServerCommunicators/YPCalendarEventsServerCommunicator.h; sourceTree = "<group>"; };
 		9BC369D21A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPCalendarEventsServerCommunicator.m; path = ServerCommunicators/YPCalendarEventsServerCommunicator.m; sourceTree = "<group>"; };
-		9BCB4AD219DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPMainViewButtonCollectionViewCell.h; path = "Custom Views/YPMainViewButtonCollectionViewCell.h"; sourceTree = "<group>"; };
-		9BCB4AD319DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPMainViewButtonCollectionViewCell.m; path = "Custom Views/YPMainViewButtonCollectionViewCell.m"; sourceTree = "<group>"; };
 		9BED8DD61A895B0F002E87AD /* YPWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPWebViewController.h; sourceTree = "<group>"; };
 		9BED8DD71A895B0F002E87AD /* YPWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPWebViewController.m; sourceTree = "<group>"; };
 		9BEDA9F61A2E66AD0095EF2C /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
@@ -313,10 +307,6 @@
 				ABD3212819EB0B48009D9281 /* YPVideoTableViewCell.h */,
 				ABD3212919EB0B48009D9281 /* YPVideoTableViewCell.m */,
 				ABD3212A19EB0B48009D9281 /* YPVideoTableViewCell.xib */,
-				9B18DA6D19DE254400CB900C /* YPMainViewButton.h */,
-				9B18DA6E19DE254400CB900C /* YPMainViewButton.m */,
-				9BCB4AD219DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.h */,
-				9BCB4AD319DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m */,
 				EA54231C19E4E63B00E75859 /* YPPhotoCollectionViewCell.h */,
 				EA54231D19E4E63B00E75859 /* YPPhotoCollectionViewCell.m */,
 				EA54231F19E58BB900E75859 /* YPStandardTableView.h */,
@@ -753,7 +743,6 @@
 				ABD3211D19EAF341009D9281 /* YPVideosPlaylistTableViewController.m in Sources */,
 				9BEDA9FD1A2E66AD0095EF2C /* TFHppleElement.m in Sources */,
 				9BC369991A040F9A00B63FF8 /* YPAthleticsViewController.m in Sources */,
-				9BCB4AD419DF4A4F000C35C5 /* YPMainViewButtonCollectionViewCell.m in Sources */,
 				ABB117C01A64A87C009743E2 /* NSCalendar+RSDFAdditions.m in Sources */,
 				ABB117C41A64A87C009743E2 /* RSDFDatePickerDaysOfWeekView.m in Sources */,
 				9BC369D31A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m in Sources */,
@@ -772,7 +761,6 @@
 				9BEDA9FC1A2E66AD0095EF2C /* TFHpple.m in Sources */,
 				ABB117C51A64A87C009743E2 /* RSDFDatePickerMonthHeader.m in Sources */,
 				EAB6861319DF2FDF0006C06F /* YPFlickrCommunicator.m in Sources */,
-				9B18DA6F19DE254400CB900C /* YPMainViewButton.m in Sources */,
 				EA4456691A7D7DC300473D5E /* YPInstagramCommunicator.m in Sources */,
 				AB39E78B1A2D94F60071C684 /* YPGlobalHelper.m in Sources */,
 				AB99B3481A16AE890003F752 /* YPOrientationViewController.m in Sources */,

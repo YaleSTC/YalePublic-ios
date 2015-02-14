@@ -7,7 +7,6 @@
 //
 
 #import "YPMainViewController.h"
-#import "YPMainViewButtonCollectionViewCell.h"
 #import "YPNewsTopicsTableViewController.h"
 #import "YPVideosPlaylistTableViewController.h"
 #import "YPAthleticsViewController.h"
@@ -17,22 +16,24 @@
 #import "YPMapsViewController.h"
 #import "YPEventsViewController.h"
 #import "YPTheme.h"
-#import "YPMainViewButton.h"
 #import <PureLayout/PureLayout.h>
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
-#define COMMENCEMENT_BUTTON_TEXT @"Commencement"
+
+#define UNDER_TEXT_FONT [UIFont systemFontOfSize:12] //was size 10. now bigger text fits
+#define IMAGE_TEXT_MARGIN 10
+#define UNDER_TEXT_HEIGHT 20
 
 typedef enum {
   YaleEventOrientation,
   YaleEventCommencement
 } YaleEvent;
 
-@interface YPMainViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface YPMainViewController ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
-@property (nonatomic, strong) UICollectionView *buttonCollectionView;
 @property (nonatomic, strong) UIBarButtonItem *infoButton;
+@property (nonatomic, strong) NSArray *buttonImageTitles;
 @property (nonatomic, strong) NSArray *buttonUnderTexts;
 @property CGSize iconSize;
 
@@ -86,35 +87,46 @@ typedef enum {
   self.backgroundImageView.layer.zPosition -= 1;
 }
 
-- (void)setupButtonCollectionView
+- (void)setupButtonViews
 {
-  UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-  CGFloat margin = (self.iconSize.height == 57) ? 20 : 30;
-  flowLayout.minimumInteritemSpacing = ([UIScreen mainScreen].bounds.size.width - self.iconSize.height*3 - margin*2) / 2;
-  flowLayout.minimumLineSpacing      = flowLayout.minimumInteritemSpacing - 20;
+  CGFloat topMargin = (self.iconSize.height == 57) ? 20 : 30; //this is also the horizontal margin to the icons (not the buttons)
+  CGFloat buttonWidth = self.iconSize.width*2; //make it big enough to fit the text below the button, even if the text is long like this text is long.
+  CGFloat leftMargin = topMargin-(buttonWidth-self.iconSize.width)/2;
+  CGFloat buttonHeight = self.iconSize.height + IMAGE_TEXT_MARGIN + UNDER_TEXT_HEIGHT;
+  CGFloat horizontalSpacing = ([UIScreen mainScreen].bounds.size.width - buttonWidth*3 - leftMargin*2) / 2; //between buttons
+  CGFloat horizontalSpacingBetweenIcons = ([UIScreen mainScreen].bounds.size.width - self.iconSize.width*3 - topMargin*2) / 2; //to keep vertical spacing stable
+  CGFloat verticalSpacing = horizontalSpacingBetweenIcons - 20; //what is this? Well, it looks good
   
-  self.automaticallyAdjustsScrollViewInsets = NO;
-  
-  self.buttonCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)
-                                                 collectionViewLayout:flowLayout];
-  [self.buttonCollectionView registerClass:[YPMainViewButtonCollectionViewCell class]
-                forCellWithReuseIdentifier:COLLECTIONVIEW_REUSE_IDENTIFIER];
-  self.buttonCollectionView.opaque = NO;
-  self.buttonCollectionView.backgroundColor = [UIColor clearColor];
-  
-  self.buttonCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
-  
-  [self.view addSubview:self.buttonCollectionView];
-  
+  for (int row=0; row<3; row++) {
+    for (int col=0; col<3; col++) {
+      int index = row*3+col;
+      UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+      button.frame = CGRectMake(leftMargin+col*horizontalSpacing+col*buttonWidth, topMargin+row*verticalSpacing+row*buttonHeight, buttonWidth, buttonHeight);
+      [button addTarget:self action:@selector(pushViewController:) forControlEvents:UIControlEventTouchUpInside];
+      [button addTarget:self action:@selector(buttonHighlight:) forControlEvents:UIControlEventTouchDown|UIControlEventTouchDragEnter];
+      [button addTarget:self action:@selector(buttonUnhighlight:) forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchUpOutside|UIControlEventTouchCancel|UIControlEventTouchDragExit];
+      button.tag = index;
+      UIImageView *iconView = [[UIImageView alloc] initWithFrame:CGRectMake(buttonWidth/2-self.iconSize.width/2, 0, self.iconSize.width, self.iconSize.height)];
+      iconView.image = [YPMainViewController imageWithImage:[UIImage imageNamed:self.buttonImageTitles[index]] scaledToSize:self.iconSize];
+      [button addSubview:iconView];
+      UILabel *underText = [[UILabel alloc] initWithFrame:CGRectMake(0, self.iconSize.height+IMAGE_TEXT_MARGIN, buttonWidth, UNDER_TEXT_HEIGHT)];
+      underText.text = self.buttonUnderTexts[index];
+      underText.font = UNDER_TEXT_FONT;
+      underText.textAlignment = NSTextAlignmentCenter;
+      underText.textColor = [UIColor whiteColor];
+      [button addSubview:underText];
+      [self.view addSubview:button];
+    }
+  }
+}
 
-  
-  [self.buttonCollectionView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:margin];
-  [self.buttonCollectionView autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:margin];
-  [self.buttonCollectionView autoAlignAxisToSuperviewAxis:ALAxisVertical];
-  [self.buttonCollectionView layoutIfNeeded];
-  
-  self.buttonCollectionView.delegate   = self;
-  self.buttonCollectionView.dataSource = self;
+- (void)buttonHighlight:(UIButton *)button
+{
+  button.alpha=0.5;
+}
+- (void)buttonUnhighlight:(UIButton *)button
+{
+  button.alpha=1;
 }
 
 #pragma mark - View life cycles
@@ -132,33 +144,17 @@ typedef enum {
   self.screenName = @"Main View";
   
   self.buttonUnderTexts = @[@"News", @"Directory", @"Maps", @"Videos", @"Photos",
-                            @"Events", @"Transit", @"Athletics", [self currentEvent]==YaleEventOrientation ? @"Orientation" : COMMENCEMENT_BUTTON_TEXT];
+                            @"Events", @"Transit", @"Athletics", [self currentEvent]==YaleEventOrientation ? @"Orientation" : @"Commencement"];
+  self.buttonImageTitles = @[@"NewsIcon", @"DirectoryIcon", @"MapsIcon", @"VideosIcon", @"PhotosIcon", @"EventsIcon", @"TransitIcon", @"AthleticsIcon", [self currentEvent]==YaleEventOrientation ? @"OrientationIcon" : @"Mobile-Icons-2014-09-18_23"];
 
   [self setupNavigationBar];
   [self setupBackgroundImage];
-  [self setupButtonCollectionView];
+  [self setupButtonViews];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
-  
-  [self.buttonCollectionView reloadData];
-  CGSize size = self.buttonCollectionView.collectionViewLayout.collectionViewContentSize;
-  [self.buttonCollectionView autoSetDimensionsToSize:size];
-}
-
-#pragma mark - UICollectionView DataSource
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView
-     numberOfItemsInSection:(NSInteger)section
-{
-  return [self.buttonUnderTexts count];
-}
-
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
-  return 1;
 }
 
 #warning Find out when the icon should change
@@ -186,62 +182,6 @@ typedef enum {
   }
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
-                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-  YPMainViewButtonCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:COLLECTIONVIEW_REUSE_IDENTIFIER
-                                                                                       forIndexPath:indexPath];
-  //this is just temporary, so the underText knows how big to be
-  cell.button.bounds = CGRectMake(0, 0, self.iconSize.width, self.iconSize.height + IMAGE_TEXT_MARGIN + UNDER_TEXT_HEIGHT);
-  switch (indexPath.row) {
-    case 0:
-      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"NewsIcon"] scaledToSize:self.iconSize];
-      break;
-    case 1:
-      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"DirectoryIcon"] scaledToSize:self.iconSize];
-      break;
-    case 2:
-      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"MapsIcon"] scaledToSize:self.iconSize];
-      break;
-    case 3:
-      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"VideosIcon"] scaledToSize:self.iconSize];
-      break;
-    case 4:
-      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"PhotosIcon"] scaledToSize:self.iconSize];
-      break;
-    case 5:
-      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"EventsIcon"] scaledToSize:self.iconSize];
-      break;
-    case 6:
-      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"TransitIcon"] scaledToSize:self.iconSize];
-      break;
-    case 7:
-      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:@"AthleticsIcon"] scaledToSize:self.iconSize];
-      break;
-    case 8:
-      cell.button.icon = [YPMainViewController imageWithImage:[UIImage imageNamed:[self currentEvent]==YaleEventOrientation ? @"OrientationIcon" : @"Mobile-Icons-2014-09-18_23"] scaledToSize:self.iconSize];
-      break;
-
-  }
-  cell.button.underText = self.buttonUnderTexts[indexPath.row];
-  [cell.button addTarget:self action:@selector(pushViewController:) forControlEvents:UIControlEventTouchUpInside];
-  return cell;
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView
-                  layout:(UICollectionViewLayout *)collectionViewLayout
-  sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-  return CGSizeMake(self.iconSize.width, self.iconSize.height + IMAGE_TEXT_MARGIN + UNDER_TEXT_HEIGHT);
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView
-                  layout:(UICollectionViewLayout*)collectionViewLayout
-referenceSizeForHeaderInSection:(NSInteger)section
-{
-  return CGSizeZero;
-}
-
 - (void)didReceiveMemoryWarning
 {
   [super didReceiveMemoryWarning];
@@ -250,9 +190,9 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 #pragma mark Connect with other VCs
 
-- (void)pushViewController:(YPMainViewButton *)button
+- (void)pushViewController:(UIButton *)button
 {
-  NSString *underText = button.underText;
+  NSString *underText = self.buttonUnderTexts[button.tag];
   if ([underText isEqualToString:@"News"]) {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPNewsViewController"
                                                          bundle:[NSBundle mainBundle]];
@@ -269,16 +209,14 @@ referenceSizeForHeaderInSection:(NSInteger)section
     UINavigationController *newsVC = [storyboard instantiateViewControllerWithIdentifier:@"PhotoVC"];
     [self.navigationController pushViewController:newsVC animated:YES];
   } else if ([underText isEqualToString:@"Athletics"]) {
-    //UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPAthleticsViewController" bundle:[NSBundle mainBundle]];
-    //UINavigationController *athleticsVC = [storyboard instantiateViewControllerWithIdentifier:@"AthleticsVC"];
     [self.navigationController pushViewController:[[YPAthleticsViewController alloc] init] animated:YES];
   } else if ([underText isEqualToString:@"Orientation"]) {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPOrientationViewController"
                                                          bundle:[NSBundle mainBundle]];
     UINavigationController *orientationVC = [storyboard instantiateViewControllerWithIdentifier:@"OrientationVC"];
     [self.navigationController pushViewController:orientationVC animated:YES];
-  } else if ([underText isEqualToString:COMMENCEMENT_BUTTON_TEXT]) {
-    [self.navigationController pushViewController:[[YPWebViewController alloc] initWithTitle:COMMENCEMENT_BUTTON_TEXT initialURL:@"http://commencement.yale.edu/"] animated:YES];
+  } else if ([underText isEqualToString:@"Commencement"]) {
+    [self.navigationController pushViewController:[[YPWebViewController alloc] initWithTitle:@"Commencement" initialURL:@"http://commencement.yale.edu/"] animated:YES];
   } else if ([underText isEqualToString:@"Transit"]) {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPTransitViewController"
                                                          bundle:[NSBundle mainBundle]];
