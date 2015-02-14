@@ -19,9 +19,9 @@
 #import "YPTheme.h"
 #import "YPMainViewButton.h"
 #import <PureLayout/PureLayout.h>
-#include "Config.h"
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
+#define COMMENCEMENT_BUTTON_TEXT @"Commencement"
 
 typedef enum {
   YaleEventOrientation,
@@ -132,7 +132,7 @@ typedef enum {
   self.screenName = @"Main View";
   
   self.buttonUnderTexts = @[@"News", @"Directory", @"Maps", @"Videos", @"Photos",
-                            @"Events", @"Transit", @"Athletics", [self currentEvent]==YaleEventOrientation ? @"Orientation" : @"Commencement"];
+                            @"Events", @"Transit", @"Athletics", [self currentEvent]==YaleEventOrientation ? @"Orientation" : COMMENCEMENT_BUTTON_TEXT];
 
   [self setupNavigationBar];
   [self setupBackgroundImage];
@@ -228,7 +228,6 @@ typedef enum {
   return cell;
 }
 
-
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -278,8 +277,8 @@ referenceSizeForHeaderInSection:(NSInteger)section
                                                          bundle:[NSBundle mainBundle]];
     UINavigationController *orientationVC = [storyboard instantiateViewControllerWithIdentifier:@"OrientationVC"];
     [self.navigationController pushViewController:orientationVC animated:YES];
-  } else if ([underText isEqualToString:@"Commencement"]) {
-    [self.navigationController pushViewController:[[YPWebViewController alloc] initWithTitle:@"Commencement" initialURL:@"http://commencement.yale.edu/"] animated:YES];
+  } else if ([underText isEqualToString:COMMENCEMENT_BUTTON_TEXT]) {
+    [self.navigationController pushViewController:[[YPWebViewController alloc] initWithTitle:COMMENCEMENT_BUTTON_TEXT initialURL:@"http://commencement.yale.edu/"] animated:YES];
   } else if ([underText isEqualToString:@"Transit"]) {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPTransitViewController"
                                                          bundle:[NSBundle mainBundle]];
