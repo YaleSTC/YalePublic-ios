@@ -97,6 +97,10 @@ typedef enum {
   CGFloat horizontalSpacingBetweenIcons = ([UIScreen mainScreen].bounds.size.width - self.iconSize.width*3 - topMargin*2) / 2; //to keep vertical spacing stable
   CGFloat verticalSpacing = horizontalSpacingBetweenIcons - 20; //what is this? Well, it looks good
   
+  //iPhone 4s
+  if ([[UIScreen mainScreen] bounds].size.height <= 568)
+    verticalSpacing -= 10;
+  
   for (int row=0; row<3; row++) {
     for (int col=0; col<3; col++) {
       int index = row*3+col;

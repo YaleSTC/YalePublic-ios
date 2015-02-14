@@ -47,20 +47,12 @@
 - (void)viewDidLoad
 {
   if (!self.title.length) self.title = self.startTitle ? self.startTitle : [self.class loadedTitle];
+  [self addWebview];
+
   [super viewDidLoad];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-  [super viewWillAppear:animated];
-  [self addWebview];
-}
 
-- (void)didReceiveMemoryWarning
-{
-  [super didReceiveMemoryWarning];
-  // Dispose of any resources that can be recreated.
-}
 
 -(void) updateButtons
 {
