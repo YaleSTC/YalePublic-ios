@@ -47,11 +47,15 @@
 - (void)viewDidLoad
 {
   if (!self.title.length) self.title = self.startTitle ? self.startTitle : [self.class loadedTitle];
-  [self addWebview];
-
+  self.view.backgroundColor=[UIColor whiteColor]; //default is clear, which makes loading any part of the view after pushing a problem
   [super viewDidLoad];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+  [super viewWillAppear:animated];
+  [self addWebview]; //this can't go in viewDidLoad because then the bounds are messed up and the toolbar isn't visible.
+}
 
 
 -(void) updateButtons
@@ -146,20 +150,28 @@ didFinishNavigation: (WKNavigation *)navigation
     [self.toolbar setItems:items animated:NO];
     [self.view addSubview:self.toolbar];
   }
-  
+  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
+  [self performSelector:@selector(initializeWebView) withObject:nil afterDelay:0];
+}
+
+//this is really slow, so don't wait to do it.
+- (void)initializeWebView
+{
+  //now set up webview. allocating the webview takes awhile and freezes the navigation transition, so attempt to allocate in another thread
   CGRect webViewFrame = self.view.bounds;
-  webViewFrame.size.height-=self.toolbar.bounds.size.height/*+self.navigationController.navigationBar.bounds.size.height*/;
-  self.webView = [[WKWebView alloc] initWithFrame:webViewFrame];
+  webViewFrame.size.height-=self.toolbar.bounds.size.height;
   
   NSString *url= self.startURL ? self.startURL : [self initialURL];
   NSURL *nsurl = [NSURL URLWithString:url];
   NSURLRequest *req = [NSURLRequest requestWithURL:nsurl];
+  
+  self.webView = [[WKWebView alloc] initWithFrame:webViewFrame];
   [self.webView loadRequest:req];
   self.webView.allowsBackForwardNavigationGestures = YES;
-  [self.view addSubview:self.webView];
+  [self.view insertSubview:self.webView atIndex:0]; //behind the "loading..." icon
   self.webView.navigationDelegate = self;
   
-  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
+  
   dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     while (self.webView.loading)
       ;
