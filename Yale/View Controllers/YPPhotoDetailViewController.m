@@ -7,10 +7,13 @@
 //
 
 #import "YPPhotoDetailViewController.h"
-#import "YPFlickrCommunicator.h"
 #import "YPInstagramCommunicator.h"
 #import "YPPhotoCollectionViewCell.h"
 #import "YPGlobalHelper.h"
+#import "Config.h"
+#import <GAI.h>
+#import <GAIFields.h>
+#import <GAIDictionaryBuilder.h>
 
 #define IMAGES_PER_ROW (2)
 
@@ -61,6 +64,14 @@
   self.collectionView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height);
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  //Google Analytics
+  id tracker = [[GAI sharedInstance] defaultTracker];
+  [tracker set:kGAIScreenName
+         value:@"Photo VC"];
+  [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+}
 //when scroll to the bottom, do pagination with instagram photos.
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
@@ -77,13 +88,7 @@
   _photoSet = [NSMutableArray array];
   rowHeights = [NSMutableArray array];
   
-  if([self.photoSetId  isEqualToString: @"INSTAGRAM"]){
-    
-    [self loadPhotosFromInstagram];
-  } else {
-    
-    [self loadPhotosFromFlickr];
-  }
+  [self loadPhotosFromInstagram];
 }
 
 -(void)loadPhotosFromInstagram {
@@ -159,57 +164,6 @@
   }];
 }
 
--(void)loadPhotosFromFlickr {
-  
-  YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
-  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
-  [flickr getPhotosForSet:self.photoSetId completionBlock:^(NSDictionary *response) {
-    
-    NSLog(@"%@", response);
-    
-      // Get a list of URLs
-      NSMutableArray *photoURLs = [NSMutableArray array];
-      for (NSDictionary *photoDictionary in [response valueForKeyPath:@"photoset.photo"]) {
-        NSURL *smallPhotoUrl = [flickr urlForImageFromDictionary:photoDictionary largeSize:NO];
-        NSURL *largePhotoUrl = [flickr urlForImageFromDictionary:photoDictionary largeSize:YES];
-        //[photoURLs addObject:url];
-        [photoURLs addObject:@{@"smallPhotoUrl": smallPhotoUrl, @"largePhotoUrl":largePhotoUrl, @"title": photoDictionary[@"title"]}];
-      }
-    [YPGlobalHelper hideNotificationView];
-
-    // Download image for each URL
-    //for (NSURL *url
-    for (NSDictionary *photo in photoURLs) {
-      [flickr downloadImageForURL:photo[@"smallPhotoUrl"] completionBlock:^(UIImage *image) {
-        //this threw an exception when image was nil or when photo["title"] was nil
-        if (image && photo[@"title"]) {
-          NSUInteger indexForRow = _photoSet.count/IMAGES_PER_ROW; //this is the index of the last row
-          [_photoSet addObject:@{@"smallImage":image, @"title": photo[@"title"], @"largePhotoUrl":photo[@"largePhotoUrl"]}];
-          NSMutableArray *imagesInRow = [NSMutableArray array]; //to find the size, consider all images in row
-          for (NSUInteger i=indexForRow*IMAGES_PER_ROW; i<_photoSet.count; i++) {
-            [imagesInRow addObject:_photoSet[i][@"smallImage"]];
-          }
-          CGFloat totalWidthWithHeight1 = 0;
-          for (UIImage *img in imagesInRow) {
-            totalWidthWithHeight1 += img.size.width / img.size.height;
-          }
-          CGFloat totalWidthDestination = self.view.bounds.size.width-IMAGES_PER_ROW;//with some space in between
-          while (rowHeights.count<indexForRow+1) [rowHeights addObject:@(0)];
-          rowHeights[indexForRow]=@(totalWidthDestination/totalWidthWithHeight1);
-          //don't reload the data too quickly, it looks flashy.
-          [NSObject cancelPreviousPerformRequestsWithTarget:self.photoCollectionView selector:@selector(reloadData) object:nil];
-          if (_photoSet.count==photoURLs.count) {
-            //this is the last photo downloaded.
-            [self.photoCollectionView reloadData];
-            
-          } else {
-            [self.photoCollectionView performSelector:@selector(reloadData) withObject:nil afterDelay:LOAD_WAIT];
-          }
-        }
-      }];
-    }
-  }];
-}
 
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
@@ -250,11 +204,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
   UIImage *image;
-  if ([self.photoSetId isEqualToString:@"INSTAGRAM"]) {
-    image = _photoSet[indexPath.row][@"image"];
-  }else {
-    image = _photoSet[indexPath.row][@"smallImage"];
-  }
+  image = _photoSet[indexPath.row][@"image"];
   NSUInteger row = indexPath.row/IMAGES_PER_ROW;
   return CGSizeMake([rowHeights[row] doubleValue]*image.size.width/image.size.height, [rowHeights[row] doubleValue]);
 }
@@ -436,29 +386,7 @@
 
 -(UIImage *)photoForSelectedIndex
 {
-  if ([self.photoSetId isEqualToString:@"INSTAGRAM"]) {
-    return _photoSet[selectedIndexPath.row][@"image"];
-  }else {       //flickr
-    if(_photoSet[selectedIndexPath.row][@"largeImage"]){
-      NSLog(@"returning large image");
-      return _photoSet[selectedIndexPath.row][@"largeImage"];
-    } else {
-      NSLog(@"returning small image");
-      // reload large image
-      YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
-      [flickr downloadImageForURL:_photoSet[selectedIndexPath.row][@"largePhotoUrl"] completionBlock:^(UIImage *image) {
-        
-        NSLog(@"downloaded large image: %@", image);
-        [fullscreenImageView setImage:image];
-        NSMutableDictionary *tempWithLargeImage = [[NSMutableDictionary alloc] initWithDictionary:_photoSet[selectedIndexPath.row]];
-        tempWithLargeImage[@"largeImage"] = image;
-        _photoSet[selectedIndexPath.row] = tempWithLargeImage;
-#warning error handling necessary
-      }
-       ];
-      return _photoSet[selectedIndexPath.row][@"smallImage"];
-    }
-  }
+  return _photoSet[selectedIndexPath.row][@"image"];
 }
 
 - (void)fullScreenImageViewTapped:(UIGestureRecognizer *)gestureRecognizer {
