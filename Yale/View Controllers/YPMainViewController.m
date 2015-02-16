@@ -11,6 +11,7 @@
 #import "YPVideosPlaylistTableViewController.h"
 #import "YPAthleticsViewController.h"
 #import "YPInfoViewViewController.h"
+#import "YPPhotoDetailViewController.h"
 #import "YPOrientationViewController.h"
 #import "YPDirectoryTableViewController.h"
 #import "YPMapsViewController.h"
@@ -210,8 +211,12 @@ typedef enum {
   } else if ([underText isEqualToString:@"Photos"]) {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPPhotoViewController"
                                                          bundle:[NSBundle mainBundle]];
-    UINavigationController *newsVC = [storyboard instantiateViewControllerWithIdentifier:@"PhotoVC"];
-    [self.navigationController pushViewController:newsVC animated:YES];
+    YPPhotoDetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"PhotoDetailVC"];
+    
+    // Have to provide album title and photoSetId
+    detailViewController.albumTitle = @"Photos";
+    detailViewController.photoSetId = @"INSTAGRAM";
+    [self.navigationController pushViewController:detailViewController animated:YES];
   } else if ([underText isEqualToString:@"Athletics"]) {
     [self.navigationController pushViewController:[[YPAthleticsViewController alloc] init] animated:YES];
   } else if ([underText isEqualToString:@"Orientation"]) {
