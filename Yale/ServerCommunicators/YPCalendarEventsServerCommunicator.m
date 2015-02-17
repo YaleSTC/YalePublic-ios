@@ -25,7 +25,7 @@ static NSString * const YPCalendarEventsErrorDomain = @"YPCalendarEventsErrorDom
   [yyyyMMdd setDateFormat:@"yyyy-MM-dd"];
   
   NSString *dateString  = [yyyyMMdd stringFromDate:day];
-  NSString *nDaysString = [NSString stringWithFormat:@"%lddays", nDays];
+  NSString *nDaysString = [NSString stringWithFormat:@"%ddays", (int)nDays];
   NSString *tagsString  = @"";
   
   for (id tag in tags) {

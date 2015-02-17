@@ -8,6 +8,26 @@
 
 #import "YPEventsCategoriesViewController.h"
 #import "YPEventsViewController.h"
+#import "YPCircleView.h"
+
+
+#warning find correct colors
+//for easy, consistent access and lookup. also to lookup by tag
+#define CATEGORIES_AND_TAGS @[ \
+@[@"All", @[@"class", @"arts", @"workshop", @"community", @"conferences", @"exhibitions", @"familyfriendly", @"films", @"groupmeetings", @"performances", @"spiritual", @"worship", @"sports", @"recreation", @"talks", @"readings", @"tours"], [UIColor clearColor]], \
+@[@"Arts", @[@"arts"], [UIColor orangeColor]/*darker orange*/], \
+@[@"Classes & Workshops", @[@"class", @"workshop"], [UIColor redColor]], \
+@[@"Community", @[@"community"], [UIColor blueColor]/*lightblue*/], \
+@[@"Conferences", @[@"conferences"], [UIColor greenColor]/*darkgreen*/], \
+@[@"Exhibitions", @[@"exhibitions"], [UIColor orangeColor]], \
+@[@"Family Friendly", @[@"familyfriendly"], [UIColor blueColor]], \
+@[@"Films", @[@"films"], [UIColor purpleColor]], \
+@[@"Group Meetings", @[@"groupmeetings"], [UIColor redColor]/*crimson*/], \
+@[@"Performances", @[@"performances"], [UIColor grayColor]/*beige*/], \
+@[@"Spiritual and Worship", @[@"spiritual", @"worship"], [UIColor grayColor]/*pink*/], \
+@[@"Sports and Recreation", @[@"sports", @"recreation"], [UIColor blueColor]/*dark blue*/], \
+@[@"Talks and Readings", @[@"talks", @"readings"], [UIColor greenColor]/*light green*/], \
+@[@"Tours", @[@"tours"], [UIColor yellowColor]]]
 
 @interface YPEventsCategoriesViewController ()
 
@@ -27,110 +47,36 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-  return 14;
+  return CATEGORIES_AND_TAGS.count;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   YPEventsViewController *eventsVC = [[YPEventsViewController alloc] init];
-  
-  switch (indexPath.row) {
-    case 0:
-      eventsVC.tags = @[@"class", @"arts", @"workshop", @"community", @"conferences", @"exhibitions", @"familyfriendly", @"films", @"groupmeetings", @"performances", @"spiritual", @"worship", @"sports", @"recreation", @"talks", @"readings", @"tours"];
-      break;
-    case 1:
-      eventsVC.tags = @[@"arts"];
-      break;
-    case 2:
-      eventsVC.tags = @[@"class", @"workshop"];
-      break;
-    case 3:
-      eventsVC.tags = @[@"community"];
-      break;
-    case 4:
-      eventsVC.tags = @[@"conferences"];
-      break;
-    case 5:
-      eventsVC.tags = @[@"exhibitions"];
-      break;
-    case 6:
-      eventsVC.tags = @[@"familyfriendly"];
-      break;
-    case 7:
-      eventsVC.tags = @[@"films"];
-      break;
-    case 8:
-      eventsVC.tags = @[@"groupmeetings"];
-      break;
-    case 9:
-      eventsVC.tags = @[@"performances"];
-      break;
-    case 10:
-      eventsVC.tags = @[@"spiritual", @"worship"];
-      break;
-    case 11:
-      eventsVC.tags = @[@"sports", @"recreation"];
-      break;
-    case 12:
-      eventsVC.tags = @[@"talks", @"readings"];
-      break;
-    case 13:
-      eventsVC.tags = @[@"tours"];
-      break;
-    default:
-      break;
-  }
+  eventsVC.tags = CATEGORIES_AND_TAGS[indexPath.row][1];
   [self.navigationController pushViewController:eventsVC animated:YES];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"categoryCell"];
-  switch (indexPath.row) {
-    case 0:
-      cell.textLabel.text = @"All";
-      break;
-    case 1:
-      cell.textLabel.text = @"Arts";
-      break;
-    case 2:
-      cell.textLabel.text = @"Classes & Workshops";
-      break;
-    case 3:
-      cell.textLabel.text = @"Community";
-      break;
-    case 4:
-      cell.textLabel.text = @"Conferences";
-      break;
-    case 5:
-      cell.textLabel.text = @"Exhibitions";
-      break;
-    case 6:
-      cell.textLabel.text = @"Family Friendly";
-      break;
-    case 7:
-      cell.textLabel.text = @"Films";
-      break;
-    case 8:
-      cell.textLabel.text = @"Group Meetings";
-      break;
-    case 9:
-      cell.textLabel.text = @"Performances";
-      break;
-    case 10:
-      cell.textLabel.text = @"Spiritual and Worship";
-      break;
-    case 11:
-      cell.textLabel.text = @"Sports and Recreation";
-      break;
-    case 12:
-      cell.textLabel.text = @"Talks and Readings";
-      break;
-    case 13:
-      cell.textLabel.text = @"Tours";
-      break;
-    default:
-      break;
-  }
+  cell.textLabel.text = CATEGORIES_AND_TAGS[indexPath.row][0];
+  YPCircleView *circle = (YPCircleView *)[cell.contentView viewWithTag:1];
+  circle.color = CATEGORIES_AND_TAGS[indexPath.row][2];
+  [circle setNeedsDisplay];
   return cell;
+}
+
++ (UIColor *)colorForTags:(NSArray *)tags
+{
+  for (NSArray *category in CATEGORIES_AND_TAGS) {
+    if (![category[0] isEqualToString:@"All"]) {
+      for (NSString *tag in tags) {
+        if ([category[1] containsObject:tag]) {
+          return category[2];
+        }
+      }
+    }
+  }
+  return [UIColor clearColor];
 }
 
 /*
