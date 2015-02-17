@@ -25,7 +25,7 @@
   UIView *overlayView;
   UIImageView *thumbnailImageView;
   UIImageView *fullscreenImageView;
-  UILabel *title;
+  UITextView *title;
   NSIndexPath *selectedIndexPath;
   NSMutableArray *rowHeights; //array of NSNumbers.
 }
@@ -122,8 +122,15 @@
       } else {
         caption = @"";
       }
+      
+      int createdInt = [photoDictionary[@"created_time"] intValue];
+      NSTimeInterval timestamp = (NSTimeInterval)createdInt;
+      NSDate *createdDate = [NSDate dateWithTimeIntervalSince1970:timestamp];
+      
       [photoURLs addObject:@{@"url": url,
-                             @"title": caption}];
+                             @"title": caption,
+                             @"date":createdDate}];
+      
     }
     [YPGlobalHelper hideNotificationView];
 
@@ -136,7 +143,9 @@
         //this threw an exception when image was nil or when photo["title"] was nil
         if (image && photo[@"title"]) {
           NSUInteger indexForRow = _photoSet.count/IMAGES_PER_ROW; //this is the index of the last row
-          [_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
+          [_photoSet addObject:@{@"image":image, @"title": photo[@"title"], @"date":photo[@"date"]}];
+          NSSortDescriptor* sortByDate = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO];
+          [_photoSet sortUsingDescriptors:[NSArray arrayWithObject:sortByDate]];
           CGFloat totalWidthWithHeight1 = 0;
           //to find the size, consider all images in row
           for (NSUInteger i=indexForRow*IMAGES_PER_ROW; i<_photoSet.count; i++) {
@@ -158,12 +167,26 @@
           }
         }
       }];
+      
     }
+    
 
     
   }];
 }
 
+-(BOOL)isPhotoSameMonthWithPrevious:(NSIndexPath *)indexPath {
+  if (indexPath.row == 0) {
+    return NO;
+  }else {
+    NSCalendar *calender = [NSCalendar currentCalendar];
+    
+    unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth;
+    NSDateComponents *compOne = [calender components:unitFlags fromDate:_photoSet[indexPath.row][@"date"]];
+    NSDateComponents *compTwo = [calender components:unitFlags fromDate:_photoSet[indexPath.row - 1][@"date"]];
+    return ([compOne month] == [compTwo month] && [compOne year] == [compTwo year]);
+  }
+}
 
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
@@ -173,14 +196,17 @@
                                      dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCell"
                                      forIndexPath:indexPath];
   
-  UIImage *smallImage;
-  if ([self.photoSetId isEqualToString:@"INSTAGRAM"]) {
-    smallImage = _photoSet[indexPath.row][@"image"];
-  }else {
-    smallImage = _photoSet[indexPath.row][@"smallImage"];
-  }
-  cell.photoImageView.image = smallImage;
+  UIImage *image;
+  image = _photoSet[indexPath.row][@"image"];
+  cell.photoImageView.image = image;
   cell.photoTitle = _photoSet[indexPath.row][@"title"];
+  
+  cell.isNewMonth = ![self isPhotoSameMonthWithPrevious:indexPath];
+  NSDateFormatter* df = [[NSDateFormatter alloc] init] ;
+  [df setDateFormat:@"MMM ''yy"];
+  cell.updatedMonthLabel.text = [df stringFromDate:_photoSet[indexPath.row][@"date"]];
+  cell.updatedMonthLabel.hidden = !cell.isNewMonth;
+  
   [cell.photoImageView setContentMode:UIViewContentModeScaleAspectFit];
   /*
   [cell.layer setBorderColor:[UIColor colorWithRed:213.0/255.0f green:210.0/255.0f blue:199.0/255.0f alpha:1.0f].CGColor];
@@ -248,15 +274,16 @@
                    }
                    completion:^(BOOL finished){
                      
+                     
+                     
                      // Create title label
-                     int distanceFromBottom = ((marginFactor/2)*fullscreenImageView.bounds.size.height);
+                     int distanceFromBottom = ((marginFactor)*fullscreenImageView.bounds.size.height);
                      int labelYCoordinate = (overlayView.bounds.size.height-distanceFromBottom);
-                     
-                     
-                     title = [[UILabel alloc] initWithFrame:CGRectMake(0, labelYCoordinate, self.view.bounds.size.width, distanceFromBottom)];
+                     title = [[UITextView alloc] initWithFrame:CGRectMake(0, labelYCoordinate + distanceFromBottom * 0.1, self.view.bounds.size.width, distanceFromBottom * 0.8 ) textContainer:nil];
+                     title.editable = NO;
+                     title.backgroundColor = [UIColor clearColor];
                      title.textColor = [UIColor whiteColor];
                      title.textAlignment = NSTextAlignmentCenter;
-                     title.numberOfLines = 2;
                      title.text = selectedCell.photoTitle;
                      [overlayView addSubview:title];
                    }
@@ -264,6 +291,7 @@
   
   
   thumbnailImageView = selectedCell.photoImageView;
+  [selectedCell bringSubviewToFront:selectedCell.updatedMonthLabel];
   
   UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewTapped:)];
   singleTap.numberOfTapsRequired = 1;
@@ -284,6 +312,7 @@
   [overlayView addGestureRecognizer:longPress];
   
 }
+
 
 -(void)fullScreenImageViewLongPressed:(UIGestureRecognizer *)gestureRecognizer
 {
@@ -350,6 +379,7 @@
     [self crossfade:fullscreenImageView image:[self photoForSelectedIndex] isRightSwiped:NO];
     //fullscreenImageView.image = _photoSet[newIndex.row][@"image"];
     [title setText:_photoSet[newIndex.row][@"title"]];
+    
     if (![[self.photoCollectionView indexPathsForVisibleItems] containsObject:newIndex]) {
       [self.photoCollectionView scrollToItemAtIndexPath:newIndex atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
       
@@ -369,6 +399,7 @@
     selectedIndexPath = newIndex;
     [self crossfade:fullscreenImageView image:[self photoForSelectedIndex] isRightSwiped:YES];
     [title setText:_photoSet[selectedIndexPath.row][@"title"]];
+    
     if (![[self.photoCollectionView indexPathsForVisibleItems] containsObject:newIndex]) {
       [self.photoCollectionView scrollToItemAtIndexPath:newIndex atScrollPosition:UICollectionViewScrollPositionBottom animated:YES];
     }
@@ -411,6 +442,7 @@
                      fullscreenImageView = nil;
                    }
    ];
+  [self.photoCollectionView reloadData];    //so that the updatedMonthLabel will be reloaded
 }
 
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
