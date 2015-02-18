@@ -17,6 +17,7 @@ static NSString * const YPCalendarEventsErrorDomain = @"YPCalendarEventsErrorDom
 
 + (void)getEventsFromDay:(NSDate *)day
                  tilNext:(NSUInteger)nDays
+                viewName:(NSString *)viewName
                     tags:(NSArray *)tags
          completionBlock:(void(^)(NSArray *))successHandler
             failureBlock:(void(^)(NSError *))failureHandler
@@ -25,20 +26,15 @@ static NSString * const YPCalendarEventsErrorDomain = @"YPCalendarEventsErrorDom
   [yyyyMMdd setDateFormat:@"yyyy-MM-dd"];
   
   NSString *dateString  = [yyyyMMdd stringFromDate:day];
-  NSString *nDaysString = [NSString stringWithFormat:@"%lddays", nDays];
-  NSString *tagsString  = @"";
-  
-  for (id tag in tags) {
-    NSAssert([tag isKindOfClass:[NSString class]], @"Tag is not an NSString!");
-    tagsString =
-        (tagsString.length == 0)
-            ? tag
-            : [NSString stringWithFormat:@"%@,%@", tagsString, (NSString *)tag];
+  NSString *nDaysString = [NSString stringWithFormat:@"%ddays", (int)nDays];
+  NSString *urlString;
+  if (viewName) {
+    urlString = [NSString stringWithFormat:@"%@/%@/%@/viewName=%@",
+                 CalendarBaseURL, dateString, nDaysString, viewName];
+  } else {
+    urlString = [NSString stringWithFormat:@"%@/%@/%@/tag=%@",
+                 CalendarBaseURL, dateString, nDaysString, [tags componentsJoinedByString:@","]];
   }
-  
-  NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@/tag=%@",
-                         CalendarBaseURL, dateString, nDaysString, tagsString];
-  
   NSLog(@"%@", urlString);
   
   AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

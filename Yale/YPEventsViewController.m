@@ -11,19 +11,34 @@
 #import "YPEventsDetailViewController.h"
 #import "YPGlobalHelper.h"
 #import "YPTheme.h"
+#import "YPEventsCategoriesViewController.h"
+#import "YPCircleView.h"
 
 @interface YPEventsViewController ()
 @property (nonatomic, strong) RSDFDatePickerView *datePickerView;
 @property (nonatomic, strong) UITableView *detailTableView;
 @property (nonatomic, strong) NSArray             *events;
-@property (nonatomic, strong) NSMutableDictionary *eventsDictionary;
 @property (nonatomic, strong) NSArray *currentEvents;
 @property (nonatomic, strong) UILabel *headerTextLabel;
 @end
 
 @implementation YPEventsViewController
 
-#define DETAIL_HEIGHT 260
+//this was 260. after frames changed so Detail table view scrolls all the way to the bottom, the size left for the calendar was noticeably smaller.
+#define DETAIL_HEIGHT 220
+
+- (void)viewWillAppear:(BOOL)animated
+{
+  //put this code here so the bounds are set AFTER self.view's bounds are set
+  CGFloat calendarHeight = self.view.bounds.size.height - DETAIL_HEIGHT;
+  
+  CGRect calendarFrame = CGRectMake(0, 0, self.view.bounds.size.width, calendarHeight);
+  self.datePickerView.frame = calendarFrame;
+  
+  CGRect detailFrame = CGRectMake(0, calendarHeight, self.view.bounds.size.width, DETAIL_HEIGHT);
+  self.detailTableView.frame = detailFrame;
+  [super viewWillAppear:animated];
+}
 
 - (void)viewDidLoad
 {
@@ -35,14 +50,14 @@
   self.datePickerView.delegate = self;
   self.datePickerView.dataSource = self;
   self.title = @"Events";
-  [self.view addSubview:self.datePickerView];
+  [self.view insertSubview:self.datePickerView atIndex:0];
   
   CGRect detailFrame = CGRectMake(0, calendarHeight, self.view.bounds.size.width, DETAIL_HEIGHT);
   self.detailTableView = [[UITableView alloc] initWithFrame:detailFrame];
   self.detailTableView.dataSource = self;
   self.detailTableView.delegate = self;
   [self.detailTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"detailCell"];
-  [self.view addSubview:self.detailTableView];
+  [self.view insertSubview:self.detailTableView atIndex:0];
   
   CGRect tableHeaderFrame = CGRectMake(0, 0, self.view.bounds.size.width, 24.0f);
   UIView *tableHeaderView = [[UIView alloc] initWithFrame:tableHeaderFrame];
@@ -59,12 +74,10 @@
   [formatter setDateFormat:@"yyyy-MM-dd"];
   self.headerTextLabel.text = [formatter stringFromDate:[NSDate date]];
   
-  
-  
   UIBarButtonItem *todayBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain target:self action:@selector(onTodayButtonTouch:)];
   self.navigationItem.rightBarButtonItem = todayBarButtonItem;
-  [self getEvents];
   
+  [self getEvents];
 }
 
 - (void)getEvents {
@@ -100,14 +113,14 @@
   // Getting the number of days in between the two dates
   NSInteger days = [YPEventsViewController daysBetweenDate:dayOneInCurrentMonth andDate:dayOneSixMonthsForward];
   
-  [YPCalendarEventsServerCommunicator getEventsFromDay:dayOneNow tilNext:days tags:self.tags completionBlock:^(NSArray *array) {
+  [YPCalendarEventsServerCommunicator getEventsFromDay:dayOneNow tilNext:days viewName:self.viewName tags:self.tags completionBlock:^(NSArray *array) {
     self.events = array;
     [YPGlobalHelper hideNotificationView];
     [self.datePickerView reloadData];
     [self.datePickerView selectDate:today];
   
     NSString *dateString = [self getDateString:today];
-    self.currentEvents = [self.eventsDictionary objectForKey:dateString];
+    self.currentEvents = [self eventsForDateString:dateString];
     [self.detailTableView reloadData];
     
   } failureBlock:^(NSError *error) {
@@ -120,11 +133,9 @@
 }
 
 - (NSString *)getDateString:(NSDate *)date {
-  NSCalendar *gregorian = [[NSCalendar alloc]
-                           initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-  NSDateComponents *components =
-  [gregorian components:(NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear) fromDate:date];
-  return [NSString stringWithFormat:@"%ld/%ld/%ld", (long)[components month], (long)[components day], (long)[components year] % 2000];
+  NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+  [formatter setDateFormat:@"yyyyMMdd"];
+  return [formatter stringFromDate:date];
   
 }
 #pragma mark - Data Source
@@ -133,7 +144,7 @@
 - (BOOL)datePickerView:(RSDFDatePickerView *)view shouldMarkDate:(NSDate *)date
 {
   NSString *dateString = [self getDateString:date];
-  return [self.eventsDictionary objectForKey:dateString];
+  return [self eventsForDateString:dateString].count;
 }
   
 
@@ -168,7 +179,7 @@
 - (void)datePickerView:(RSDFDatePickerView *)view didSelectDate:(NSDate *)date
 {
   NSString *dateString = [self getDateString:date];
-  self.currentEvents = [self.eventsDictionary objectForKey:dateString];
+  self.currentEvents = [self eventsForDateString:dateString];
   [self.detailTableView reloadData];
   NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
   [formatter setDateFormat:@"yyyy-MM-dd"];
@@ -181,20 +192,44 @@
   return [self.currentEvents count];
 }
 
++ (NSString *)eventTitle:(NSDictionary *)event
+{
+  return [[[event objectForKey:@"summary"] stringByReplacingOccurrencesOfString:@"&rsquo;" withString:@"'"] stringByReplacingOccurrencesOfString:@"&lsquo;" withString:@"'"];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   UITableViewCell *cell = [self.detailTableView dequeueReusableCellWithIdentifier:@"detailCell"];
   NSDictionary *event = [self.currentEvents objectAtIndex:indexPath.row];
-  cell.textLabel.text = [event objectForKey:@"summary"];
+  cell.textLabel.text = [self.class eventTitle:event];
+  NSArray *tags = [event objectForKey:@"categories"];
+  UIColor *color = [YPEventsCategoriesViewController colorForTags:tags];
+  
+  //add circle of color to tableviewcell
+  YPCircleView *circle;
+  if (!(circle = (YPCircleView *)[cell.contentView viewWithTag:1])) {
+    CGFloat height = [self tableView:tableView heightForRowAtIndexPath:indexPath];
+    CGFloat size = 20;
+    circle = [[YPCircleView alloc] initWithFrame:CGRectMake(-3, height/2-size/2, size, size)];
+    circle.tag = 1;
+    circle.backgroundColor = [UIColor clearColor];
+    [cell.contentView addSubview:circle];
+  }
+  circle.color = color;
+  [circle setNeedsDisplay];
   return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  return 44; //default. just to make sure everything is consistent
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
   
   YPEventsDetailViewController *detail = [[YPEventsDetailViewController alloc] init];
   NSDictionary *event = [self.currentEvents objectAtIndex:indexPath.row];
   detail.url = [event objectForKey:@"eventlink"];
-  detail.title = [event objectForKey:@"summary"];
+  detail.title = [self.class eventTitle:event];
   [self.detailTableView deselectRowAtIndexPath:indexPath animated:YES];
   
   if (detail.url)
@@ -223,21 +258,21 @@
 
 #pragma mark - Setter
 
-- (void)setEvents:(NSArray *)events
+//dateString is of format yyyyMMDD. this way, converting to an int will create a monotonic function date->int, to make bounds checking easy.
+//checks to see if the date is between the start and end dates for each event
+- (NSArray *)eventsForDateString:(NSString *)dateString
 {
-  if (_events != events) {
-    _events = events;
-    self.eventsDictionary = [NSMutableDictionary dictionary];
-    
-    [_events enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-      NSString *dateString = obj[@"start"][@"shortdate"];
-      if (![self.eventsDictionary objectForKey:dateString]) {
-        [self.eventsDictionary setObject:[NSMutableArray array] forKey:dateString];
-      }
-      [self.eventsDictionary[dateString] addObject:obj];
-    }];
-    NSLog(@"Events updated: %@", self.eventsDictionary);
-  }
+  //date string will be an int, in the range of 20 million. that should easily fit in an int.
+  int dateIntValue = [dateString intValue];
+  NSMutableArray *eventsArray = [NSMutableArray array];
+  [self.events enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    int startDate = [obj[@"start"][@"datetime"] intValue];
+    int endDate = [obj[@"end"][@"datetime"] intValue];
+    if (startDate <= dateIntValue && endDate >= dateIntValue) {
+      [eventsArray addObject:obj];
+    }
+  }];
+  return [eventsArray copy];
 }
 
 #pragma mark - Interaction
