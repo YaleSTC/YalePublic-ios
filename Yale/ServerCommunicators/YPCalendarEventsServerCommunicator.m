@@ -18,7 +18,6 @@ static NSString * const YPCalendarEventsErrorDomain = @"YPCalendarEventsErrorDom
 + (void)getEventsFromDay:(NSDate *)day
                  tilNext:(NSUInteger)nDays
                 viewName:(NSString *)viewName
-                    tags:(NSArray *)tags
          completionBlock:(void(^)(NSArray *))successHandler
             failureBlock:(void(^)(NSError *))failureHandler
 {
@@ -27,14 +26,8 @@ static NSString * const YPCalendarEventsErrorDomain = @"YPCalendarEventsErrorDom
   
   NSString *dateString  = [yyyyMMdd stringFromDate:day];
   NSString *nDaysString = [NSString stringWithFormat:@"%ddays", (int)nDays];
-  NSString *urlString;
-  if (viewName) {
-    urlString = [NSString stringWithFormat:@"%@/%@/%@/viewName=%@",
+  NSString *urlString = [NSString stringWithFormat:@"%@/%@/%@/viewName=%@",
                  CalendarBaseURL, dateString, nDaysString, viewName];
-  } else {
-    urlString = [NSString stringWithFormat:@"%@/%@/%@/tag=%@",
-                 CalendarBaseURL, dateString, nDaysString, [tags componentsJoinedByString:@","]];
-  }
   NSLog(@"%@", urlString);
   
   AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

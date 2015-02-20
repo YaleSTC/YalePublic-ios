@@ -113,7 +113,7 @@
   // Getting the number of days in between the two dates
   NSInteger days = [YPEventsViewController daysBetweenDate:dayOneInCurrentMonth andDate:dayOneSixMonthsForward];
   
-  [YPCalendarEventsServerCommunicator getEventsFromDay:dayOneNow tilNext:days viewName:self.viewName tags:self.tags completionBlock:^(NSArray *array) {
+  [YPCalendarEventsServerCommunicator getEventsFromDay:dayOneNow tilNext:days viewName:self.viewName completionBlock:^(NSArray *array) {
     self.events = array;
     [YPGlobalHelper hideNotificationView];
     [self.datePickerView reloadData];
@@ -202,7 +202,7 @@
   NSDictionary *event = [self.currentEvents objectAtIndex:indexPath.row];
   cell.textLabel.text = [self.class eventTitle:event];
   NSArray *tags = [event objectForKey:@"categories"];
-  UIColor *color = [YPEventsCategoriesViewController colorForTags:tags];
+  UIColor *color = [YPEventsCategoriesViewController colorForName:self.viewName tags:tags];
   
   //add circle of color to tableviewcell
   YPCircleView *circle;
@@ -280,6 +280,8 @@
 - (void)onTodayButtonTouch:(UIBarButtonItem *)sender
 {
   [self.datePickerView scrollToToday:YES];
+  [self.datePickerView selectDate:[NSDate date]];
+  [self datePickerView:self.datePickerView didSelectDate:[NSDate date]]; //this isn't called automatically when set programmatically
 }
 
 @end
