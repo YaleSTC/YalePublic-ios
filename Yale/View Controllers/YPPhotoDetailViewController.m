@@ -389,7 +389,11 @@
 
 -(void)fullScreenImageViewLeftSwiped:(UIGestureRecognizer *)gestureRecognizer
 {
-  
+  if (selectedIndexPath.row == _photoSet.count-2) {
+    //the image that will be swiped onto the screen is the last one loaded so far.
+    //so paginate.
+    [self loadPhotosFromInstagram];
+  }
   //first check if there is more pictures to see.
   if(selectedIndexPath.row < (_photoSet.count-1))
   {
