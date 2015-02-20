@@ -7,10 +7,13 @@
 //
 
 #import "YPPhotoDetailViewController.h"
-#import "YPFlickrCommunicator.h"
 #import "YPInstagramCommunicator.h"
 #import "YPPhotoCollectionViewCell.h"
 #import "YPGlobalHelper.h"
+#import "Config.h"
+#import <GAI.h>
+#import <GAIFields.h>
+#import <GAIDictionaryBuilder.h>
 
 #define IMAGES_PER_ROW (2)
 
@@ -22,7 +25,7 @@
   UIView *overlayView;
   UIImageView *thumbnailImageView;
   UIImageView *fullscreenImageView;
-  UILabel *title;
+  UITextView *title;
   NSIndexPath *selectedIndexPath;
   NSMutableArray *rowHeights; //array of NSNumbers.
 }
@@ -61,6 +64,14 @@
   self.collectionView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height);
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  //Google Analytics
+  id tracker = [[GAI sharedInstance] defaultTracker];
+  [tracker set:kGAIScreenName
+         value:@"Photo VC"];
+  [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+}
 //when scroll to the bottom, do pagination with instagram photos.
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
@@ -77,13 +88,7 @@
   _photoSet = [NSMutableArray array];
   rowHeights = [NSMutableArray array];
   
-  if([self.photoSetId  isEqualToString: @"INSTAGRAM"]){
-    
-    [self loadPhotosFromInstagram];
-  } else {
-    
-    [self loadPhotosFromFlickr];
-  }
+  [self loadPhotosFromInstagram];
 }
 
 -(void)loadPhotosFromInstagram {
@@ -117,8 +122,15 @@
       } else {
         caption = @"";
       }
+      
+      int createdInt = [photoDictionary[@"created_time"] intValue];
+      NSTimeInterval timestamp = (NSTimeInterval)createdInt;
+      NSDate *createdDate = [NSDate dateWithTimeIntervalSince1970:timestamp];
+      
       [photoURLs addObject:@{@"url": url,
-                             @"title": caption}];
+                             @"title": caption,
+                             @"date":createdDate}];
+      
     }
     [YPGlobalHelper hideNotificationView];
 
@@ -131,7 +143,9 @@
         //this threw an exception when image was nil or when photo["title"] was nil
         if (image && photo[@"title"]) {
           NSUInteger indexForRow = _photoSet.count/IMAGES_PER_ROW; //this is the index of the last row
-          [_photoSet addObject:@{@"image":image, @"title": photo[@"title"]}];
+          [_photoSet addObject:@{@"image":image, @"title": photo[@"title"], @"date":photo[@"date"]}];
+          NSSortDescriptor* sortByDate = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO];
+          [_photoSet sortUsingDescriptors:[NSArray arrayWithObject:sortByDate]];
           CGFloat totalWidthWithHeight1 = 0;
           //to find the size, consider all images in row
           for (NSUInteger i=indexForRow*IMAGES_PER_ROW; i<_photoSet.count; i++) {
@@ -153,62 +167,25 @@
           }
         }
       }];
+      
     }
+    
 
     
   }];
 }
 
--(void)loadPhotosFromFlickr {
-  
-  YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
-  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
-  [flickr getPhotosForSet:self.photoSetId completionBlock:^(NSDictionary *response) {
+-(BOOL)isPhotoSameMonthWithPrevious:(NSIndexPath *)indexPath {
+  if (indexPath.row == 0) {
+    return NO;
+  }else {
+    NSCalendar *calender = [NSCalendar currentCalendar];
     
-    NSLog(@"%@", response);
-    
-      // Get a list of URLs
-      NSMutableArray *photoURLs = [NSMutableArray array];
-      for (NSDictionary *photoDictionary in [response valueForKeyPath:@"photoset.photo"]) {
-        NSURL *smallPhotoUrl = [flickr urlForImageFromDictionary:photoDictionary largeSize:NO];
-        NSURL *largePhotoUrl = [flickr urlForImageFromDictionary:photoDictionary largeSize:YES];
-        //[photoURLs addObject:url];
-        [photoURLs addObject:@{@"smallPhotoUrl": smallPhotoUrl, @"largePhotoUrl":largePhotoUrl, @"title": photoDictionary[@"title"]}];
-      }
-    [YPGlobalHelper hideNotificationView];
-
-    // Download image for each URL
-    //for (NSURL *url
-    for (NSDictionary *photo in photoURLs) {
-      [flickr downloadImageForURL:photo[@"smallPhotoUrl"] completionBlock:^(UIImage *image) {
-        //this threw an exception when image was nil or when photo["title"] was nil
-        if (image && photo[@"title"]) {
-          NSUInteger indexForRow = _photoSet.count/IMAGES_PER_ROW; //this is the index of the last row
-          [_photoSet addObject:@{@"smallImage":image, @"title": photo[@"title"], @"largePhotoUrl":photo[@"largePhotoUrl"]}];
-          NSMutableArray *imagesInRow = [NSMutableArray array]; //to find the size, consider all images in row
-          for (NSUInteger i=indexForRow*IMAGES_PER_ROW; i<_photoSet.count; i++) {
-            [imagesInRow addObject:_photoSet[i][@"smallImage"]];
-          }
-          CGFloat totalWidthWithHeight1 = 0;
-          for (UIImage *img in imagesInRow) {
-            totalWidthWithHeight1 += img.size.width / img.size.height;
-          }
-          CGFloat totalWidthDestination = self.view.bounds.size.width-IMAGES_PER_ROW;//with some space in between
-          while (rowHeights.count<indexForRow+1) [rowHeights addObject:@(0)];
-          rowHeights[indexForRow]=@(totalWidthDestination/totalWidthWithHeight1);
-          //don't reload the data too quickly, it looks flashy.
-          [NSObject cancelPreviousPerformRequestsWithTarget:self.photoCollectionView selector:@selector(reloadData) object:nil];
-          if (_photoSet.count==photoURLs.count) {
-            //this is the last photo downloaded.
-            [self.photoCollectionView reloadData];
-            
-          } else {
-            [self.photoCollectionView performSelector:@selector(reloadData) withObject:nil afterDelay:LOAD_WAIT];
-          }
-        }
-      }];
-    }
-  }];
+    unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth;
+    NSDateComponents *compOne = [calender components:unitFlags fromDate:_photoSet[indexPath.row][@"date"]];
+    NSDateComponents *compTwo = [calender components:unitFlags fromDate:_photoSet[indexPath.row - 1][@"date"]];
+    return ([compOne month] == [compTwo month] && [compOne year] == [compTwo year]);
+  }
 }
 
 
@@ -219,14 +196,17 @@
                                      dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCell"
                                      forIndexPath:indexPath];
   
-  UIImage *smallImage;
-  if ([self.photoSetId isEqualToString:@"INSTAGRAM"]) {
-    smallImage = _photoSet[indexPath.row][@"image"];
-  }else {
-    smallImage = _photoSet[indexPath.row][@"smallImage"];
-  }
-  cell.photoImageView.image = smallImage;
+  UIImage *image;
+  image = _photoSet[indexPath.row][@"image"];
+  cell.photoImageView.image = image;
   cell.photoTitle = _photoSet[indexPath.row][@"title"];
+  
+  cell.isNewMonth = ![self isPhotoSameMonthWithPrevious:indexPath];
+  NSDateFormatter* df = [[NSDateFormatter alloc] init] ;
+  [df setDateFormat:@"MMM ''yy"];
+  cell.updatedMonthLabel.text = [df stringFromDate:_photoSet[indexPath.row][@"date"]];
+  cell.updatedMonthLabel.hidden = !cell.isNewMonth;
+  
   [cell.photoImageView setContentMode:UIViewContentModeScaleAspectFit];
   /*
   [cell.layer setBorderColor:[UIColor colorWithRed:213.0/255.0f green:210.0/255.0f blue:199.0/255.0f alpha:1.0f].CGColor];
@@ -250,11 +230,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
   UIImage *image;
-  if ([self.photoSetId isEqualToString:@"INSTAGRAM"]) {
-    image = _photoSet[indexPath.row][@"image"];
-  }else {
-    image = _photoSet[indexPath.row][@"smallImage"];
-  }
+  image = _photoSet[indexPath.row][@"image"];
   NSUInteger row = indexPath.row/IMAGES_PER_ROW;
   return CGSizeMake([rowHeights[row] doubleValue]*image.size.width/image.size.height, [rowHeights[row] doubleValue]);
 }
@@ -298,15 +274,16 @@
                    }
                    completion:^(BOOL finished){
                      
+                     
+                     
                      // Create title label
-                     int distanceFromBottom = ((marginFactor/2)*fullscreenImageView.bounds.size.height);
+                     int distanceFromBottom = ((marginFactor)*fullscreenImageView.bounds.size.height);
                      int labelYCoordinate = (overlayView.bounds.size.height-distanceFromBottom);
-                     
-                     
-                     title = [[UILabel alloc] initWithFrame:CGRectMake(0, labelYCoordinate, self.view.bounds.size.width, distanceFromBottom)];
+                     title = [[UITextView alloc] initWithFrame:CGRectMake(0, labelYCoordinate + distanceFromBottom * 0.1, self.view.bounds.size.width, distanceFromBottom * 0.8 ) textContainer:nil];
+                     title.editable = NO;
+                     title.backgroundColor = [UIColor clearColor];
                      title.textColor = [UIColor whiteColor];
                      title.textAlignment = NSTextAlignmentCenter;
-                     title.numberOfLines = 2;
                      title.text = selectedCell.photoTitle;
                      [overlayView addSubview:title];
                    }
@@ -314,6 +291,7 @@
   
   
   thumbnailImageView = selectedCell.photoImageView;
+  [selectedCell bringSubviewToFront:selectedCell.updatedMonthLabel];
   
   UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewTapped:)];
   singleTap.numberOfTapsRequired = 1;
@@ -334,6 +312,7 @@
   [overlayView addGestureRecognizer:longPress];
   
 }
+
 
 -(void)fullScreenImageViewLongPressed:(UIGestureRecognizer *)gestureRecognizer
 {
@@ -400,6 +379,7 @@
     [self crossfade:fullscreenImageView image:[self photoForSelectedIndex] isRightSwiped:NO];
     //fullscreenImageView.image = _photoSet[newIndex.row][@"image"];
     [title setText:_photoSet[newIndex.row][@"title"]];
+    
     if (![[self.photoCollectionView indexPathsForVisibleItems] containsObject:newIndex]) {
       [self.photoCollectionView scrollToItemAtIndexPath:newIndex atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
       
@@ -419,6 +399,7 @@
     selectedIndexPath = newIndex;
     [self crossfade:fullscreenImageView image:[self photoForSelectedIndex] isRightSwiped:YES];
     [title setText:_photoSet[selectedIndexPath.row][@"title"]];
+    
     if (![[self.photoCollectionView indexPathsForVisibleItems] containsObject:newIndex]) {
       [self.photoCollectionView scrollToItemAtIndexPath:newIndex atScrollPosition:UICollectionViewScrollPositionBottom animated:YES];
     }
@@ -436,29 +417,7 @@
 
 -(UIImage *)photoForSelectedIndex
 {
-  if ([self.photoSetId isEqualToString:@"INSTAGRAM"]) {
-    return _photoSet[selectedIndexPath.row][@"image"];
-  }else {       //flickr
-    if(_photoSet[selectedIndexPath.row][@"largeImage"]){
-      NSLog(@"returning large image");
-      return _photoSet[selectedIndexPath.row][@"largeImage"];
-    } else {
-      NSLog(@"returning small image");
-      // reload large image
-      YPFlickrCommunicator *flickr = [[YPFlickrCommunicator alloc] init];
-      [flickr downloadImageForURL:_photoSet[selectedIndexPath.row][@"largePhotoUrl"] completionBlock:^(UIImage *image) {
-        
-        NSLog(@"downloaded large image: %@", image);
-        [fullscreenImageView setImage:image];
-        NSMutableDictionary *tempWithLargeImage = [[NSMutableDictionary alloc] initWithDictionary:_photoSet[selectedIndexPath.row]];
-        tempWithLargeImage[@"largeImage"] = image;
-        _photoSet[selectedIndexPath.row] = tempWithLargeImage;
-#warning error handling necessary
-      }
-       ];
-      return _photoSet[selectedIndexPath.row][@"smallImage"];
-    }
-  }
+  return _photoSet[selectedIndexPath.row][@"image"];
 }
 
 - (void)fullScreenImageViewTapped:(UIGestureRecognizer *)gestureRecognizer {
@@ -483,6 +442,7 @@
                      fullscreenImageView = nil;
                    }
    ];
+  [self.photoCollectionView reloadData];    //so that the updatedMonthLabel will be reloaded
 }
 
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView

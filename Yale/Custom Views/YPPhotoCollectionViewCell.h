@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface YPPhotoCollectionViewCell : UICollectionViewCell
+@property (weak, nonatomic) IBOutlet UILabel *updatedMonthLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *photoImageView;
 @property (strong, nonatomic) NSString *photoTitle;
+@property (nonatomic) BOOL isNewMonth;
 
 @end
