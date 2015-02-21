@@ -10,7 +10,7 @@
 #import "Config.h"
 #import "YPGlobalHelper.h"
 
-@interface YPWebViewController ()
+@interface YPWebViewController () <UIAlertViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *back;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *forward;
@@ -23,6 +23,8 @@
 //set only in initializer.
 @property (strong) NSString *startTitle;
 @property (strong) NSString *startURL;
+
+@property (strong) NSString *failedURL;
 
 @end
 
@@ -92,6 +94,9 @@ didFinishNavigation: (WKNavigation *)navigation
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
+  NSString *url = error.userInfo[@"NSErrorFailingURLStringKey"];
+  self.failedURL = url;
+  [self loadFailureAlert];
   NSLog(@"Error loading webview: %@", error.description);
 }
 
@@ -99,6 +104,22 @@ didFinishNavigation: (WKNavigation *)navigation
 {
   //this gets called when user clicks on a link to the itunes store
   NSLog(@"Error loading webview (provisional):%@", error.description);
+  NSString *url = error.userInfo[@"NSErrorFailingURLStringKey"];
+  self.failedURL = url;
+  [self loadFailureAlert];
+}
+
+- (void)loadFailureAlert
+{
+  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Load failed" message:nil delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Open in Safari", nil];
+  [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+  if (buttonIndex!=alertView.cancelButtonIndex) {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.failedURL]]; //attempt to open in safari.
+  }
 }
 
 - (IBAction)openSafari:(UIBarButtonItem *)sender
