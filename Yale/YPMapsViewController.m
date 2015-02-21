@@ -57,6 +57,9 @@
   tableViewFrame.size.height = self.view.bounds.size.height - tableViewFrame.origin.y;
   self.tableView.frame = tableViewFrame;
   [super viewWillAppear:animated];
+  
+  //resetting this here makes it so the first cell in the table view is actually visible.
+  self.tableView.tableHeaderView = self.searchController.searchBar;
 }
 
 - (void)setupBuildings {
