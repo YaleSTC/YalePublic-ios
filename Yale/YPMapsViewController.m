@@ -183,6 +183,7 @@
   MKCoordinateSpan span = MKCoordinateSpanMake(0.01, 0.01);
   [self.mapView setRegion:MKCoordinateRegionMake(location, span)];
   
+  [self.mapView removeOverlays:self.mapView.overlays];
   if (self.currentAnnotation)
       [self.mapView removeAnnotation:self.currentAnnotation];
   self.currentAnnotation = [[MKPointAnnotation alloc] init];
@@ -193,10 +194,38 @@
   [self.mapView addAnnotation:self.currentAnnotation];
   [self.mapView selectAnnotation:self.currentAnnotation animated:YES];
   
-  
+  [self performSelector:@selector(findDirections) withObject:nil afterDelay:0];
 }
 
+- (void)findDirections
+{
+  [self mapViewWillStartLocatingUser:self.mapView];
+  MKDirectionsRequest *request = [[MKDirectionsRequest alloc] init];
+  [request setSource:[MKMapItem mapItemForCurrentLocation]];
+  [request setDestination:[[MKMapItem alloc] initWithPlacemark:[[MKPlacemark alloc] initWithCoordinate:self.currentAnnotation.coordinate addressDictionary:nil]]];
+  [request setTransportType:MKDirectionsTransportTypeAny]; // Should these be just walking directions?
+  [request setRequestsAlternateRoutes:NO];
+  MKDirections *directions = [[MKDirections alloc] initWithRequest:request];
+  [directions calculateDirectionsWithCompletionHandler:^(MKDirectionsResponse *response, NSError *error) {
+    if (!error) {
+      for (MKRoute *route in [response routes]) {
+        [self.mapView addOverlay:[route polyline] level:MKOverlayLevelAboveRoads]; // Draws the route above roads, but below labels.
+        // You can also get turn-by-turn steps, distance, advisory notices, ETA, etc by accessing various route properties.
+      }
+    }
+  }];
+}
 
+- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
+{
+  if ([overlay isKindOfClass:[MKPolyline class]]) {
+    MKPolylineRenderer *renderer = [[MKPolylineRenderer alloc] initWithOverlay:overlay];
+    [renderer setStrokeColor:[UIColor blueColor]];
+    [renderer setLineWidth:5.0];
+    return renderer;
+  }
+  return nil;
+}
 
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
