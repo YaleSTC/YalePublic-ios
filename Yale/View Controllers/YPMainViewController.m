@@ -18,6 +18,7 @@
 #import "YPEventsViewController.h"
 #import "YPTheme.h"
 #import <PureLayout/PureLayout.h>
+#import "YPAppDelegate.h"
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
 
@@ -159,6 +160,7 @@ typedef enum {
 
 - (void)viewWillAppear:(BOOL)animated
 {
+  [[UIApplication sharedApplication].delegate window].rootViewController = self.navigationController;
   [super viewWillAppear:animated];
 }
 

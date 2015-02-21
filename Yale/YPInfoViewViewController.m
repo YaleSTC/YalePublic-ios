@@ -96,6 +96,11 @@
   }
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+  [[UIApplication sharedApplication].delegate window].rootViewController = self.navigationController;
+}
+
 
 // Then implement the delegate method
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {

@@ -90,6 +90,17 @@ didFinishNavigation: (WKNavigation *)navigation
   self.navigationItem.rightBarButtonItem = nil;
 }
 
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
+{
+  NSLog(@"Error loading webview: %@", error.description);
+}
+
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error
+{
+  //this gets called when user clicks on a link to the itunes store
+  NSLog(@"Error loading webview (provisional):%@", error.description);
+}
+
 - (IBAction)openSafari:(UIBarButtonItem *)sender
 {
   [[UIApplication sharedApplication] openURL:self.currentURL];
