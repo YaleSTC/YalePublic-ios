@@ -36,6 +36,8 @@
   [[UINavigationBar appearance] setTranslucent:false];
   [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
   
+  [application setStatusBarStyle:UIStatusBarStyleLightContent];
+  
 #ifdef DEBUG
   [[FLEXManager sharedManager] showExplorer];
 #endif

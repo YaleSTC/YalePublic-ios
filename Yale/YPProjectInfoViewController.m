@@ -7,44 +7,17 @@
 //
 
 #import "YPProjectInfoViewController.h"
-#import "YPGlobalHelper.h"
-@import WebKit;
-
-@interface YPProjectInfoViewController ()
-
-@end
 
 @implementation YPProjectInfoViewController
 
-
-- (void)viewDidLoad
++ (NSString *)loadedTitle
 {
-  [super viewDidLoad];
-  self.title = @"Yale OPAC";
+  return @"Yale OPAC";
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (NSString *)initialURL
 {
-  [super viewWillAppear:animated];
-  [self setUpWebView];
-}
-
-- (void)setUpWebView
-{
-  NSURL *url = [NSURL URLWithString:@"http://communications.yale.edu/mobile"];
-  NSURLRequest *request = [NSURLRequest requestWithURL:url];
-  
-  WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];;
-  [webView loadRequest:request];
-  [self.view addSubview:webView];
-  [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
-  dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    while (webView.loading)
-      ;
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [YPGlobalHelper hideNotificationView];
-    });
-  });
+  return @"http://communications.yale.edu/mobile";
 }
 
 @end

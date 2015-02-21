@@ -87,7 +87,12 @@
     [mailCont setSubject:@"Feedback"];
     [mailCont setToRecipients:[NSArray arrayWithObject:@"yalepublic@gmail.com"]];
     [mailCont setMessageBody:@"" isHTML:NO];
-    [self.navigationController presentViewController:mailCont animated:YES completion:nil];
+    [self.navigationController presentViewController:mailCont animated:YES completion:^{
+      //without these lines the status bar shows up black, for some reason.
+      [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+      [self setNeedsStatusBarAppearanceUpdate];
+    }];
+    mailCont.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
   }
 }
 
@@ -99,9 +104,9 @@
 
 
 #pragma mark - Navigation
-- (IBAction)dissmissThisVC:(id)sender {
+- (IBAction)dissmissThisVC:(id)sender
+{
   [self dismissViewControllerAnimated:YES completion:nil];
-
 }
 
 @end
