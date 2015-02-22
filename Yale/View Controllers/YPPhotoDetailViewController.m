@@ -33,6 +33,13 @@
 //to continue loading pages, have to keep this around. if photos are to be reloaded from scratch, should set this to nil.
 @property (strong) YPInstagramCommunicator *instagramCommunicator;
 
+@property (strong, nonatomic) UIProgressView *progressView;
+
+@property int numberOfPhotosDownloading;
+@property int numberOfPhotosToDownload;
+@property NSUInteger totalBytesForAllPhotosDownloading;
+@property NSUInteger totalBytesLoadedForAllPhotosDownloading;
+
 @end
 
 //if there is less than this amount of seconds between photo loads, don't update the view multiple times in succession. Wait for a pause, then update the view.
@@ -60,6 +67,9 @@
   
   NSLog(@"backButtonTitle: %@",backItem.title);
   
+  self.progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 2)];
+  [self.view addSubview:self.progressView];
+  
   [self loadPhotos];
   self.collectionView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height-self.navigationController.navigationBar.bounds.size.height);
 }
@@ -78,8 +88,10 @@
   if (self.instagramCommunicator && !self.instagramCommunicator.lastPageLoaded) { //if viewing instagram photos
     //if scrolled to bottom
     if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height) {
-      NSLog(@"Paginate");
-      [self loadPhotosFromInstagram]; //bypass the loadPhotos step, which resets the photos already set.
+      if (!self.numberOfPhotosDownloading) {
+        //no photos are currently being downloaded, so it's okay to load more
+        [self loadPhotosFromInstagram]; //bypass the loadPhotos step, which resets the photos already set.
+      }
     }
   }
 }
@@ -93,6 +105,8 @@
 
 -(void)loadPhotosFromInstagram {
   if (!self.instagramCommunicator) self.instagramCommunicator = [[YPInstagramCommunicator alloc] init];
+  self.progressView.alpha = 1;
+  self.progressView.progress = 0;
   [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
   NSUInteger photosAlreadyLoaded = _photoSet.count;
 
@@ -136,9 +150,18 @@
 
     // Download image for each URL
     for (NSDictionary *photo in photoURLs) {
+      self.numberOfPhotosToDownload++;
 
-      [self.instagramCommunicator downloadImageForURL:photo[@"url"] completionBlock:^(UIImage *image) {
+      [self.instagramCommunicator downloadImageForURL:photo[@"url"] completionBlock:^(UIImage *image, NSUInteger bytesLoaded) {
         //[self.photoCollectionView reloadData];
+        if (self.numberOfPhotosDownloading == self.numberOfPhotosToDownload) {
+          //they've all been downloaded.
+          self.totalBytesForAllPhotosDownloading = 0;
+          self.totalBytesLoadedForAllPhotosDownloading = 0;
+          self.numberOfPhotosDownloading = 0;
+          self.numberOfPhotosToDownload = 0;
+        }
+        
         
         //this threw an exception when image was nil or when photo["title"] was nil
         if (image && photo[@"title"]) {
@@ -166,13 +189,46 @@
             [self.photoCollectionView performSelector:@selector(reloadData) withObject:nil afterDelay:LOAD_WAIT];
           }
         }
+      } progressBlocks:^(NSUInteger bytesLoaded) {
+        self.totalBytesLoadedForAllPhotosDownloading += bytesLoaded;
+        [self showImageLoadingProgress];
+      } :^(NSUInteger bytesTotal) {
+        self.totalBytesForAllPhotosDownloading += bytesTotal;
+        self.numberOfPhotosDownloading++;
+        [self showImageLoadingProgress];
       }];
       
     }
     
-
-    
+  } progressBlock:^(double progress) {
+    [self showProgress:progress];
   }];
+}
+
+- (void)showImageLoadingProgress
+{
+  //the downloaded portion of all photos that have started downloading.
+  double downloadedPortion = (double)self.totalBytesLoadedForAllPhotosDownloading / (double)self.totalBytesForAllPhotosDownloading;
+  //but it only accounts for a proportion of the photos that will be downloading.
+  //this is the proportion of the photos which have started downloading
+  double startedDownloading = (double)self.numberOfPhotosDownloading / (double)self.numberOfPhotosToDownload;
+  [self showProgress:downloadedPortion * startedDownloading];
+}
+
+- (void)showProgress:(double)progress
+{
+  if (progress < self.progressView.progress - 0.5) { //goes down a long way. this is good for when resetting to 0, don't want to animate that.
+    self.progressView.progress = progress;
+  } else {
+    [self.progressView setProgress:progress animated:YES];
+  }
+  if (progress < 0.99) {
+    self.progressView.alpha = 1;
+  } else if (self.progressView.alpha) {
+    [UIView animateWithDuration:1 animations:^{
+      self.progressView.alpha = 0;
+    }];
+  }
 }
 
 -(BOOL)isPhotoSameMonthWithPrevious:(NSIndexPath *)indexPath {
