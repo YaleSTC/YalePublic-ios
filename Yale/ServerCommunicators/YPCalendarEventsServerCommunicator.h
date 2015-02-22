@@ -15,6 +15,7 @@
                  tilNext:(NSUInteger)nDays
                 viewName:(NSString *)viewName
          completionBlock:(void(^)(NSArray *events))successHandler
+           progressBlock:(void(^)(double progress))progressHandler
             failureBlock:(void(^)(NSError *error))failureHandler;
 
 @end

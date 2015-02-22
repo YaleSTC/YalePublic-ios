@@ -16,6 +16,7 @@
 
 @interface YPEventsViewController ()
 @property (nonatomic, strong) RSDFDatePickerView *datePickerView;
+@property (nonatomic, strong) UIProgressView *progressView;
 @property (nonatomic, strong) UITableView *detailTableView;
 @property (nonatomic, strong) NSArray             *events;
 @property (nonatomic, strong) NSArray *currentEvents;
@@ -38,6 +39,10 @@
   CGRect detailFrame = CGRectMake(0, calendarHeight, self.view.bounds.size.width, DETAIL_HEIGHT);
   self.detailTableView.frame = detailFrame;
   [super viewWillAppear:animated];
+  
+  self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+  self.progressView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 2);
+  [self.view addSubview:self.progressView];
 }
 
 - (void)viewDidLoad
@@ -123,8 +128,16 @@
     self.currentEvents = [self eventsForDateString:dateString];
     [self.detailTableView reloadData];
     
+  } progressBlock:^(double progress) {
+    [self.progressView setProgress:progress animated:YES];
+    if (self.progressView.hidden != progress > 0.99) {
+      [UIView animateWithDuration:1 animations:^{
+        self.progressView.alpha = progress < 0.99;
+      }];
+    }
   } failureBlock:^(NSError *error) {
     NSLog(@"error: %@", [error localizedDescription]);
+    [YPGlobalHelper hideNotificationView];
   }];
   
   [YPGlobalHelper showNotificationInViewController:self
