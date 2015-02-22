@@ -10,7 +10,7 @@
 #import "Config.h"
 #import "YPGlobalHelper.h"
 
-@interface YPWebViewController () <UIAlertViewDelegate>
+@interface YPWebViewController ()
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *back;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *forward;
@@ -23,8 +23,6 @@
 //set only in initializer.
 @property (strong) NSString *startTitle;
 @property (strong) NSString *startURL;
-
-@property (strong) NSString *failedURL;
 
 @end
 
@@ -94,9 +92,6 @@ didFinishNavigation: (WKNavigation *)navigation
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
-  NSString *url = error.userInfo[@"NSErrorFailingURLStringKey"];
-  self.failedURL = url;
-  [self loadFailureAlert];
   NSLog(@"Error loading webview: %@", error.description);
 }
 
@@ -104,22 +99,28 @@ didFinishNavigation: (WKNavigation *)navigation
 {
   //this gets called when user clicks on a link to the itunes store
   NSLog(@"Error loading webview (provisional):%@", error.description);
-  NSString *url = error.userInfo[@"NSErrorFailingURLStringKey"];
-  self.failedURL = url;
-  [self loadFailureAlert];
 }
 
-- (void)loadFailureAlert
+//code adapted from http://stackoverflow.com/questions/26501172/launching-phone-email-map-links-in-wkwebview?rq=1
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Load failed" message:nil delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Open in Safari", nil];
-  [alert show];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-  if (buttonIndex!=alertView.cancelButtonIndex) {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.failedURL]]; //attempt to open in safari.
+  if(webView != self.webView) {
+    decisionHandler(WKNavigationActionPolicyAllow);
+    return;
   }
+  
+  UIApplication *app = [UIApplication sharedApplication];
+  NSURL         *url = navigationAction.request.URL;
+  
+  // if not successful load, or if app link, or if email or phone number, use the phone's default response (open in app store, mail, or phone apps). If this link has target="_blank", this will open it in Safari.
+  if (!navigationAction.targetFrame || [url.host isEqualToString:@"itunes.apple.com"] || [url.scheme isEqualToString:@"tel"] || [url.scheme isEqualToString:@"mailto"]) {
+    if ([app canOpenURL:url]) {
+      [app openURL:url];
+      decisionHandler(WKNavigationActionPolicyCancel);
+      return;
+    }
+  }
+  decisionHandler(WKNavigationActionPolicyAllow);
 }
 
 - (IBAction)openSafari:(UIBarButtonItem *)sender
