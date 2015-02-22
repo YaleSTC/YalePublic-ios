@@ -24,6 +24,8 @@
 @property (strong) NSString *startTitle;
 @property (strong) NSString *startURL;
 
+@property BOOL loaded;
+
 @end
 
 @implementation YPWebViewController
@@ -51,10 +53,21 @@
   [super viewDidLoad];
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+  [super viewDidDisappear:animated];
+  // make sure the status bar stays white (it might go black if presenting a mail view controller).
+  [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+  [self setNeedsStatusBarAppearanceUpdate];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
-  [self addWebview]; //this can't go in viewDidLoad because then the bounds are messed up and the toolbar isn't visible.
+  if (!self.loaded) { //this shouldn't be called more than once, but it might be if a mail editor is loaded and then dismissed.
+    [self addWebview]; //this can't go in viewDidLoad because then the bounds are messed up and the toolbar isn't visible.
+    self.loaded = YES;
+  }
 }
 
 

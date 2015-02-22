@@ -20,7 +20,6 @@
 - (void)setupNavigationBar
 {
   UINavigationBar *navigationBar = self.navigationController.navigationBar;
-  navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName : [UIColor whiteColor] };
   navigationBar.barStyle = UIBarStyleBlack;
   [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
                                     forBarPosition:UIBarPositionAny
@@ -92,7 +91,6 @@
       [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
       [self setNeedsStatusBarAppearanceUpdate];
     }];
-    mailCont.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor whiteColor]};
   }
 }
 

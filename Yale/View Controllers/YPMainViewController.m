@@ -53,7 +53,6 @@ typedef enum {
   self.navigationItem.rightBarButtonItem = self.infoButton;
   [infoButton addTarget:self action:@selector(viewInfo) forControlEvents:UIControlEventTouchUpInside];
   navigationBar.barStyle = UIBarStyleBlack;
-  navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName : [UIColor whiteColor] };
   navigationBar.translucent = NO;
   [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
                                     forBarPosition:UIBarPositionAny

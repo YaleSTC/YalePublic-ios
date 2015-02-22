@@ -35,6 +35,7 @@
   [[UINavigationBar appearance] setBarTintColor:[YPTheme navigationBarColor]];
   [[UINavigationBar appearance] setTranslucent:false];
   [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+  [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
   
   [application setStatusBarStyle:UIStatusBarStyleLightContent];
   
