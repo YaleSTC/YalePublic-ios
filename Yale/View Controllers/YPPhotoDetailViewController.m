@@ -292,11 +292,14 @@
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-  
   YPPhotoCollectionViewCell *selectedCell = (YPPhotoCollectionViewCell *) [self.photoCollectionView cellForItemAtIndexPath:indexPath];
   selectedIndexPath = indexPath;
   NSLog(@"selected indexPath %@", indexPath);
   
+  //don't allow selections to happen really frequently
+  // if the user double taps on a photo, two of the big images will load and only one can be dismissed.
+  
+  if (overlayView) return; //don't do anything if something is already being displayed.
   overlayView = [[UIView alloc] init];
   
   fullscreenImageView = [[UIImageView alloc] initWithImage:[self photoForSelectedIndex]];
