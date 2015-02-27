@@ -75,12 +75,11 @@
 //when scroll to the bottom, do pagination with instagram photos.
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-  if (self.instagramCommunicator && !self.instagramCommunicator.lastPageLoaded) { //if viewing instagram photos
-    //if scrolled to bottom
-    if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height) {
-      NSLog(@"Paginate");
-      [self loadPhotosFromInstagram]; //bypass the loadPhotos step, which resets the photos already set.
-    }
+  if (!self.instagramCommunicator) return;
+  //if scrolled to bottom
+  if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height) {
+    NSLog(@"Paginate");
+    [self loadPhotosFromInstagram]; //bypass the loadPhotos step, which resets the photos already set.
   }
 }
 
@@ -92,6 +91,7 @@
 }
 
 -(void)loadPhotosFromInstagram {
+  if (self.instagramCommunicator.lastPageLoaded) return; //if at end, do nothing
   if (!self.instagramCommunicator) self.instagramCommunicator = [[YPInstagramCommunicator alloc] init];
   [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
   NSUInteger photosAlreadyLoaded = _photoSet.count;
@@ -368,7 +368,11 @@
 
 -(void)fullScreenImageViewLeftSwiped:(UIGestureRecognizer *)gestureRecognizer
 {
-  
+  if (selectedIndexPath.row == _photoSet.count-2) {
+    //the image that will be swiped onto the screen is the last one loaded so far.
+    //so paginate.
+    [self loadPhotosFromInstagram];
+  }
   //first check if there is more pictures to see.
   if(selectedIndexPath.row < (_photoSet.count-1))
   {
