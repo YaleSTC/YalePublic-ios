@@ -236,9 +236,17 @@
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-  
+
+
   YPPhotoCollectionViewCell *selectedCell = (YPPhotoCollectionViewCell *) [self.photoCollectionView cellForItemAtIndexPath:indexPath];
   selectedIndexPath = indexPath;
+  
+  if (selectedIndexPath.row == _photoSet.count-1) {
+    //the image that will be swiped onto the screen is the last one loaded so far.
+    //so paginate.
+    [self loadPhotosFromInstagram];
+  }
+  
   NSLog(@"selected indexPath %@", indexPath);
   
   overlayView = [[UIView alloc] init];
