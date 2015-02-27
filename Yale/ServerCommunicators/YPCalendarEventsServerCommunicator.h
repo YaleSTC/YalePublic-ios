@@ -14,8 +14,8 @@
 + (void)getEventsFromDay:(NSDate *)day
                  tilNext:(NSUInteger)nDays
                 viewName:(NSString *)viewName
-                    tags:(NSArray *)tags
          completionBlock:(void(^)(NSArray *events))successHandler
+           progressBlock:(void(^)(double progress))progressHandler
             failureBlock:(void(^)(NSError *error))failureHandler;
 
 @end

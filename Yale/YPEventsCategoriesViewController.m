@@ -49,10 +49,14 @@
   return CATEGORY_DATA.count;
 }
 
++ (NSString *)viewNameForCategory:(NSString *)category
+{
+  return [[[category stringByReplacingOccurrencesOfString:@"&" withString:@"And"] stringByReplacingOccurrencesOfString:@" " withString:@""] stringByReplacingOccurrencesOfString:@"and" withString:@"And"];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   YPEventsViewController *eventsVC = [[YPEventsViewController alloc] init];
-  eventsVC.tags = CATEGORY_DATA[indexPath.row][1];
-  eventsVC.viewName = [[[CATEGORY_DATA[indexPath.row][0] stringByReplacingOccurrencesOfString:@"&" withString:@"And"] stringByReplacingOccurrencesOfString:@" " withString:@""] stringByReplacingOccurrencesOfString:@"and" withString:@"And"];
+  eventsVC.viewName = [self.class viewNameForCategory:CATEGORY_DATA[indexPath.row][0]];
   [self.navigationController pushViewController:eventsVC animated:YES];
 }
 
@@ -65,17 +69,22 @@
   return cell;
 }
 
-+ (UIColor *)colorForTags:(NSArray *)tags
++ (UIColor *)colorForName:(NSString *)viewName tags:(NSArray *)tags
 {
   for (NSArray *category in CATEGORY_DATA) {
-    if (![category[0] isEqualToString:@"All"]) {
+    if ([viewName isEqualToString:@"All"]) {
       for (NSString *tag in tags) {
         if ([category[1] containsObject:tag]) {
           return category[2];
         }
       }
+    } else {
+      if ([[self viewNameForCategory:category[0]] isEqualToString:viewName]) {
+        return category[2];
+      }
     }
   }
+  
   return [UIColor clearColor];
 }
 

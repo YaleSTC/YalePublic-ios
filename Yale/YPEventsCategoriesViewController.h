@@ -10,6 +10,6 @@
 
 @interface YPEventsCategoriesViewController : UITableViewController
 
-+ (UIColor *)colorForTags:(NSArray *)tags;
++ (UIColor *)colorForName:(NSString *)viewName tags:(NSArray *)tags;
 
 @end
