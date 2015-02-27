@@ -17,8 +17,7 @@
 
 #define IMAGES_PER_ROW (2)
 
-//for debugging, can show border around cells
-//#import <QuartzCore/QuartzCore.h>
+#define EXPAND_PHOTO_DURATION (0.4) //seconds of animation to get photo to full screen
 
 @interface YPPhotoDetailViewController () {
   __block NSMutableArray *_photoSet;
@@ -315,11 +314,14 @@
   fullscreenImageView = [[UIImageView alloc] initWithImage:[self photoForSelectedIndex]];
   [fullscreenImageView setContentMode:UIViewContentModeScaleAspectFit];
   
-  CGRect tempPoint = CGRectMake(thumbnailImageView.center.x, thumbnailImageView.center.y, 0, 0);
+  thumbnailImageView = selectedCell.photoImageView;
+  
+  CGRect tempPoint = thumbnailImageView.bounds;
   CGRect startingPoint = [self.view convertRect:tempPoint
                                        fromView:[self.collectionView cellForItemAtIndexPath:indexPath]];
   
-  [overlayView setFrame:startingPoint];
+  [overlayView setFrame:CGRectMake(0,0,self.view.bounds.size.width,self.view.bounds.size.height)];
+  overlayView.alpha = 0;
   [fullscreenImageView setFrame:startingPoint];
   
   
@@ -330,36 +332,34 @@
   
   float marginFactor = 0.2;
   
+  // we want some space to display a label in portrait mode
+  int margin = (marginFactor*fullscreenImageView.bounds.size.height);
+  CGRect fullscreenFrame = CGRectMake(0,(margin/2),self.view.bounds.size.width, (self.view.bounds.size.height-margin));
   
-  [UIView animateWithDuration:0.4
+  // Create title label
+  int distanceFromBottom = ((marginFactor)*fullscreenFrame.size.height);
+  int labelYCoordinate = (overlayView.bounds.size.height-distanceFromBottom);
+  title = [[UITextView alloc] initWithFrame:CGRectMake(0, labelYCoordinate + distanceFromBottom * 0.1, self.view.bounds.size.width, distanceFromBottom * 0.8 ) textContainer:nil];
+  title.editable = NO;
+  title.backgroundColor = [UIColor clearColor];
+  title.textColor = [UIColor whiteColor];
+  title.textAlignment = NSTextAlignmentCenter;
+  title.text = selectedCell.photoTitle;
+  title.alpha = 0;
+  [overlayView addSubview:title];
+  
+  [UIView animateWithDuration:EXPAND_PHOTO_DURATION
                    animations:^{
-                     [overlayView setFrame:CGRectMake(0,0,self.view.bounds.size.width,self.view.bounds.size.height)];
-                     
-                     // we want some space to display a label in portrait mode
-                     int margin = (marginFactor*fullscreenImageView.bounds.size.height);
-                     CGRect fullscreenFrame = CGRectMake(0,(margin/2),self.view.bounds.size.width, (self.view.bounds.size.height-margin));
+                     [overlayView setAlpha:1];
+                     title.alpha = 1;
                      
                      [fullscreenImageView setFrame:fullscreenFrame];
                    }
                    completion:^(BOOL finished){
                      
-                     
-                     
-                     // Create title label
-                     int distanceFromBottom = ((marginFactor)*fullscreenImageView.bounds.size.height);
-                     int labelYCoordinate = (overlayView.bounds.size.height-distanceFromBottom);
-                     title = [[UITextView alloc] initWithFrame:CGRectMake(0, labelYCoordinate + distanceFromBottom * 0.1, self.view.bounds.size.width, distanceFromBottom * 0.8 ) textContainer:nil];
-                     title.editable = NO;
-                     title.backgroundColor = [UIColor clearColor];
-                     title.textColor = [UIColor whiteColor];
-                     title.textAlignment = NSTextAlignmentCenter;
-                     title.text = selectedCell.photoTitle;
-                     [overlayView addSubview:title];
                    }
    ];
   
-  
-  thumbnailImageView = selectedCell.photoImageView;
   [selectedCell bringSubviewToFront:selectedCell.updatedMonthLabel];
   
   UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewTapped:)];
@@ -497,15 +497,12 @@
   
   CGRect point=[self.view convertRect:thumbnailImageView.bounds fromView:thumbnailImageView];
   
-  
-  gestureRecognizer.view.backgroundColor=[UIColor clearColor];
-  [title removeFromSuperview];
-  title = nil;
-  
   //[self.photoCollectionView scrollToItemAtIndexPath:selectedIndexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
-  [UIView animateWithDuration:0.5
+  [UIView animateWithDuration:EXPAND_PHOTO_DURATION
                    animations:^{
+                     gestureRecognizer.view.alpha = 0;
                      [fullscreenImageView setFrame:point];
+                     title.alpha = 0;
                    }
                    completion:^(BOOL finished){
                      [overlayView removeFromSuperview];
@@ -513,6 +510,9 @@
                      
                      [fullscreenImageView removeFromSuperview];
                      fullscreenImageView = nil;
+                     
+                     [title removeFromSuperview];
+                     title = nil;
                    }
    ];
   [self.photoCollectionView reloadData];    //so that the updatedMonthLabel will be reloaded
