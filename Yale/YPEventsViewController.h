@@ -11,6 +11,6 @@
 
 @interface YPEventsViewController : UIViewController <RSDFDatePickerViewDelegate, RSDFDatePickerViewDataSource, UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, strong) NSArray *tags;
+@property (nonatomic, strong) NSString *viewName;
 
 @end

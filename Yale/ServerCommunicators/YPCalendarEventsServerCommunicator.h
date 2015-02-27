@@ -10,10 +10,12 @@
 
 @interface YPCalendarEventsServerCommunicator : NSObject
 
+//either viewName or tags should be nil.
 + (void)getEventsFromDay:(NSDate *)day
                  tilNext:(NSUInteger)nDays
-                    tags:(NSArray *)tags
+                viewName:(NSString *)viewName
          completionBlock:(void(^)(NSArray *events))successHandler
+           progressBlock:(void(^)(double progress))progressHandler
             failureBlock:(void(^)(NSError *error))failureHandler;
 
 @end

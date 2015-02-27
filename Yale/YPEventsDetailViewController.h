@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YPWebViewController.h"
 
-@interface YPEventsDetailViewController : UIViewController
+@interface YPEventsDetailViewController : YPWebViewController
 @property (nonatomic, strong) NSString *url;
 @end
