@@ -40,9 +40,12 @@
   self.detailTableView.frame = detailFrame;
   [super viewWillAppear:animated];
   
-  self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
-  self.progressView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 2);
-  [self.view addSubview:self.progressView];
+  //there shouldn't be more than one progress view on screen at a time
+  if (!self.progressView) {
+    self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+    self.progressView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 2);
+    [self.view addSubview:self.progressView];
+  }
 }
 
 - (void)viewDidLoad
