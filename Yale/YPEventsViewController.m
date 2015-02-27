@@ -232,6 +232,7 @@
   }
   circle.color = color;
   [circle setNeedsDisplay];
+  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   return cell;
 }
 
