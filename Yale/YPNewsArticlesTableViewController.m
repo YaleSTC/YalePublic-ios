@@ -129,15 +129,15 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  [self performSegueWithIdentifier:@"showArticle" sender:nil];
+  [self performSegueWithIdentifier:@"showArticle" sender:indexPath];
 }
 
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(NSIndexPath *)indexPath
 {
   if ([segue.identifier isEqualToString:@"showArticle"]) {
     YPNewsEmbeddedViewController *articleVC = segue.destinationViewController;
-    NSDictionary *articleNode = self.articlesArray[[self.tableView indexPathForCell:sender].row][@"node"];
+    NSDictionary *articleNode = self.articlesArray[indexPath.row][@"node"];
     articleVC.url = articleNode[@"path"];
     articleVC.title = [NSString stringWithFormat:@"YaleNews | %@", [articleNode[@"title"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
     
