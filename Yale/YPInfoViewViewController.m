@@ -20,7 +20,6 @@
 - (void)setupNavigationBar
 {
   UINavigationBar *navigationBar = self.navigationController.navigationBar;
-  navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName : [UIColor whiteColor] };
   navigationBar.barStyle = UIBarStyleBlack;
   [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
                                     forBarPosition:UIBarPositionAny
@@ -87,8 +86,17 @@
     [mailCont setSubject:@"Feedback"];
     [mailCont setToRecipients:[NSArray arrayWithObject:@"yalepublic@gmail.com"]];
     [mailCont setMessageBody:@"" isHTML:NO];
-    [self.navigationController presentViewController:mailCont animated:YES completion:nil];
+    [self.navigationController presentViewController:mailCont animated:YES completion:^{
+      //without these lines the status bar shows up black, for some reason.
+      [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+      [self setNeedsStatusBarAppearanceUpdate];
+    }];
   }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+  [[UIApplication sharedApplication].delegate window].rootViewController = self.navigationController;
 }
 
 
@@ -99,9 +107,9 @@
 
 
 #pragma mark - Navigation
-- (IBAction)dissmissThisVC:(id)sender {
+- (IBAction)dissmissThisVC:(id)sender
+{
   [self dismissViewControllerAnimated:YES completion:nil];
-
 }
 
 @end

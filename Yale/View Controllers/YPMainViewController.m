@@ -18,6 +18,7 @@
 #import "YPEventsViewController.h"
 #import "YPTheme.h"
 #import <PureLayout/PureLayout.h>
+#import "YPAppDelegate.h"
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
 
@@ -52,7 +53,6 @@ typedef enum {
   self.navigationItem.rightBarButtonItem = self.infoButton;
   [infoButton addTarget:self action:@selector(viewInfo) forControlEvents:UIControlEventTouchUpInside];
   navigationBar.barStyle = UIBarStyleBlack;
-  navigationBar.titleTextAttributes = @{ NSForegroundColorAttributeName : [UIColor whiteColor] };
   navigationBar.translucent = NO;
   [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
                                     forBarPosition:UIBarPositionAny
@@ -159,6 +159,7 @@ typedef enum {
 
 - (void)viewWillAppear:(BOOL)animated
 {
+  [[UIApplication sharedApplication].delegate window].rootViewController = self.navigationController;
   [super viewWillAppear:animated];
 }
 
