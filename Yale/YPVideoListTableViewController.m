@@ -127,16 +127,17 @@
   cell.titleLabel.text = snippet[@"title"];
   cell.subtitleLabel.text = snippet[@"description"];
   NSURL *imgURL = [NSURL URLWithString:snippet[@"thumbnails"][@"default"][@"url"]];
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    UIImage *img = [self imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:imgURL]]
-                           scaledToSize:cell.imageContainer.bounds.size];
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [self foundImage:img forIndexPath:indexPath];
-    });
-    
-  });
+  
   if (self.thumbnailImages.count <= indexPath.row || [self.thumbnailImages[indexPath.row] isKindOfClass:[NSNull class]]) {
     cell.imageContainer.image = nil;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+      UIImage *img = [self imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:imgURL]]
+                             scaledToSize:cell.imageContainer.bounds.size];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [self foundImage:img forIndexPath:indexPath];
+      });
+      
+    });
   } else {
     cell.imageContainer.image = self.thumbnailImages[indexPath.row];
   }
