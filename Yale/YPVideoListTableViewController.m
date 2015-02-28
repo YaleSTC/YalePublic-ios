@@ -17,6 +17,7 @@
 @interface YPVideoListTableViewController ()
 @property (nonatomic, strong) NSArray *videosArray;
 @property (nonatomic, strong) UIProgressView *progressView;
+@property (atomic, strong) NSMutableArray *thumbnailImages; //NSArray of UIImages. The index of the image corresponds to the row of the cell it belongs in.
 @end
 
 @implementation YPVideoListTableViewController
@@ -39,6 +40,16 @@
   }
 }
 
+- (void)foundImage:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
+{
+  while (self.thumbnailImages.count <= indexPath.row) {
+    [self.thumbnailImages addObject:[NSNull null]];
+  }
+  self.thumbnailImages[indexPath.row] = image;
+  YPVideoTableViewCell *cell = (YPVideoTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+  [cell.imageContainer setImage:image];
+}
+
 - (void)loadVideos
 {
   [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
@@ -57,6 +68,7 @@
                                     error:&error];
       
       self.videosArray = videosObject[@"items"];
+      self.thumbnailImages = [NSMutableArray arrayWithCapacity:self.videosArray.count];
       dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
       });
@@ -119,10 +131,15 @@
     UIImage *img = [self imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:imgURL]]
                            scaledToSize:cell.imageContainer.bounds.size];
     dispatch_async(dispatch_get_main_queue(), ^{
-      [cell.imageContainer setImage:img];
+      [self foundImage:img forIndexPath:indexPath];
     });
     
   });
+  if (self.thumbnailImages.count <= indexPath.row || [self.thumbnailImages[indexPath.row] isKindOfClass:[NSNull class]]) {
+    cell.imageContainer.image = nil;
+  } else {
+    cell.imageContainer.image = self.thumbnailImages[indexPath.row];
+  }
   NSString *dateString = [snippet[@"publishedAt"] substringToIndex:10];
   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
   [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
