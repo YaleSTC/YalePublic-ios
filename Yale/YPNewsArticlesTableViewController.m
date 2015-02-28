@@ -16,6 +16,7 @@
 
 @interface YPNewsArticlesTableViewController ()
 @property (nonatomic, strong) NSArray *articlesArray;
+@property (strong) UIProgressView *progressView;
 @end
 
 @implementation YPNewsArticlesTableViewController
@@ -31,7 +32,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
-  
+  if (!self.progressView) {
+    self.progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 2)];
+    [self.view addSubview:self.progressView];
+  }
 }
 
 
@@ -40,7 +44,7 @@
   [YPGlobalHelper showNotificationInViewController:self message:@"loading..." style:JGProgressHUDStyleDark];
   
   AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-  [manager GET:self.url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+  AFHTTPRequestOperation *operation = [manager GET:self.url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
     [YPGlobalHelper hideNotificationView];
     NSData *responseData = operation.responseData;
     NSError *error = nil;
@@ -59,8 +63,15 @@
     
   }];
   
-  
-  
+  [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+    if (totalBytesExpectedToRead < 0) totalBytesExpectedToRead = totalBytesRead * 20;
+    [self.progressView setProgress:(double) totalBytesRead / (double)totalBytesExpectedToRead animated:YES];
+    if (totalBytesRead >= totalBytesExpectedToRead) {
+      [UIView animateWithDuration:0.8 animations:^{
+        self.progressView.alpha = 0;
+      }];
+    }
+  }];
   
 }
 
