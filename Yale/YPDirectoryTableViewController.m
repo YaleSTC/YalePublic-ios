@@ -12,6 +12,8 @@
 #import "YPDirectoryDetailViewController.h"
 @interface YPDirectoryTableViewController ()
 
+@property (strong) UIProgressView *progressView;
+
 @end
 
 @implementation YPDirectoryTableViewController
@@ -21,6 +23,16 @@
   [super viewDidLoad];
   self.title = @"Directory";
   
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+  [super viewWillAppear:animated];
+  if (!self.progressView) {
+    self.progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 2)];
+    self.progressView.alpha = 0;
+    [self.view addSubview:self.progressView];
+  }
 }
 
 
@@ -109,6 +121,15 @@
   NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://directory.yale.edu/phonebook/index.htm?searchString=%@", searchString]];
   NSURLRequest *request = [NSURLRequest requestWithURL:url];
   AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+  
+  self.progressView.alpha = 1;
+  self.progressView.progress = 0;
+  [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+    if (totalBytesExpectedToRead <= totalBytesRead) [UIView animateWithDuration:0.5 animations:^{
+      self.progressView.alpha = 0;
+    }];
+    [self.progressView setProgress:((double)totalBytesRead) / (double)totalBytesExpectedToRead animated:YES];
+  }];
   
   [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
     NSString *responseString = operation.responseString;
@@ -224,6 +245,11 @@
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    
+    [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+      if (totalBytesExpectedToRead < 0) totalBytesExpectedToRead = MAX(11000, 2*totalBytesRead); // at first the total expected is unknown. it should be approximately 10000 bytes read, though (one data point is 10121, another 9074)
+      pdvc.progress = ((double)totalBytesRead) / (double)totalBytesExpectedToRead;
+    }];
     
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
       
