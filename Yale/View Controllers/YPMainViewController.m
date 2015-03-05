@@ -150,7 +150,7 @@ typedef enum {
   
   self.buttonUnderTexts = @[@"News", @"Directory", @"Maps", @"Videos", @"Photos",
                             @"Events", @"Transit", @"Athletics", [self currentEvent]==YaleEventOrientation ? @"Orientation" : @"Commencement"];
-  self.buttonImageTitles = @[@"NewsIcon", @"DirectoryIcon", @"MapsIcon", @"VideosIcon", @"PhotosIcon", @"EventsIcon", @"TransitIcon", @"AthleticsIcon", [self currentEvent]==YaleEventOrientation ? @"OrientationIcon" : @"Mobile-Icons-2014-09-18_23"];
+  self.buttonImageTitles = @[@"NewsIcon", @"DirectoryIcon", @"MapsIcon", @"VideosIcon", @"PhotosIcon", @"EventsIcon", @"TransitIcon", @"AthleticsIcon", [self currentEvent]==YaleEventOrientation ? @"OrientationIcon2019" : @"CommencementIcon2015"];
 
   [self setupNavigationBar];
   [self setupBackgroundImage];
