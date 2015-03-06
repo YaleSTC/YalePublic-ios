@@ -13,6 +13,8 @@
 
 @interface YPDirectoryDetailViewController ()
 
+@property (strong) UIProgressView *progressView;
+
 @end
 
 @implementation YPDirectoryDetailViewController
@@ -26,6 +28,24 @@
     [self loadData];
     NSLog(@"have data");
   }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+  [super viewWillAppear:animated];
+  if (!self.progressView) {
+    self.progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 2)];
+    [self.view addSubview:self.progressView];
+  }
+}
+
+- (void)setProgress:(double)progress
+{
+  _progress = progress;
+  [self.progressView setProgress:progress animated:YES];
+  if (progress >= 0.99) [UIView animateWithDuration:0.5 animations:^{
+    self.progressView.alpha = 0;
+  }];
 }
 
 - (void)loadData {

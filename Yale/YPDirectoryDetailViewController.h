@@ -17,4 +17,7 @@
 @property (nonatomic, strong) NSString *phoneURL;
 @property (strong, nonatomic) IBOutlet UILabel *nameLabel;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+
+@property (nonatomic) double progress;
+
 @end
