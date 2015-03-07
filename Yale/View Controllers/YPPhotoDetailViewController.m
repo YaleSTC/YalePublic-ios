@@ -258,11 +258,14 @@
                                      dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCell"
                                      forIndexPath:indexPath];
   cell.photoImageView.image = nil;
-  [self getImageAtIndex:indexPath.row handler:^(UIImage *foundImage) {
-    cell.photoImageView.image = foundImage;
-    [cell.photoImageView setContentMode:UIViewContentModeScaleAspectFit];
-  }];
   cell.photoTitle = _photoSet[indexPath.row][@"title"];
+  
+  [self getImageAtIndex:indexPath.row handler:^(UIImage *foundImage) {
+    if ([_photoSet[indexPath.row][@"title"] isEqualToString:cell.photoTitle]) { //due to dequeue, this cell might actually be different
+      cell.photoImageView.image = foundImage;
+      [cell.photoImageView setContentMode:UIViewContentModeScaleAspectFit];
+    }
+  }];
   
   cell.isNewMonth = ![self isPhotoSameMonthWithPrevious:indexPath];
   static NSDateFormatter* df;
