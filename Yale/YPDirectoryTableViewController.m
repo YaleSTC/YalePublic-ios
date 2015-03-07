@@ -186,6 +186,7 @@
   NSArray *sectionPeople = [self.sectionedPeople objectForKey:sectionTitle];
   NSString *person = [[sectionPeople objectAtIndex:indexPath.row] objectForKey:@"name"];
   cell.textLabel.text = person;
+  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   return cell;
 }
 

@@ -113,7 +113,11 @@
       NSArray *toRecipients = [NSArray arrayWithObjects:cell.detailTextLabel.text, nil];
       [[mailer navigationBar] setTintColor:[UIColor whiteColor]];
       [mailer setToRecipients:toRecipients];
-      [self presentViewController:mailer animated:YES completion:nil];
+      [self presentViewController:mailer animated:YES completion:^{
+        //without these lines the status bar shows up black, for some reason.
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+        [self setNeedsStatusBarAppearanceUpdate];
+      }];
     } else {
       UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Yale is unable to launch the email service. Your device doesn't support the composer sheet."
                                                      delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
