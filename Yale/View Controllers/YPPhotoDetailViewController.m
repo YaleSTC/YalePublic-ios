@@ -16,11 +16,13 @@
 #import <GAIDictionaryBuilder.h>
 
 #define IMAGES_PER_ROW (2)
+#define EXPAND_PHOTO_DURATION (0.4) //seconds of animation to get photo to full screen
 
 //for debugging, can show border around cells
 //#import <QuartzCore/QuartzCore.h>
 
 @interface YPPhotoDetailViewController () {
+  // photos set is array of NSMutableDictionary @{image: UIImage, sizeratio: nsnumber width/height, url: NSURL to download photo, title: string of caption, date: nsdate of photo}
   __block NSMutableArray *_photoSet;
   UIView *overlayView;
   UIImageView *thumbnailImageView;
@@ -39,6 +41,8 @@
 @property int numberOfPhotosToDownload;
 @property NSUInteger totalBytesForAllPhotosDownloading;
 @property NSUInteger totalBytesLoadedForAllPhotosDownloading;
+
+@property BOOL waitingToSwipe;
 
 @end
 
@@ -168,14 +172,14 @@
         //this threw an exception when image was nil or when photo["title"] was nil
         if (image && photo[@"title"]) {
           NSUInteger indexForRow = _photoSet.count/IMAGES_PER_ROW; //this is the index of the last row
-          [_photoSet addObject:@{@"image":image, @"title": photo[@"title"], @"date":photo[@"date"]}];
+          [_photoSet addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"image":image, @"url":photo[@"url"], @"title": photo[@"title"], @"date":photo[@"date"], @"sizeratio":@(image.size.width/image.size.height)}]];
           NSSortDescriptor* sortByDate = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO];
-          [_photoSet sortUsingDescriptors:[NSArray arrayWithObject:sortByDate]];
+          [_photoSet sortUsingDescriptors:@[sortByDate]];
           CGFloat totalWidthWithHeight1 = 0;
           //to find the size, consider all images in row
           for (NSUInteger i=indexForRow*IMAGES_PER_ROW; i<_photoSet.count; i++) {
-            UIImage *imageInRow = _photoSet[i][@"image"];
-            totalWidthWithHeight1 += imageInRow.size.width / imageInRow.size.height;
+            NSNumber *imageSizeRatioInRow = _photoSet[i][@"sizeratio"];
+            totalWidthWithHeight1 += [imageSizeRatioInRow doubleValue];
           }
           CGFloat totalWidthDestination = self.view.bounds.size.width-IMAGES_PER_ROW;//with some space in between
           while (rowHeights.count<indexForRow+1) [rowHeights addObject:@(0)];
@@ -253,48 +257,43 @@
   YPPhotoCollectionViewCell *cell = [self.photoCollectionView
                                      dequeueReusableCellWithReuseIdentifier:@"PhotoCollectionViewCell"
                                      forIndexPath:indexPath];
-  
-  UIImage *image;
-  image = _photoSet[indexPath.row][@"image"];
-  cell.photoImageView.image = image;
+  cell.photoImageView.image = nil;
+  [self getImageAtIndex:indexPath.row handler:^(UIImage *foundImage) {
+    cell.photoImageView.image = foundImage;
+    [cell.photoImageView setContentMode:UIViewContentModeScaleAspectFit];
+  }];
   cell.photoTitle = _photoSet[indexPath.row][@"title"];
   
   cell.isNewMonth = ![self isPhotoSameMonthWithPrevious:indexPath];
-  NSDateFormatter* df = [[NSDateFormatter alloc] init] ;
-  [df setDateFormat:@"MMM ''yy"];
+  static NSDateFormatter* df;
+  if (!df) {
+    df = [[NSDateFormatter alloc] init];
+    [df setDateFormat:@"MMM ''yy"];
+  }
   cell.updatedMonthLabel.text = [df stringFromDate:_photoSet[indexPath.row][@"date"]];
   cell.updatedMonthLabel.hidden = !cell.isNewMonth;
   
-  [cell.photoImageView setContentMode:UIViewContentModeScaleAspectFit];
-  /*
-  [cell.layer setBorderColor:[UIColor colorWithRed:213.0/255.0f green:210.0/255.0f blue:199.0/255.0f alpha:1.0f].CGColor];
-  [cell.layer setBorderWidth:1.0f];
-  cell.photoImageView.layer.borderColor=[UIColor blackColor].CGColor;
-  cell.photoImageView.layer.borderWidth=2;
-  */
   [cell removeConstraints:cell.constraints];
-  //cell.translatesAutoresizingMaskIntoConstraints = NO;
-  //cell.photoImageView.translatesAutoresizingMaskIntoConstraints = NO;
+  
   UIView *imageViewSuperview = cell.photoImageView.superview;
   [imageViewSuperview addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:imageViewSuperview attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];
   [imageViewSuperview addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:imageViewSuperview attribute:NSLayoutAttributeTop multiplier:1.0 constant:0]];
   [imageViewSuperview addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:imageViewSuperview attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0]];
   [imageViewSuperview addConstraint:[NSLayoutConstraint constraintWithItem:cell.photoImageView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:imageViewSuperview attribute:NSLayoutAttributeRight multiplier:1.0 constant:0]];
-  //CGSize photoSize = [self collectionView:collectionView layout:self.collectionViewLayout sizeForItemAtIndexPath:indexPath];
-  //cell.photoImageView.frame = CGRectMake(0, 0, photoSize.width, photoSize.height);
+  
   return cell;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-  UIImage *image;
-  image = _photoSet[indexPath.row][@"image"];
+  NSNumber *sizeRatio = _photoSet[indexPath.row][@"sizeratio"];
   NSUInteger row = indexPath.row/IMAGES_PER_ROW;
-  return CGSizeMake([rowHeights[row] doubleValue]*image.size.width/image.size.height, [rowHeights[row] doubleValue]);
+  return CGSizeMake([rowHeights[row] doubleValue]*[sizeRatio doubleValue], [rowHeights[row] doubleValue]);
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-
+  if (overlayView) return; //don't do anything if something is already being displayed.
+  
   YPPhotoCollectionViewCell *selectedCell = (YPPhotoCollectionViewCell *) [self.photoCollectionView cellForItemAtIndexPath:indexPath];
   selectedIndexPath = indexPath;
   
@@ -309,76 +308,73 @@
   //don't allow selections to happen really frequently
   // if the user double taps on a photo, two of the big images will load and only one can be dismissed.
   
-  if (overlayView) return; //don't do anything if something is already being displayed.
   overlayView = [[UIView alloc] init];
   
-  fullscreenImageView = [[UIImageView alloc] initWithImage:[self photoForSelectedIndex]];
-  [fullscreenImageView setContentMode:UIViewContentModeScaleAspectFit];
-  
-  CGRect tempPoint = CGRectMake(thumbnailImageView.center.x, thumbnailImageView.center.y, 0, 0);
+  thumbnailImageView = selectedCell.photoImageView;
+  CGRect tempPoint = thumbnailImageView.bounds;
   CGRect startingPoint = [self.view convertRect:tempPoint
                                        fromView:[self.collectionView cellForItemAtIndexPath:indexPath]];
-  
-  [overlayView setFrame:startingPoint];
-  [fullscreenImageView setFrame:startingPoint];
-  
-  
+  [overlayView setFrame:self.view.bounds];
+  overlayView.alpha = 0;
   [overlayView setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.8f]];
-  
   [self.view addSubview:overlayView];
-  [self.view addSubview:fullscreenImageView];
   
   float marginFactor = 0.2;
   
-  
-  [UIView animateWithDuration:0.4
-                   animations:^{
-                     [overlayView setFrame:CGRectMake(0,0,self.view.bounds.size.width,self.view.bounds.size.height)];
-                     
-                     // we want some space to display a label in portrait mode
-                     int margin = (marginFactor*fullscreenImageView.bounds.size.height);
-                     CGRect fullscreenFrame = CGRectMake(0,(margin/2),self.view.bounds.size.width, (self.view.bounds.size.height-margin));
-                     
-                     [fullscreenImageView setFrame:fullscreenFrame];
-                   }
-                   completion:^(BOOL finished){
-                     
-                     
-                     
-                     // Create title label
-                     int distanceFromBottom = ((marginFactor)*fullscreenImageView.bounds.size.height);
-                     int labelYCoordinate = (overlayView.bounds.size.height-distanceFromBottom);
-                     title = [[UITextView alloc] initWithFrame:CGRectMake(0, labelYCoordinate + distanceFromBottom * 0.1, self.view.bounds.size.width, distanceFromBottom * 0.8 ) textContainer:nil];
-                     title.editable = NO;
-                     title.backgroundColor = [UIColor clearColor];
-                     title.textColor = [UIColor whiteColor];
-                     title.textAlignment = NSTextAlignmentCenter;
-                     title.text = selectedCell.photoTitle;
-                     [overlayView addSubview:title];
-                   }
-   ];
-  
-  
-  thumbnailImageView = selectedCell.photoImageView;
-  [selectedCell bringSubviewToFront:selectedCell.updatedMonthLabel];
-  
-  UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewTapped:)];
-  singleTap.numberOfTapsRequired = 1;
-  singleTap.numberOfTouchesRequired = 1;
-  [overlayView addGestureRecognizer:singleTap];
-  [overlayView setUserInteractionEnabled:YES];
-  
-  UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewLeftSwiped:)];
-  [leftSwipe setDirection:UISwipeGestureRecognizerDirectionLeft];
-  [overlayView addGestureRecognizer:leftSwipe];
-  
-  UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewRightSwiped:)];
-  [rightSwipe setDirection:UISwipeGestureRecognizerDirectionRight];
-  [overlayView addGestureRecognizer:rightSwipe];
-  
-  //For saving a photo
-  UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewLongPressed:)];
-  [overlayView addGestureRecognizer:longPress];
+  [self getPhotoForSelectedIndex:^(UIImage *foundImage) {
+    fullscreenImageView = [[UIImageView alloc] initWithImage:foundImage];
+    [fullscreenImageView setContentMode:UIViewContentModeScaleAspectFit];
+    [fullscreenImageView setFrame:startingPoint];
+    [self.view addSubview:fullscreenImageView];
+    // we want some space to display a label in portrait mode
+    int margin = marginFactor*startingPoint.size.height;
+    CGRect fullscreenFrame = CGRectMake(0,(margin/2),self.view.bounds.size.width, (self.view.bounds.size.height-margin));
+    
+    // Create title label
+    int distanceFromBottom = marginFactor*fullscreenFrame.size.height;
+    int labelYCoordinate = (overlayView.bounds.size.height-distanceFromBottom);
+    title = [[UITextView alloc] initWithFrame:CGRectMake(0, labelYCoordinate + distanceFromBottom * 0.1, self.view.bounds.size.width, distanceFromBottom * 0.8 ) textContainer:nil];
+    title.editable = NO;
+    title.backgroundColor = [UIColor clearColor];
+    title.textColor = [UIColor whiteColor];
+    title.textAlignment = NSTextAlignmentCenter;
+    title.text = selectedCell.photoTitle;
+    title.alpha = 0;
+    [overlayView addSubview:title];
+    
+    [UIView animateWithDuration:EXPAND_PHOTO_DURATION
+                     animations:^{
+                       overlayView.alpha = 1;
+                       
+                       [fullscreenImageView setFrame:fullscreenFrame];
+                       
+                       title.alpha = 1;
+                     }
+                     completion:^(BOOL finished){
+                       
+                     }
+     ];
+    
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewTapped:)];
+    singleTap.numberOfTapsRequired = 1;
+    singleTap.numberOfTouchesRequired = 1;
+    [overlayView addGestureRecognizer:singleTap];
+    [overlayView setUserInteractionEnabled:YES];
+    
+    UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewLeftSwiped:)];
+    [leftSwipe setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [overlayView addGestureRecognizer:leftSwipe];
+    
+    UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewRightSwiped:)];
+    [rightSwipe setDirection:UISwipeGestureRecognizerDirectionRight];
+    [overlayView addGestureRecognizer:rightSwipe];
+    
+    //For saving a photo
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(fullScreenImageViewLongPressed:)];
+    [overlayView addGestureRecognizer:longPress];
+    
+    [selectedCell bringSubviewToFront:selectedCell.updatedMonthLabel];
+  }];
   
 }
 
@@ -437,6 +433,8 @@
 
 -(void)fullScreenImageViewLeftSwiped:(UIGestureRecognizer *)gestureRecognizer
 {
+  if (self.waitingToSwipe) return;
+  self.waitingToSwipe = YES;
   if (selectedIndexPath.row == _photoSet.count-2) {
     //the image that will be swiped onto the screen is the last one loaded so far.
     //so paginate.
@@ -448,10 +446,12 @@
     NSIndexPath *newIndex = [NSIndexPath indexPathForRow:selectedIndexPath.row+1 inSection:selectedIndexPath.section];
     NSLog(@"new indexPath.orw %ld", (long)newIndex.row);
     selectedIndexPath = newIndex;
+    [self getPhotoForSelectedIndex:^(UIImage *foundImage) {
+      [self crossfade:fullscreenImageView image:foundImage isRightSwiped:NO];
+      [title setText:_photoSet[newIndex.row][@"title"]];
+      self.waitingToSwipe = NO;
+    }];
     
-    [self crossfade:fullscreenImageView image:[self photoForSelectedIndex] isRightSwiped:NO];
-    //fullscreenImageView.image = _photoSet[newIndex.row][@"image"];
-    [title setText:_photoSet[newIndex.row][@"title"]];
     
     if (![[self.photoCollectionView indexPathsForVisibleItems] containsObject:newIndex]) {
       [self.photoCollectionView scrollToItemAtIndexPath:newIndex atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
@@ -464,14 +464,18 @@
 
 -(void)fullScreenImageViewRightSwiped:(UIGestureRecognizer *)gestureRecognizer
 {
-  
+  if (self.waitingToSwipe) return;
+  self.waitingToSwipe = YES;
   if(selectedIndexPath.row > 0)
   {
     NSIndexPath *newIndex = [NSIndexPath indexPathForRow:selectedIndexPath.row-1 inSection:selectedIndexPath.section];
     NSLog(@"new indexPath.orw %ld", (long)newIndex.row);
     selectedIndexPath = newIndex;
-    [self crossfade:fullscreenImageView image:[self photoForSelectedIndex] isRightSwiped:YES];
-    [title setText:_photoSet[selectedIndexPath.row][@"title"]];
+    [self getPhotoForSelectedIndex:^(UIImage *foundImage) {
+      [self crossfade:fullscreenImageView image:foundImage isRightSwiped:YES];
+      [title setText:_photoSet[selectedIndexPath.row][@"title"]];
+      self.waitingToSwipe = NO;
+    }];
     
     if (![[self.photoCollectionView indexPathsForVisibleItems] containsObject:newIndex]) {
       [self.photoCollectionView scrollToItemAtIndexPath:newIndex atScrollPosition:UICollectionViewScrollPositionBottom animated:YES];
@@ -486,25 +490,35 @@
     thumbnailImageView = newSelectedCell.photoImageView;
 }
 
-
-
--(UIImage *)photoForSelectedIndex
+- (void)getImageAtIndex:(NSUInteger)imageIndex handler:(void(^)(UIImage *foundImage))handler
 {
-  return _photoSet[selectedIndexPath.row][@"image"];
+  __block UIImage *foundImage;
+  if ((foundImage = _photoSet[imageIndex][@"image"])) {
+    handler(foundImage);
+  } else {
+  // get value if has been unloaded
+    [self.instagramCommunicator downloadImageForURL:_photoSet[imageIndex][@"url"] completionBlock:^(UIImage *image, NSUInteger bytesFound) {
+      //load the image back into memory
+      foundImage = image;
+      _photoSet[imageIndex][@"image"] = foundImage;
+      handler(foundImage);
+    } progressBlocks:nil :nil];
+  }
+}
+
+-(void)getPhotoForSelectedIndex:(void(^)(UIImage *foundImage))handler
+{
+  [self getImageAtIndex:selectedIndexPath.row handler:handler];
 }
 
 - (void)fullScreenImageViewTapped:(UIGestureRecognizer *)gestureRecognizer {
   
   CGRect point=[self.view convertRect:thumbnailImageView.bounds fromView:thumbnailImageView];
   
-  
-  gestureRecognizer.view.backgroundColor=[UIColor clearColor];
-  [title removeFromSuperview];
-  title = nil;
-  
-  //[self.photoCollectionView scrollToItemAtIndexPath:selectedIndexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
-  [UIView animateWithDuration:0.5
+  [UIView animateWithDuration:EXPAND_PHOTO_DURATION
                    animations:^{
+                     overlayView.alpha = 0;
+                     title.alpha = 0;
                      [fullscreenImageView setFrame:point];
                    }
                    completion:^(BOOL finished){
@@ -513,6 +527,9 @@
                      
                      [fullscreenImageView removeFromSuperview];
                      fullscreenImageView = nil;
+                     
+                     [title removeFromSuperview];
+                     title = nil;
                    }
    ];
   [self.photoCollectionView reloadData];    //so that the updatedMonthLabel will be reloaded
@@ -528,7 +545,17 @@
   return _photoSet.count;
 }
 
+- (void)unloadAllPhotos
+{
+  for (int index = 0; index < _photoSet.count; index++) {
+    NSMutableDictionary *photoData = _photoSet[index];
+    [photoData removeObjectForKey:@"image"];
+  }
+}
+
 - (void)didReceiveMemoryWarning {
+  [self unloadAllPhotos];
+  [self.collectionView reloadData];
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
 }
