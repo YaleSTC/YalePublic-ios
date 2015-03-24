@@ -9,6 +9,9 @@
 #import "YPWebViewController.h"
 #import "Config.h"
 #import "YPGlobalHelper.h"
+#import <GAI.h>
+#import <GAIFields.h>
+#import <GAIDictionaryBuilder.h>
 
 @interface YPWebViewController ()
 
@@ -32,6 +35,18 @@
 @end
 
 @implementation YPWebViewController
+
+- (void)viewDidAppear:(BOOL)animated
+{
+  [super viewDidAppear:animated];
+  
+  //Google Analytics
+  id tracker = [[GAI sharedInstance] defaultTracker];
+  NSString *screenName = [NSString stringWithFormat:@"%@ with title: %@", NSStringFromClass([self class]), self.title];
+  [tracker set:kGAIScreenName
+         value:screenName];
+  [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+}
 
 + (NSString *)loadedTitle
 {
