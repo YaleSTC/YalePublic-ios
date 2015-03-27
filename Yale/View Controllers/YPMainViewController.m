@@ -215,7 +215,7 @@ typedef enum {
     YPPhotoDetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"PhotoDetailVC"];
     
     // Have to provide album title and photoSetId
-    detailViewController.albumTitle = @"Photos";
+    detailViewController.albumTitle = @"Instagram Photos";
     detailViewController.photoSetId = @"INSTAGRAM";
     [self.navigationController pushViewController:detailViewController animated:YES];
   } else if ([underText isEqualToString:@"Athletics"]) {
