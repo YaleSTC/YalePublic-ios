@@ -17,6 +17,7 @@
 
 @interface YPVideosPlaylistTableViewController ()
 @property (nonatomic, strong) NSArray *playlistArray;
+@property (nonatomic, strong) UIProgressView *progressView;
 @end
 
 @implementation YPVideosPlaylistTableViewController
@@ -49,6 +50,11 @@
   [super viewWillAppear:animated];
   
   [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+  
+  if (!self.progressView) {
+    self.progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 2)];
+    [self.view addSubview:self.progressView];
+  }
 }
 
 - (void)loadPlaylists
@@ -57,7 +63,7 @@
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSString *url = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/playlists?part=snippet&maxResults=50&channelId=%@&key=%@", CHANNEL_ID, YOUTUBE_API_KEY];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    AFHTTPRequestOperation *operation = [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
       dispatch_async(dispatch_get_main_queue(), ^{
         [YPGlobalHelper hideNotificationView];
       });
@@ -78,6 +84,15 @@
         [YPGlobalHelper hideNotificationView];
       });
       NSLog(@"Error: %@", error);
+    }];
+    [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+      if (totalBytesExpectedToRead < 0) totalBytesExpectedToRead = totalBytesRead * 20;
+      [self.progressView setProgress:(double) totalBytesRead / (double)totalBytesExpectedToRead animated:YES];
+      if (totalBytesRead >= totalBytesExpectedToRead) {
+        [UIView animateWithDuration:0.8 animations:^{
+          self.progressView.alpha = 0;
+        }];
+      }
     }];
   });
 }

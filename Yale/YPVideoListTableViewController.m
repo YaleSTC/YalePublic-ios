@@ -16,6 +16,8 @@
 
 @interface YPVideoListTableViewController ()
 @property (nonatomic, strong) NSArray *videosArray;
+@property (nonatomic, strong) UIProgressView *progressView;
+@property (atomic, strong) NSMutableArray *thumbnailImages; //NSArray of UIImages. The index of the image corresponds to the row of the cell it belongs in.
 @end
 
 @implementation YPVideoListTableViewController
@@ -32,6 +34,20 @@
 {
   [super viewWillAppear:animated];
   [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+  if (!self.progressView) {
+    self.progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 2)];
+    [self.view addSubview:self.progressView];
+  }
+}
+
+- (void)foundImage:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
+{
+  while (self.thumbnailImages.count <= indexPath.row) {
+    [self.thumbnailImages addObject:[NSNull null]];
+  }
+  self.thumbnailImages[indexPath.row] = image;
+  YPVideoTableViewCell *cell = (YPVideoTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+  [cell.imageContainer setImage:image];
 }
 
 - (void)loadVideos
@@ -40,7 +56,7 @@
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSString *url = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=%@&key=%@", self.playlistID, YOUTUBE_API_KEY];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    AFHTTPRequestOperation *operation = [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
       dispatch_async(dispatch_get_main_queue(), ^{
         [YPGlobalHelper hideNotificationView];
       });
@@ -52,6 +68,7 @@
                                     error:&error];
       
       self.videosArray = videosObject[@"items"];
+      self.thumbnailImages = [NSMutableArray arrayWithCapacity:self.videosArray.count];
       dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
       });
@@ -63,6 +80,16 @@
         [YPGlobalHelper hideNotificationView];
       });
       NSLog(@"Error: %@", error);
+    }];
+    
+    [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+      if (totalBytesExpectedToRead < 0) totalBytesExpectedToRead = totalBytesRead * 20;
+      [self.progressView setProgress:(double) totalBytesRead / (double)totalBytesExpectedToRead animated:YES];
+      if (totalBytesRead >= totalBytesExpectedToRead) {
+        [UIView animateWithDuration:0.8 animations:^{
+          self.progressView.alpha = 0;
+        }];
+      }
     }];
   });
 
@@ -100,14 +127,20 @@
   cell.titleLabel.text = snippet[@"title"];
   cell.subtitleLabel.text = snippet[@"description"];
   NSURL *imgURL = [NSURL URLWithString:snippet[@"thumbnails"][@"default"][@"url"]];
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    UIImage *img = [self imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:imgURL]]
-                           scaledToSize:cell.imageContainer.bounds.size];
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [cell.imageContainer setImage:img];
+  
+  if (self.thumbnailImages.count <= indexPath.row || [self.thumbnailImages[indexPath.row] isKindOfClass:[NSNull class]]) {
+    cell.imageContainer.image = nil;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+      UIImage *img = [self imageWithImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:imgURL]]
+                             scaledToSize:cell.imageContainer.bounds.size];
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [self foundImage:img forIndexPath:indexPath];
+      });
+      
     });
-    
-  });
+  } else {
+    cell.imageContainer.image = self.thumbnailImages[indexPath.row];
+  }
   NSString *dateString = [snippet[@"publishedAt"] substringToIndex:10];
   NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
   [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
