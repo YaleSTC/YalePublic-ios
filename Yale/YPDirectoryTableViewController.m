@@ -10,6 +10,10 @@
 #import "AFNetworking.h"
 #import "YPGlobalHelper.h"
 #import "YPDirectoryDetailViewController.h"
+#import <GAI.h>
+#import <GAIFields.h>
+#import <GAIDictionaryBuilder.h>
+
 @interface YPDirectoryTableViewController ()
 
 @end
@@ -23,6 +27,16 @@
   
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+  [super viewDidAppear:animated];
+  
+  //Google Analytics
+  id tracker = [[GAI sharedInstance] defaultTracker];
+  [tracker set:kGAIScreenName
+         value:@"Directory VC"];
+  [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+}
 
 #pragma mark Data Manipulation
 

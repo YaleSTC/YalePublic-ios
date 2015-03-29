@@ -13,6 +13,9 @@
 #import "YPTheme.h"
 #import "YPEventsCategoriesViewController.h"
 #import "YPCircleView.h"
+#import <GAI.h>
+#import <GAIFields.h>
+#import <GAIDictionaryBuilder.h>
 
 @interface YPEventsViewController ()
 @property (nonatomic, strong) RSDFDatePickerView *datePickerView;
@@ -24,6 +27,17 @@
 @end
 
 @implementation YPEventsViewController
+
+- (void)viewDidAppear:(BOOL)animated
+{
+  [super viewDidAppear:animated];
+  
+  //Google Analytics
+  id tracker = [[GAI sharedInstance] defaultTracker];
+  [tracker set:kGAIScreenName
+         value:@"Events VC"];
+  [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+}
 
 //this was 260. after frames changed so Detail table view scrolls all the way to the bottom, the size left for the calendar was noticeably smaller.
 #define DETAIL_HEIGHT 220

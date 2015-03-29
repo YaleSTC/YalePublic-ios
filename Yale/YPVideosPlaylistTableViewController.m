@@ -11,12 +11,26 @@
 #import "AFNetworking.h"
 #import "YPGlobalHelper.h"
 #import "Config.h"
+#import <GAI.h>
+#import <GAIFields.h>
+#import <GAIDictionaryBuilder.h>
 
 @interface YPVideosPlaylistTableViewController ()
 @property (nonatomic, strong) NSArray *playlistArray;
 @end
 
 @implementation YPVideosPlaylistTableViewController
+
+- (void)viewDidAppear:(BOOL)animated
+{
+  [super viewDidAppear:animated];
+  
+  //Google Analytics
+  id tracker = [[GAI sharedInstance] defaultTracker];
+  [tracker set:kGAIScreenName
+         value:@"Videos VC"];
+  [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+}
 
 #define CHANNEL_ID @"UC4EY_qnSeAP1xGsh61eOoJA"
 
