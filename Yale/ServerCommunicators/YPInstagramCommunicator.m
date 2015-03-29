@@ -41,7 +41,7 @@ typedef void(^ByteCallback)(NSUInteger);
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
   [self.dataLoading appendData:data];
-  self.loadedBytes(data.length);
+  if (self.loadedBytes) self.loadedBytes(data.length);
   if (self.dataLoading.length >= self.expectedBytes) {
     UIImage *image = [[UIImage alloc] initWithData:self.dataLoading];
     self.completionBlock(image, self.expectedBytes);
@@ -52,7 +52,7 @@ typedef void(^ByteCallback)(NSUInteger);
 {
   self.expectedBytes = response.expectedContentLength;
   self.dataLoading = [NSMutableData dataWithCapacity:self.expectedBytes];
-  self.totalBytes(self.expectedBytes);
+  if (self.totalBytes) self.totalBytes(self.expectedBytes);
 }
 
 @end
