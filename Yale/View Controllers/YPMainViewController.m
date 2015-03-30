@@ -19,6 +19,9 @@
 #import "YPTheme.h"
 #import <PureLayout/PureLayout.h>
 #import "YPAppDelegate.h"
+#import <GAI.h>
+#import <GAIFields.h>
+#import <GAIDictionaryBuilder.h>
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
 
@@ -42,6 +45,17 @@ typedef enum {
 @end
 
 @implementation YPMainViewController
+
+- (void)viewDidAppear:(BOOL)animated
+{
+  [super viewDidAppear:animated];
+  
+  //Google Analytics
+  id tracker = [[GAI sharedInstance] defaultTracker];
+  [tracker set:kGAIScreenName
+         value:@"Main VC"];
+  [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+}
 
 #pragma mark - View Setup
 
