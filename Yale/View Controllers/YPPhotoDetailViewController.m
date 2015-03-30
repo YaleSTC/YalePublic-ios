@@ -142,12 +142,15 @@
       } else {
         caption = @"";
       }
+      // convenient place to link the user to if they want to comment, like, etc.
+      NSString *link = photoDictionary[@"link"];
       
       int createdInt = [photoDictionary[@"created_time"] intValue];
       NSTimeInterval timestamp = (NSTimeInterval)createdInt;
       NSDate *createdDate = [NSDate dateWithTimeIntervalSince1970:timestamp];
       
       [photoURLs addObject:@{@"url": url,
+                             @"link": link,
                              @"title": caption,
                              @"date":createdDate}];
       
@@ -172,7 +175,7 @@
         //this threw an exception when image was nil or when photo["title"] was nil
         if (image && photo[@"title"]) {
           NSUInteger indexForRow = _photoSet.count/IMAGES_PER_ROW; //this is the index of the last row
-          [_photoSet addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"image":image, @"url":photo[@"url"], @"title": photo[@"title"], @"date":photo[@"date"], @"sizeratio":@(image.size.width/image.size.height)}]];
+          [_photoSet addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"image":image, @"url":photo[@"url"], @"title": photo[@"title"], @"date":photo[@"date"], @"sizeratio":@(image.size.width/image.size.height), @"link": photo[@"link"]}]];
           NSSortDescriptor* sortByDate = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO];
           [_photoSet sortUsingDescriptors:@[sortByDate]];
           CGFloat totalWidthWithHeight1 = 0;
@@ -381,11 +384,10 @@
   
 }
 
-
 -(void)fullScreenImageViewLongPressed:(UIGestureRecognizer *)gestureRecognizer
 {
   //Show a dialog to download the photo
-  UIAlertController* downloadSheet = [UIAlertController alertControllerWithTitle:@"Saving This Photo"
+  UIAlertController* downloadSheet = [UIAlertController alertControllerWithTitle:nil
                                                                          message:nil
                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
   UIAlertAction* downloadingAction = [UIAlertAction actionWithTitle:@"Save"
@@ -395,11 +397,17 @@
                                                               UIImageWriteToSavedPhotosAlbum(fullscreenImageView.image, self, @selector(savingImageIsFinished:didFinishSavingWithError:contextInfo:), nil);
                                                             }];
   UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
-                                                         style:UIAlertActionStyleDestructive
+                                                         style:UIAlertActionStyleCancel
                                                        handler:^(UIAlertAction *action) {
                                                          //cancel
                                                        }];
+  UIAlertAction* openInInstagram = [UIAlertAction actionWithTitle:@"Open" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    NSString *link = _photoSet[selectedIndexPath.row][@"link"];
+    NSURL *url = [NSURL URLWithString:link];
+    [[UIApplication sharedApplication] openURL:url];
+  }];
   [downloadSheet addAction:downloadingAction];
+  [downloadSheet addAction:openInInstagram];
   [downloadSheet addAction:cancelAction];
   [self presentViewController:downloadSheet animated:YES completion:nil];
 }
