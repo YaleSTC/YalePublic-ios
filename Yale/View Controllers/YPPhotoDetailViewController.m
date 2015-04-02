@@ -44,6 +44,10 @@
 
 @property BOOL waitingToSwipe;
 
+@property BOOL actionControllerVisible;
+
+@property UIBarButtonItem *actionBarButton;
+
 @end
 
 //if there is less than this amount of seconds between photo loads, don't update the view multiple times in succession. Wait for a pause, then update the view.
@@ -62,6 +66,8 @@
   titleLabel.text = self.albumTitle;
   [titleLabel sizeToFit];
   self.navigationItem.titleView = titleLabel;
+  self.actionBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(fullScreenImageViewLongPressed:)];
+  //self.navigationController.toolbarItems = @[];
   //self.navigationItem.title = self.albumTitle;
   
   //BackButton
@@ -142,13 +148,18 @@
       } else {
         caption = @"";
       }
+      // convenient place to link the user to if they want to comment, like, etc.
+      NSString *link = photoDictionary[@"link"];
+      NSString *photoId = photoDictionary[@"id"];
       
       int createdInt = [photoDictionary[@"created_time"] intValue];
       NSTimeInterval timestamp = (NSTimeInterval)createdInt;
       NSDate *createdDate = [NSDate dateWithTimeIntervalSince1970:timestamp];
       
       [photoURLs addObject:@{@"url": url,
+                             @"link": link,
                              @"title": caption,
+                             @"id": photoId,
                              @"date":createdDate}];
       
     }
@@ -172,7 +183,7 @@
         //this threw an exception when image was nil or when photo["title"] was nil
         if (image && photo[@"title"]) {
           NSUInteger indexForRow = _photoSet.count/IMAGES_PER_ROW; //this is the index of the last row
-          [_photoSet addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"image":image, @"url":photo[@"url"], @"title": photo[@"title"], @"date":photo[@"date"], @"sizeratio":@(image.size.width/image.size.height)}]];
+          [_photoSet addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"image":image, @"url":photo[@"url"], @"title": photo[@"title"], @"date":photo[@"date"], @"sizeratio":@(image.size.width/image.size.height), @"link": photo[@"link"], @"id":photo[@"id"]}]];
           NSSortDescriptor* sortByDate = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO];
           [_photoSet sortUsingDescriptors:@[sortByDate]];
           CGFloat totalWidthWithHeight1 = 0;
@@ -296,6 +307,7 @@
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
   if (overlayView) return; //don't do anything if something is already being displayed.
+  [self.navigationItem setRightBarButtonItem:self.actionBarButton animated:YES];
   
   YPPhotoCollectionViewCell *selectedCell = (YPPhotoCollectionViewCell *) [self.photoCollectionView cellForItemAtIndexPath:indexPath];
   selectedIndexPath = indexPath;
@@ -381,11 +393,12 @@
   
 }
 
-
 -(void)fullScreenImageViewLongPressed:(UIGestureRecognizer *)gestureRecognizer
 {
+  if (self.actionControllerVisible) return;
+  self.actionControllerVisible = YES;
   //Show a dialog to download the photo
-  UIAlertController* downloadSheet = [UIAlertController alertControllerWithTitle:@"Saving This Photo"
+  UIAlertController* downloadSheet = [UIAlertController alertControllerWithTitle:nil
                                                                          message:nil
                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
   UIAlertAction* downloadingAction = [UIAlertAction actionWithTitle:@"Save"
@@ -393,13 +406,28 @@
                                                             handler:^(UIAlertAction *action) {
                                                               //Saving Code here
                                                               UIImageWriteToSavedPhotosAlbum(fullscreenImageView.image, self, @selector(savingImageIsFinished:didFinishSavingWithError:contextInfo:), nil);
+                                                              self.actionControllerVisible = NO;
                                                             }];
   UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
-                                                         style:UIAlertActionStyleDestructive
+                                                         style:UIAlertActionStyleCancel
                                                        handler:^(UIAlertAction *action) {
+                                                         self.actionControllerVisible = NO;
                                                          //cancel
                                                        }];
+  UIAlertAction* openInInstagram = [UIAlertAction actionWithTitle:@"Open in Instagram" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+    self.actionControllerVisible = NO;
+    // according to https://instagram.com/developer/mobile-sharing/iphone-hooks/
+    NSString *linkToApp = [NSString stringWithFormat:@"instagram://media?id=%@", _photoSet[selectedIndexPath.row][@"id"]];
+    NSURL *url = [NSURL URLWithString:linkToApp];
+    if  (![[UIApplication sharedApplication] canOpenURL:url])
+    {
+      NSString *link = _photoSet[selectedIndexPath.row][@"link"];
+      url = [NSURL URLWithString:link];
+    }
+    [[UIApplication sharedApplication] openURL:url];
+  }];
   [downloadSheet addAction:downloadingAction];
+  [downloadSheet addAction:openInInstagram];
   [downloadSheet addAction:cancelAction];
   [self presentViewController:downloadSheet animated:YES completion:nil];
 }
@@ -516,6 +544,7 @@
 
 - (void)fullScreenImageViewTapped:(UIGestureRecognizer *)gestureRecognizer {
   
+  [self.navigationItem setRightBarButtonItem:nil animated:YES];
   CGRect point=[self.view convertRect:thumbnailImageView.bounds fromView:thumbnailImageView];
   
   [UIView animateWithDuration:EXPAND_PHOTO_DURATION

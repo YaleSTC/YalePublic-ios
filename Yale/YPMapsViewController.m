@@ -81,7 +81,7 @@
   NSData* data = [NSData dataWithContentsOfFile:filePath];
   NSError* error = nil;
   self.buildings = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
-  self.buildingsArray = [self.buildings allKeys];
+  self.buildingsArray = [[self.buildings allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
   NSLog(@"%@", self.buildingsArray);
 }
 
