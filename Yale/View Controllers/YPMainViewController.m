@@ -25,7 +25,7 @@
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
 
-#define UNDER_TEXT_FONT [UIFont systemFontOfSize:16] //was size 10, then 12. now bigger text fits
+#define UNDER_TEXT_FONT [UIFont systemFontOfSize:14] //was size 10, then 12. now bigger text fits
 #define IMAGE_TEXT_MARGIN 10
 #define UNDER_TEXT_HEIGHT 20
 
@@ -41,6 +41,7 @@ typedef enum {
 @property (nonatomic, strong) NSArray *buttonImageTitles;
 @property (nonatomic, strong) NSArray *buttonUnderTexts;
 @property CGSize iconSize;
+@property BOOL loaded;
 
 @end
 
@@ -111,8 +112,8 @@ typedef enum {
   CGSize statusBarSize = [UIApplication sharedApplication].statusBarFrame.size;
   CGSize navigationBarSize = self.navigationController.navigationBar.frame.size;
   // buttons contain icons
-  CGFloat horizontalMarginToIcons = (iconSize.height == 57) ? 20 : 30; //this is also the horizontal margin to the icons (not the buttons)
-  CGFloat buttonWidth = iconSize.width*2; //make it big enough to fit the text below the button, even if the text is long like this text is long.
+  CGFloat horizontalMarginToIcons = (iconSize.height == 57) ? 20 : 30; //this is the horizontal margin to the icons (not the buttons)
+  CGFloat buttonWidth = MIN(iconSize.width*3, viewSize.width/3); //make it big enough to fit the text below the button, even if the text is long like this text is long.
   CGFloat leftMargin = horizontalMarginToIcons-(buttonWidth-iconSize.width)/2;
   CGFloat buttonHeight = iconSize.height + IMAGE_TEXT_MARGIN + UNDER_TEXT_HEIGHT;
   CGFloat horizontalSpacing = (viewSize.width - buttonWidth*3 - leftMargin*2) / 2; //between buttons
@@ -184,10 +185,9 @@ typedef enum {
 
 - (void)viewWillAppear:(BOOL)animated
 {
-  static BOOL loaded = NO;
-  if (!loaded) {
+  if (!self.loaded) {
     [self setupButtonViews];
-    loaded = YES;
+    self.loaded = YES;
   }
   //[[UIApplication sharedApplication].delegate window].rootViewController = self.navigationController;
   [super viewWillAppear:animated];

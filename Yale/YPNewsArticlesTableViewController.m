@@ -13,6 +13,7 @@
 #import "TTTTimeIntervalFormatter.h"
 #import "MWFeedParser/NSString+HTML.h"
 #import "YPGlobalHelper.h"
+#import "YPTheme.h"
 
 @interface YPNewsArticlesTableViewController ()
 @property (nonatomic, strong) NSArray *articlesArray;
@@ -100,6 +101,7 @@
   cell.titleLabel.text = [[articleNode[@"title"] stringByDecodingHTMLEntities] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   cell.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
   cell.titleLabel.numberOfLines = 2;
+  cell.titleLabel.textColor = [YPTheme textColor];
   
   cell.snippetLabel.text = [[articleNode[@"description"] stringByDecodingHTMLEntities] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
   cell.snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
