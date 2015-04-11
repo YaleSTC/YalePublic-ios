@@ -25,7 +25,7 @@
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
 
-#define UNDER_TEXT_FONT [UIFont systemFontOfSize:12] //was size 10. now bigger text fits
+#define UNDER_TEXT_FONT [UIFont systemFontOfSize:16] //was size 10, then 12. now bigger text fits
 #define IMAGE_TEXT_MARGIN 10
 #define UNDER_TEXT_HEIGHT 20
 
@@ -104,17 +104,25 @@ typedef enum {
 
 - (void)setupButtonViews
 {
-  CGFloat topMargin = (self.iconSize.height == 57) ? 20 : 30; //this is also the horizontal margin to the icons (not the buttons)
-  CGFloat buttonWidth = self.iconSize.width*2; //make it big enough to fit the text below the button, even if the text is long like this text is long.
-  CGFloat leftMargin = topMargin-(buttonWidth-self.iconSize.width)/2;
-  CGFloat buttonHeight = self.iconSize.height + IMAGE_TEXT_MARGIN + UNDER_TEXT_HEIGHT;
-  CGFloat horizontalSpacing = ([UIScreen mainScreen].bounds.size.width - buttonWidth*3 - leftMargin*2) / 2; //between buttons
-  CGFloat horizontalSpacingBetweenIcons = ([UIScreen mainScreen].bounds.size.width - self.iconSize.width*3 - topMargin*2) / 2; //to keep vertical spacing stable
+  CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+  CGSize viewSize = self.view.bounds.size;
+  CGSize iconSize = self.iconSize;
+  // buttons contain icons
+  CGFloat horizontalMarginToIcons = (iconSize.height == 57) ? 20 : 30; //this is also the horizontal margin to the icons (not the buttons)
+  CGFloat buttonWidth = iconSize.width*2; //make it big enough to fit the text below the button, even if the text is long like this text is long.
+  CGFloat leftMargin = horizontalMarginToIcons-(buttonWidth-iconSize.width)/2;
+  CGFloat buttonHeight = iconSize.height + IMAGE_TEXT_MARGIN + UNDER_TEXT_HEIGHT;
+  CGFloat horizontalSpacing = (viewSize.width - buttonWidth*3 - leftMargin*2) / 2; //between buttons
+  CGFloat horizontalSpacingBetweenIcons = (viewSize.width - iconSize.width*3 - horizontalMarginToIcons*2) / 2; //to keep vertical spacing stable
   CGFloat verticalSpacing = horizontalSpacingBetweenIcons - 20; //what is this? Well, it looks good
   
   //iPhone 4s
-  if ([[UIScreen mainScreen] bounds].size.height <= 568)
+  if (screenSize.height <= 568)
     verticalSpacing -= 10;
+  
+  // height of all stuff including buttons and text (this is just the bottom of the lowest text, without a top margin)
+  CGFloat totalHeight = 2*verticalSpacing + 3*buttonHeight;
+  CGFloat topMargin = (viewSize.height - totalHeight)/2;
   
   for (int row=0; row<3; row++) {
     for (int col=0; col<3; col++) {
@@ -163,16 +171,20 @@ typedef enum {
   self.screenName = @"Main View";
   
   self.buttonUnderTexts = @[@"News", @"Directory", @"Maps", @"Videos", @"Photos",
-                            @"Events", @"Transit", @"Athletics", [self currentEvent]==YaleEventOrientation ? @"Orientation" : @"Commencement"];
-  self.buttonImageTitles = @[@"NewsIcon", @"DirectoryIcon", @"MapsIcon", @"VideosIcon", @"PhotosIcon", @"EventsIcon", @"TransitIcon", @"AthleticsIcon", [self currentEvent]==YaleEventOrientation ? @"OrientationIcon2019" : @"CommencementIcon2015"];
+                            @"Events", @"Transit", [self currentEvent]==YaleEventOrientation ? @"Orientation" : @"Commencement", @"Athletics"];
+  self.buttonImageTitles = @[@"NewsIcon", @"DirectoryIcon", @"MapsIcon", @"VideosIcon", @"PhotosIcon", @"EventsIcon", @"TransitIcon", [self currentEvent]==YaleEventOrientation ? @"OrientationIcon2019" : @"CommencementIcon2015", @"AthleticsIcon"];
 
   [self setupNavigationBar];
   [self setupBackgroundImage];
-  [self setupButtonViews];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
+  static BOOL loaded = NO;
+  if (!loaded) {
+    [self setupButtonViews];
+    loaded = YES;
+  }
   [[UIApplication sharedApplication].delegate window].rootViewController = self.navigationController;
   [super viewWillAppear:animated];
 }
