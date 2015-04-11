@@ -8,7 +8,7 @@
         <!--Info View View Controller-->
         <scene sceneID="rkL-GG-QiJ">
             <objects>
-                <viewController storyboardIdentifier="InfoVC" id="4Nk-ZI-DMW" customClass="YPInfoViewViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="InfoVC Root" id="4Nk-ZI-DMW" customClass="YPInfoViewViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="XZc-QS-gXj"/>
                         <viewControllerLayoutGuide type="bottom" id="jze-GO-73A"/>
@@ -98,16 +98,10 @@
                     <toolbarItems>
                         <barButtonItem title="Item" id="toE-Bz-UwG"/>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" id="igj-76-282">
-                        <barButtonItem key="rightBarButtonItem" title="Done" id="coA-y0-D5B">
-                            <connections>
-                                <action selector="dissmissThisVC:" destination="4Nk-ZI-DMW" id="XqH-ty-zuh"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="igj-76-282"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="doneButton" destination="coA-y0-D5B" id="KlE-WV-gId"/>
                         <outlet property="logoImageView" destination="8hQ-As-4lc" id="OFo-zN-41o"/>
                         <outlet property="projectInfoButton" destination="Ze3-Nt-fnU" id="jsi-Nk-8t0"/>
                         <outlet property="releaseLabel" destination="wk3-MH-nIa" id="AXl-kl-zIF"/>
@@ -135,27 +129,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vVr-Wz-oDi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2238" y="60"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="KBd-XU-TE9">
-            <objects>
-                <navigationController storyboardIdentifier="InfoVC Root" automaticallyAdjustsScrollViewInsets="NO" id="hv2-X1-CIz" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="yI8-os-Esk">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <textAttributes key="titleTextAttributes">
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        </textAttributes>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="4Nk-ZI-DMW" kind="relationship" relationship="rootViewController" id="88I-kn-wgZ"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Jqu-fH-H3M" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="798" y="60"/>
         </scene>
     </scenes>
 </document>

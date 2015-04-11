@@ -96,20 +96,14 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-  [[UIApplication sharedApplication].delegate window].rootViewController = self.navigationController;
+  [super viewWillAppear:animated];
+  //[[UIApplication sharedApplication].delegate window].rootViewController = self.navigationController;
 }
 
 
 // Then implement the delegate method
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
   [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-}
-
-
-#pragma mark - Navigation
-- (IBAction)dissmissThisVC:(id)sender
-{
-  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

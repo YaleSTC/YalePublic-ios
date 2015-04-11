@@ -25,6 +25,7 @@
 
 #import "RSDFDatePickerDaysOfWeekView.h"
 #import "NSCalendar+RSDFAdditions.h"
+#import "YPTheme.h"
 
 @interface RSDFDatePickerDaysOfWeekView ()
 
@@ -274,7 +275,8 @@
 
 - (UIColor *)dayOfWeekLabelTextColor
 {
-    return [UIColor blackColor];
+  return [YPTheme textColor];
+    //return [UIColor blackColor];
 }
 
 - (UIColor *)dayOffOfWeekLabelTextColor

@@ -14,6 +14,7 @@
 #import <GAI.h>
 #import <GAIFields.h>
 #import <GAIDictionaryBuilder.h>
+#import "YPTheme.h"
 
 @interface YPVideosPlaylistTableViewController ()
 @property (nonatomic, strong) NSArray *playlistArray;
@@ -110,6 +111,7 @@
   UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"playlistCell"];
   NSDictionary *snippet = self.playlistArray[indexPath.row][@"snippet"];
   cell.textLabel.numberOfLines = 2;
+  cell.textLabel.textColor = [YPTheme textColor];
   cell.textLabel.text = snippet[@"title"];
   return cell;
 }

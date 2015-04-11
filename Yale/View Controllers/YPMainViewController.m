@@ -66,13 +66,14 @@ typedef enum {
   self.infoButton = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
   self.navigationItem.rightBarButtonItem = self.infoButton;
   [infoButton addTarget:self action:@selector(viewInfo) forControlEvents:UIControlEventTouchUpInside];
-  navigationBar.barStyle = UIBarStyleBlack;
+  //navigationBar.barStyle = UIBarStyleBlack;
   navigationBar.translucent = NO;
   [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init]
                                     forBarPosition:UIBarPositionAny
                                         barMetrics:UIBarMetricsDefault];
   
   [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+  
   self.title = @"Home";
 }
 
@@ -107,6 +108,8 @@ typedef enum {
   CGSize screenSize = [[UIScreen mainScreen] bounds].size;
   CGSize viewSize = self.view.bounds.size;
   CGSize iconSize = self.iconSize;
+  CGSize statusBarSize = [UIApplication sharedApplication].statusBarFrame.size;
+  CGSize navigationBarSize = self.navigationController.navigationBar.frame.size;
   // buttons contain icons
   CGFloat horizontalMarginToIcons = (iconSize.height == 57) ? 20 : 30; //this is also the horizontal margin to the icons (not the buttons)
   CGFloat buttonWidth = iconSize.width*2; //make it big enough to fit the text below the button, even if the text is long like this text is long.
@@ -122,7 +125,8 @@ typedef enum {
   
   // height of all stuff including buttons and text (this is just the bottom of the lowest text, without a top margin)
   CGFloat totalHeight = 2*verticalSpacing + 3*buttonHeight;
-  CGFloat topMargin = (viewSize.height - totalHeight)/2;
+  // center in screen, vertically
+  CGFloat topMargin = (screenSize.height - totalHeight)/2 - navigationBarSize.height - statusBarSize.height;
   
   for (int row=0; row<3; row++) {
     for (int col=0; col<3; col++) {
@@ -185,7 +189,7 @@ typedef enum {
     [self setupButtonViews];
     loaded = YES;
   }
-  [[UIApplication sharedApplication].delegate window].rootViewController = self.navigationController;
+  //[[UIApplication sharedApplication].delegate window].rootViewController = self.navigationController;
   [super viewWillAppear:animated];
 }
 
@@ -281,7 +285,8 @@ typedef enum {
   UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPInfoViewController"
                                                        bundle:[NSBundle mainBundle]];
   UINavigationController *infoVC = [storyboard instantiateViewControllerWithIdentifier:@"InfoVC Root"];
-  [self.navigationController presentViewController:infoVC animated:YES completion:nil];
+  [self.navigationController pushViewController:infoVC animated:YES];
+  // [self.navigationController presentViewController:infoVC animated:YES completion:nil];
 }
 
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
