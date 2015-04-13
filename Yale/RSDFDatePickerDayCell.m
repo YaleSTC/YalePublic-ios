@@ -24,6 +24,7 @@
 //
 
 #import "RSDFDatePickerDayCell.h"
+#import "YPTheme.h"
 
 @interface RSDFDatePickerDayCell ()
 
@@ -285,7 +286,8 @@
 
 - (UIColor *)dayLabelTextColor
 {
-    return [UIColor blackColor];
+  return [YPTheme textColor];
+    //return [UIColor blackColor];
 }
 
 - (UIColor *)dayOffLabelTextColor

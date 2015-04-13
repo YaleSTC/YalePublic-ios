@@ -7,6 +7,7 @@
 //
 
 #import "YPResultsTableViewController.h"
+#import "YPTheme.h"
 
 @implementation YPResultsTableViewController
 
@@ -28,6 +29,7 @@
     
   }
   cell.textLabel.text = [self.filteredBuildings objectAtIndex:indexPath.row];
+  cell.textLabel.textColor = [YPTheme textColor];
   
   return cell;
 }

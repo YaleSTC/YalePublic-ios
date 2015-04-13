@@ -11,5 +11,6 @@
 @interface YPTheme : NSObject
 
 + (UIColor *)navigationBarColor;
++ (UIColor *)textColor;
 
 @end

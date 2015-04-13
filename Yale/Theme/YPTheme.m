@@ -15,7 +15,14 @@
 
 + (UIColor *)navigationBarColor
 {
-  return RGB(14.0, 54.0, 98.0);
+  return [UIColor colorWithRed:15/255. green:68/225. blue:129/225. alpha:1];
+  //return RGB(26.0, 62.0, 123.0);
+  //return RGB(14.0, 54.0, 98.0);
+}
+
++ (UIColor *)textColor
+{
+  return [UIColor colorWithRed:51/255. green:51/255. blue:51/255. alpha:1];
 }
 
 @end

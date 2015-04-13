@@ -9,6 +9,7 @@
 #import "YPDirectoryDetailViewController.h"
 #import "CoreMacro.h"
 #import "YPGlobalHelper.h"
+#import "YPTheme.h"
 
 
 @interface YPDirectoryDetailViewController ()
@@ -39,7 +40,7 @@
 {
   self.title = [self.data valueForKey:@"Name"];
   self.nameLabel.text = [self.data valueForKey:@"Name"];
-  
+  self.nameLabel.textColor = [YPTheme textColor];
   
   NSString *subheaderString = @"";
   for (NSString *item in [self.data allKeys]) {
@@ -93,7 +94,7 @@
   NSString *title = [[[self.data allKeys] sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:indexPath.row];
   cell.textLabel.text = title;
   cell.detailTextLabel.text = [self.data objectForKey:title];
-  
+  cell.detailTextLabel.textColor = [YPTheme textColor];
   
   cell.userInteractionEnabled = ([title isEqualToString:@"Email"] || [title isEqualToString:@"Phone"]) ? YES : NO;
   

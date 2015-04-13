@@ -12,7 +12,6 @@
 
 - (void)awakeFromNib {
   [super awakeFromNib];
-  //  self.backgroundColor = [UIColor blackColor];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

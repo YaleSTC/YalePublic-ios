@@ -13,6 +13,7 @@
 #import "TTTTimeIntervalFormatter.h"
 #import "YPGlobalHelper.h"
 #import "Config.h"
+#import "YPTheme.h"
 
 @interface YPVideoListTableViewController ()
 @property (nonatomic, strong) NSArray *videosArray;
@@ -125,6 +126,7 @@
   NSDictionary *snippet = self.videosArray[indexPath.row][@"snippet"];
   NSLog(@"%@", snippet);
   cell.titleLabel.text = snippet[@"title"];
+  cell.titleLabel.textColor = [YPTheme textColor];
   cell.subtitleLabel.text = snippet[@"description"];
   NSURL *imgURL = [NSURL URLWithString:snippet[@"thumbnails"][@"default"][@"url"]];
   

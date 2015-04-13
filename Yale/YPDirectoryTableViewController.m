@@ -12,6 +12,7 @@
 #import "YPDirectoryDetailViewController.h"
 #import <GAI.h>
 #import <GAIFields.h>
+#import "YPTheme.h"
 #import <GAIDictionaryBuilder.h>
 
 @interface YPDirectoryTableViewController ()
@@ -200,6 +201,7 @@
   NSArray *sectionPeople = [self.sectionedPeople objectForKey:sectionTitle];
   NSString *person = [[sectionPeople objectAtIndex:indexPath.row] objectForKey:@"name"];
   cell.textLabel.text = person;
+  cell.textLabel.textColor = [YPTheme textColor];
   return cell;
 }
 

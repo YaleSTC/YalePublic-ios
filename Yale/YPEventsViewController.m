@@ -228,6 +228,7 @@
   UITableViewCell *cell = [self.detailTableView dequeueReusableCellWithIdentifier:@"detailCell"];
   NSDictionary *event = [self.currentEvents objectAtIndex:indexPath.row];
   cell.textLabel.text = [self.class eventTitle:event];
+  cell.textLabel.textColor = [YPTheme textColor];
   NSArray *tags = [event objectForKey:@"categories"];
   UIColor *color = [YPEventsCategoriesViewController colorForName:self.viewName tags:tags];
   

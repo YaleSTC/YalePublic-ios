@@ -179,6 +179,7 @@
   }
   
   cell.textLabel.text = [self.buildingsArray objectAtIndex:indexPath.row];
+  cell.textLabel.textColor = [YPTheme textColor];
   return cell;
 }
 

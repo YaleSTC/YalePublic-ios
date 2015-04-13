@@ -33,9 +33,11 @@
   self.window.rootViewController = rootVC;
 
   [[UINavigationBar appearance] setBarTintColor:[YPTheme navigationBarColor]];
-  [[UINavigationBar appearance] setTranslucent:false];
+  //[[UINavigationBar appearance] setTitleVerticalPositionAdjustment:-3 forBarMetrics:UIBarMetricsDefault];
+  [[UINavigationBar appearance] setTranslucent:NO];
   [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
   [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+  [[UILabel appearanceWhenContainedIn:[UITableViewHeaderFooterView class], nil] setTextColor:[YPTheme textColor]];
   
   [application setStatusBarStyle:UIStatusBarStyleLightContent];
   

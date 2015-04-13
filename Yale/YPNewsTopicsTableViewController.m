@@ -11,6 +11,7 @@
 #import <GAI.h>
 #import <GAIFields.h>
 #import <GAIDictionaryBuilder.h>
+#import "YPTheme.h"
 
 @interface YPNewsTopicsTableViewController ()
 
@@ -70,6 +71,7 @@
     default:
       break;
   }
+  cell.textLabel.textColor = [YPTheme textColor];
   return cell;
 }
 

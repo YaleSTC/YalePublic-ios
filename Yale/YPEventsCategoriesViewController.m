@@ -9,6 +9,7 @@
 #import "YPEventsCategoriesViewController.h"
 #import "YPEventsViewController.h"
 #import "YPCircleView.h"
+#import "YPTheme.h"
 
 //for easy, consistent access and lookup. also to lookup by tag
 //colors found by sampling colors from the old app
@@ -63,6 +64,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"categoryCell"];
   cell.textLabel.text = CATEGORY_DATA[indexPath.row][0];
+  cell.textLabel.textColor = [YPTheme textColor];
   YPCircleView *circle = (YPCircleView *)[cell.contentView viewWithTag:1];
   circle.color = CATEGORY_DATA[indexPath.row][2];
   [circle setNeedsDisplay];

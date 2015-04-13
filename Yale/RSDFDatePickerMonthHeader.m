@@ -23,6 +23,8 @@
 // THE SOFTWARE.
 //
 
+#import "YPTheme.h"
+
 #import "RSDFDatePickerMonthHeader.h"
 
 @implementation RSDFDatePickerMonthHeader
@@ -101,7 +103,8 @@
 
 - (UIColor *)monthLabelTextColor
 {
-    return [UIColor blackColor];
+  return [YPTheme textColor];
+    //return [UIColor blackColor];
 }
 
 - (UIColor *)currentMonthLabelTextColor
