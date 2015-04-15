@@ -67,14 +67,14 @@ DEPENDENCIES:
   - XMLDictionary (~> 1.4)
 
 SPEC CHECKSUMS:
-  AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
-  FLEX: 8e53751b915759215d77c7c72b1c7bd28665dac2
-  FlickrKit: 1bbc5c91f065fa0d7ce4119c5d5c63a9241eea73
-  FormatterKit: 877ff970af3feb2f602ced0a9420e9fbc25f568c
-  GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
-  JGProgressHUD: a7c58f711eec0b67f257a0821c0bac9194c72398
-  MWFeedParser: 003cbf5398e99a7f2057fbe9583054fd1b84be72
-  PureLayout: c8960fa0f3b40d849d5e177d699d0148faa63b63
-  XMLDictionary: 735e81b9a043e220b0d24e9d4f16719606f2e0fc
+  AFNetworking: 41d45d2c14219af0fa5addf3cfd433a002c13c9f
+  FLEX: a58e34e78f83547b9aceedd53a8e8f85286682ec
+  FlickrKit: 658792f6d54b3a282e0b0996b0d4ede3fcfed6e1
+  FormatterKit: 03b5d827cf91fa0f1398c00ab0d558bcb69ee168
+  GoogleAnalytics-iOS-SDK: 3b0994bef22ed2e176a9e2a4d1660c7c2542eb47
+  JGProgressHUD: 7860357e1185cb665b92d5145f3dbbd1cd1db9db
+  MWFeedParser: 2cf646014c1baf6ad1b08c480b40a08180079247
+  PureLayout: 461724f6da2da366709e5fe6e6006f6039b7c2dd
+  XMLDictionary: f9f51601ba76678b594ab485f2b00ec1fed23724
 
 COCOAPODS: 0.35.0

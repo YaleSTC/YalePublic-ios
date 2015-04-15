@@ -17,6 +17,8 @@
 #import <GAIFields.h>
 #import <GAIDictionaryBuilder.h>
 
+typedef void(^SuccessHandler)(NSArray *events);
+
 @interface YPEventsViewController ()
 @property (nonatomic, strong) RSDFDatePickerView *datePickerView;
 @property (nonatomic, strong) UIProgressView *progressView;
@@ -24,6 +26,9 @@
 @property (nonatomic, strong) NSArray             *events;
 @property (nonatomic, strong) NSArray *currentEvents;
 @property (nonatomic, strong) UILabel *headerTextLabel;
+
+@property (nonatomic, strong) SuccessHandler toExcecuteOnLoad;
+
 @end
 
 @implementation YPEventsViewController
@@ -37,6 +42,10 @@
   [tracker set:kGAIScreenName
          value:@"Events VC"];
   [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+  
+  if (self.toExcecuteOnLoad) {
+    self.toExcecuteOnLoad(self.events);
+  }
 }
 
 //this was 260. after frames changed so Detail table view scrolls all the way to the bottom, the size left for the calendar was noticeably smaller.
@@ -54,13 +63,15 @@
   self.detailTableView.frame = detailFrame;
   [super viewWillAppear:animated];
   
-  self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
-  self.progressView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 2);
-  [self.view addSubview:self.progressView];
 }
 
 - (void)viewDidLoad
 {
+  
+  self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+  self.progressView.frame = CGRectMake(0, 0, self.view.bounds.size.width, 2);
+  [self.view addSubview:self.progressView];
+  
   [super viewDidLoad];
   CGFloat calendarHeight = self.view.bounds.size.height - DETAIL_HEIGHT;
   
@@ -94,12 +105,37 @@
   self.headerTextLabel.text = [formatter stringFromDate:[NSDate date]];
   
   UIBarButtonItem *todayBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Today" style:UIBarButtonItemStylePlain target:self action:@selector(onTodayButtonTouch:)];
-  self.navigationItem.rightBarButtonItem = todayBarButtonItem;
+  UIBarButtonItem *refreshBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshEvents)];
+  [self.navigationItem setRightBarButtonItems:@[todayBarButtonItem, refreshBarButtonItem]];
   
   [self getEvents];
 }
 
-- (void)getEvents {
+- (void)refreshEvents {
+  [self.class storeData:nil forViewName:self.viewName];
+  self.progressView.alpha = 1;
+  self.progressView.progress = 0;
+  [self getEvents];
+}
+
+// TODO: Store in a file
++ (NSArray *)storedDataForViewName:(NSString *)viewName {
+  NSData *data;
+  data = [[NSUserDefaults standardUserDefaults] objectForKey:viewName];
+  return [NSKeyedUnarchiver unarchiveObjectWithData:data];
+}
+
+// data to store must all be combinations of NSDictionary, NSArray, NSNumber, NSDate, NSString, NSData, NSValue
++ (void)storeData:(NSArray *)array forViewName:(NSString *)viewName {
+  NSData *data = array ? [NSKeyedArchiver archivedDataWithRootObject:array] : nil;
+  [[NSUserDefaults standardUserDefaults] setObject:data forKey:viewName];
+}
+
+- (void)getEventsWithViewName:(NSString *)viewName
+         completionBlock:(SuccessHandler)successHandler
+           progressBlock:(void(^)(double progress))progressHandler
+            failureBlock:(void(^)(NSError *error))failureHandler
+{
   NSDate *today = [NSDate date];
   
   // Getting first day of this month
@@ -118,9 +154,9 @@
   components.year  = 0;
   components.era   = 0;
   NSDate *dayOneNow = [calendar dateByAddingComponents:components
-                                                          toDate:dayOneInCurrentMonth
-                                                         options:0];
-
+                                                toDate:dayOneInCurrentMonth
+                                               options:0];
+  
   
   // Getting day one of 6 month forward
   components.month = 6;
@@ -132,16 +168,46 @@
   // Getting the number of days in between the two dates
   NSInteger days = [YPEventsViewController daysBetweenDate:dayOneInCurrentMonth andDate:dayOneSixMonthsForward];
   
-  [YPCalendarEventsServerCommunicator getEventsFromDay:dayOneNow tilNext:days viewName:self.viewName completionBlock:^(NSArray *array) {
+  NSArray *storedData = [self.class storedDataForViewName:viewName];
+  NSDate *dateWhenMustReload = [storedData objectAtIndex:0];
+  if (!dateWhenMustReload || [dateWhenMustReload timeIntervalSinceNow] < 0) {
+    NSTimeInterval weekSeconds = 10;//7*24*60*60;
+    dateWhenMustReload = [[NSDate date] dateByAddingTimeInterval:weekSeconds];
+    [YPCalendarEventsServerCommunicator getEventsFromDay:dayOneNow tilNext:days viewName:viewName completionBlock:^(NSArray *events) {
+      NSArray *cache = @[dateWhenMustReload, events];
+      [self.class storeData:cache forViewName:viewName];
+      successHandler(events);
+    } progressBlock:^(double progress) {
+      progressHandler(progress);
+    } failureBlock:^(NSError *error) {
+      failureHandler(error);
+    }];
+  } else {
+    progressHandler(1);
+    NSArray *events = storedData[1];
+    self.events = events;
+    self.toExcecuteOnLoad = successHandler; // this should happen in viewdidappear
+    // successHandler(events);
+  }
+}
+
+- (void)getEvents {
+  
+  [YPGlobalHelper showNotificationInViewController:self
+                                           message:@"Loading"
+                                             style:JGProgressHUDStyleDark];
+  
+  NSDate *today = [NSDate date];
+  
+  [self getEventsWithViewName:self.viewName completionBlock:^(NSArray *array) {
     self.events = array;
     [YPGlobalHelper hideNotificationView];
     [self.datePickerView reloadData];
     [self.datePickerView selectDate:today];
-  
+    
     NSString *dateString = [self getDateString:today];
     self.currentEvents = [self eventsForDateString:dateString];
     [self.detailTableView reloadData];
-    
   } progressBlock:^(double progress) {
     [self.progressView setProgress:progress animated:YES];
     if (self.progressView.hidden != progress > 0.99) {
@@ -153,10 +219,6 @@
     NSLog(@"error: %@", [error localizedDescription]);
     [YPGlobalHelper hideNotificationView];
   }];
-  
-  [YPGlobalHelper showNotificationInViewController:self
-                                           message:@"Loading"
-                                             style:JGProgressHUDStyleDark];
 }
 
 - (NSString *)getDateString:(NSDate *)date {
