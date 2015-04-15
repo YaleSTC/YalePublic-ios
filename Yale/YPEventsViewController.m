@@ -118,17 +118,42 @@ typedef void(^SuccessHandler)(NSArray *events);
   [self getEvents];
 }
 
+// not sure what file type this should be. txt is pretty basic, so let's go with that. probably won't be a readable text file
+#define CACHE_FILE_NAME @"events_cache.txt"
+
 // TODO: Store in a file
 + (NSArray *)storedDataForViewName:(NSString *)viewName {
-  NSData *data;
-  data = [[NSUserDefaults standardUserDefaults] objectForKey:viewName];
-  return [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject stringByAppendingPathComponent:CACHE_FILE_NAME];
+  NSData *data = [NSData dataWithContentsOfFile:path];
+  if (!data) {
+    [self storeData:nil forViewName:viewName]; // will create dictionary of viewNames
+    return nil;
+  }
+  NSDictionary *dict = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+  return dict[viewName];
 }
 
-// data to store must all be combinations of NSDictionary, NSArray, NSNumber, NSDate, NSString, NSData, NSValue
+// data to store must all be combinations of objects which comply to NSCoding protocol
 + (void)storeData:(NSArray *)array forViewName:(NSString *)viewName {
-  NSData *data = array ? [NSKeyedArchiver archivedDataWithRootObject:array] : nil;
-  [[NSUserDefaults standardUserDefaults] setObject:data forKey:viewName];
+  // get current dict
+  NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject stringByAppendingPathComponent:CACHE_FILE_NAME];
+  NSData *data = [NSData dataWithContentsOfFile:path];
+  NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+  if (data) {
+    dict = [NSMutableDictionary dictionaryWithDictionary:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
+  }
+  if (array) {
+    dict[viewName] = array;
+  } else {
+    [dict removeObjectForKey:viewName];
+  }
+  
+  data = [NSKeyedArchiver archivedDataWithRootObject:[dict copy]];
+  if (!path || ![data writeToFile:path atomically:YES]) {
+    NSLog(@"Could not store event cache at path: %@", path);
+  } else {
+    NSLog(@"Saved event cache at path: %@", path);
+  }
 }
 
 - (void)getEventsWithViewName:(NSString *)viewName
@@ -171,7 +196,8 @@ typedef void(^SuccessHandler)(NSArray *events);
   NSArray *storedData = [self.class storedDataForViewName:viewName];
   NSDate *dateWhenMustReload = [storedData objectAtIndex:0];
   if (!dateWhenMustReload || [dateWhenMustReload timeIntervalSinceNow] < 0) {
-    NSTimeInterval weekSeconds = 10;//7*24*60*60;
+    NSLog(@"Reloading cache");
+    NSTimeInterval weekSeconds = 7*24*60*60;
     dateWhenMustReload = [[NSDate date] dateByAddingTimeInterval:weekSeconds];
     [YPCalendarEventsServerCommunicator getEventsFromDay:dayOneNow tilNext:days viewName:viewName completionBlock:^(NSArray *events) {
       NSArray *cache = @[dateWhenMustReload, events];
@@ -183,6 +209,7 @@ typedef void(^SuccessHandler)(NSArray *events);
       failureHandler(error);
     }];
   } else {
+    NSLog(@"Using cached event data");
     progressHandler(1);
     NSArray *events = storedData[1];
     self.events = events;
