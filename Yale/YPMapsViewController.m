@@ -12,8 +12,9 @@
 #import <GAI.h>
 #import <GAIFields.h>
 #import <GAIDictionaryBuilder.h>
+#import "JSONLoader.h"
 
-@interface YPMapsViewController () <UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, UITableViewDataSource, UITableViewDelegate>
+@interface YPMapsViewController () <UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, UITableViewDataSource, UITableViewDelegate, JSONLoaderDelegate>
 
 @property (nonatomic, strong) UISearchController *searchController;
 @property (nonatomic, strong) YPResultsTableViewController *resultsTableController; 
@@ -26,9 +27,27 @@
 @property (strong, nonatomic) MKUserTrackingBarButtonItem *trackingItem;
 @property (nonatomic, strong) MKPointAnnotation *currentAnnotation;
 
+@property (strong, nonatomic) JSONLoader *buildingLoader;
+
 @end
 
 @implementation YPMapsViewController
+
+- (void)jsonLoaderNamed:(NSString *)name updatedPlist:(NSDictionary *)plist
+{
+  
+}
+
+#define BUILDINGS_URL @"https://gw.its.yale.edu/soa-gateway/buildings/feed?type=json&apikey=l7xxe29bf8a290714cb1a5d05460001965f6"
+
+- (JSONLoader *)buildingLoader
+{
+  if (!_buildingLoader)
+  {
+    _buildingLoader = [[JSONLoader alloc] initWithName:@"Buildings File" defaultName:@"buildingdata" url:BUILDINGS_URL delegate:self];
+  }
+  return _buildingLoader;
+}
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -76,11 +95,25 @@
   self.tableView.tableHeaderView = self.searchController.searchBar;
 }
 
+// takes a JSON in the API-format and turns it into a format like
+// {"nice building name": {"Longitude": number, "Latitude": number, "Address": [address lines]}}
++ (NSDictionary *)parseJSON:(NSDictionary *)json
+{
+  NSMutableDictionary *buildings = [NSMutableDictionary dictionary];
+  for (NSDictionary *building in json[@"ServiceResponse"][@"Buildings"][@"Building"]) {
+    NSString *buildingName = building[@"DESCRIPTION"];
+    id longitude = building[@"LONGITUDE"];
+    id latitude = building[@"LATITUDE"];
+    if (longitude && latitude) {
+      NSArray *address = [NSArray arrayWithObjects:building[@"ADDRESS_1"], building[@"ADDRESS_2"], building[@"ADDRESS_3"], nil];
+      [buildings setObject:@{@"Longitude": longitude, @"Latitude":latitude, @"Address": address} forKey:buildingName];
+    }
+  }
+  return [buildings copy];
+}
+
 - (void)setupBuildings {
-  NSString *filePath = [[NSBundle mainBundle] pathForResource:@"buildings" ofType:@"json"];
-  NSData* data = [NSData dataWithContentsOfFile:filePath];
-  NSError* error = nil;
-  self.buildings = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+  self.buildings = [self.class parseJSON:self.buildingLoader.json];
   self.buildingsArray = [[self.buildings allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
   NSLog(@"%@", self.buildingsArray);
 }
