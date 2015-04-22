@@ -11,6 +11,9 @@
 #import "Config.h"
 #import "YPTheme.h"
 
+#warning NEED_YALE_EDU_EMAIL
+#define FEEDBACK_EMAIL @"yalepublic@gmail.com"
+
 @interface YPInfoViewViewController () <UITextViewDelegate>
 @property UITextView *textView;
 @property BOOL loaded;
@@ -88,8 +91,8 @@
   [link addAttribute:NSLinkAttributeName value:@"http://link.com" range:NSMakeRange(0, link.length)]; // this triggers the delegate method
   [info appendAttributedString:link];
   [info appendAttributedString:[[NSAttributedString alloc] initWithString:@"\nAbout this App" attributes:headerAttributes]];
-  [info appendAttributedString:[[NSAttributedString alloc] initWithString:@"\nVersion 1.0 of Yale was created by the Student Developer and Mentorship Program at Yale in conjunction with Office of Public Affairs and Communications and Yale ITS." attributes:textAttributes]];
-  [info appendAttributedString:[[NSAttributedString alloc] initWithString:@"\nMembers of the team include Minh Tri Pham, Hengchu Zhang, Charly Walther, Lee Danilek, Taishi Nojima, Hannia Zia, and Jenny Allen" attributes:textAttributes]];
+  [info appendAttributedString:[[NSAttributedString alloc] initWithString:@"\nVersion 1.0 of Yale was created by the Student Developer and Mentorship Program at Yale in conjunction with the Office of Public Affairs and Communications and Yale ITS." attributes:textAttributes]];
+  [info appendAttributedString:[[NSAttributedString alloc] initWithString:@"\nMembers of the team include Minh Tri Pham, Hengchu Zhang, Charly Walther, Lee Danilek, Taishi Nojima, Hannia Zia, and Jenny Allen." attributes:textAttributes]];
   [info appendAttributedString:[[NSAttributedString alloc] initWithString:@"\nWe would like to thank everyone who supported us making this application." attributes:textAttributes]];
   return [info copy];
 }
@@ -121,7 +124,7 @@
     mailCont.mailComposeDelegate = self;
     
     [mailCont setSubject:@"Feedback"];
-    [mailCont setToRecipients:[NSArray arrayWithObject:@"yalepublic@gmail.com"]];
+    [mailCont setToRecipients:[NSArray arrayWithObject:FEEDBACK_EMAIL]];
     [mailCont setMessageBody:@"" isHTML:NO];
     [self.navigationController presentViewController:mailCont animated:YES completion:^{
       //without these lines the status bar shows up black, for some reason.

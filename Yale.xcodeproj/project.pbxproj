@@ -20,12 +20,14 @@
 		9B8BE2A519DE153D00CFE39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B8BE2A419DE153D00CFE39A /* Images.xcassets */; };
 		9B8BE2B419DE153D00CFE39A /* YaleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B8BE2B319DE153D00CFE39A /* YaleTests.m */; };
 		9B8EE5F81A92A789005ED167 /* YPCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B8EE5F71A92A789005ED167 /* YPCircleView.m */; };
+		9B9171BB1AE708F800F34276 /* buildingdata.json in Resources */ = {isa = PBXBuildFile; fileRef = 9B9171BA1AE708F800F34276 /* buildingdata.json */; };
 		9BC369991A040F9A00B63FF8 /* YPAthleticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC369981A040F9A00B63FF8 /* YPAthleticsViewController.m */; };
 		9BC369D31A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC369D21A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m */; };
 		9BED8DD81A895B0F002E87AD /* YPWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BED8DD71A895B0F002E87AD /* YPWebViewController.m */; };
 		9BEDA9FC1A2E66AD0095EF2C /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDA9F71A2E66AD0095EF2C /* TFHpple.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9BEDA9FD1A2E66AD0095EF2C /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDA9F91A2E66AD0095EF2C /* TFHppleElement.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9BEDA9FE1A2E66AD0095EF2C /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BEDA9FB1A2E66AD0095EF2C /* XPathQuery.m */; };
+		9BF860021AE700010069CC5F /* JSONLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BF860011AE700010069CC5F /* JSONLoader.m */; };
 		AB0071D419E4C8F000ABF52D /* YPNewsTopicsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0071D319E4C8F000ABF52D /* YPNewsTopicsTableViewController.m */; };
 		AB0071D719E4C90300ABF52D /* YPNewsArticlesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0071D619E4C90300ABF52D /* YPNewsArticlesTableViewController.m */; };
 		AB0071DA19E4C92300ABF52D /* YPNewsEmbeddedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0071D919E4C92300ABF52D /* YPNewsEmbeddedViewController.m */; };
@@ -112,6 +114,7 @@
 		9B8BE2B319DE153D00CFE39A /* YaleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YaleTests.m; sourceTree = "<group>"; };
 		9B8EE5F61A92A789005ED167 /* YPCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPCircleView.h; sourceTree = "<group>"; };
 		9B8EE5F71A92A789005ED167 /* YPCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPCircleView.m; sourceTree = "<group>"; };
+		9B9171BA1AE708F800F34276 /* buildingdata.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = buildingdata.json; sourceTree = "<group>"; };
 		9BC369971A040F9A00B63FF8 /* YPAthleticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPAthleticsViewController.h; path = "View Controllers/YPAthleticsViewController.h"; sourceTree = "<group>"; };
 		9BC369981A040F9A00B63FF8 /* YPAthleticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YPAthleticsViewController.m; path = "View Controllers/YPAthleticsViewController.m"; sourceTree = "<group>"; };
 		9BC369D11A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPCalendarEventsServerCommunicator.h; path = ServerCommunicators/YPCalendarEventsServerCommunicator.h; sourceTree = "<group>"; };
@@ -125,6 +128,8 @@
 		9BEDA9FA1A2E66AD0095EF2C /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XPathQuery.h; sourceTree = "<group>"; };
 		9BEDA9FB1A2E66AD0095EF2C /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
 		9BEDAA001A2E677D0095EF2C /* CoreMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreMacro.h; sourceTree = "<group>"; };
+		9BF860001AE700010069CC5F /* JSONLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONLoader.h; sourceTree = "<group>"; };
+		9BF860011AE700010069CC5F /* JSONLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONLoader.m; sourceTree = "<group>"; };
 		AB0071D219E4C8F000ABF52D /* YPNewsTopicsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsTopicsTableViewController.h; sourceTree = "<group>"; };
 		AB0071D319E4C8F000ABF52D /* YPNewsTopicsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPNewsTopicsTableViewController.m; sourceTree = "<group>"; };
 		AB0071D519E4C90300ABF52D /* YPNewsArticlesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPNewsArticlesTableViewController.h; sourceTree = "<group>"; };
@@ -477,7 +482,10 @@
 				AB1A5A721A80270D000484ED /* YPResultsTableViewController.m */,
 				AB8AB5BF1A5D347800149B4B /* YPMapsViewController.h */,
 				AB8AB5C01A5D347800149B4B /* YPMapsViewController.m */,
+				9BF860001AE700010069CC5F /* JSONLoader.h */,
+				9BF860011AE700010069CC5F /* JSONLoader.m */,
 				AB1A5A741A802831000484ED /* buildings.json */,
+				9B9171BA1AE708F800F34276 /* buildingdata.json */,
 			);
 			name = Maps;
 			sourceTree = "<group>";
@@ -652,6 +660,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ABD3212C19EB0B48009D9281 /* YPVideoTableViewCell.xib in Resources */,
+				9B9171BB1AE708F800F34276 /* buildingdata.json in Resources */,
 				AB99B34F1A16B0ED0003F752 /* YPTransitViewController.storyboard in Resources */,
 				AB7D007E19E734FA008047A6 /* YPNewsArticleCell.xib in Resources */,
 				AB6F83301A0408A500F3FBD7 /* YPInfoViewController.storyboard in Resources */,
@@ -736,6 +745,7 @@
 				AB6F832E1A04081700F3FBD7 /* YPInfoViewViewController.m in Sources */,
 				AB6F83351A041F0000F3FBD7 /* YPProjectInfoViewController.m in Sources */,
 				ABD3211D19EAF341009D9281 /* YPVideosPlaylistTableViewController.m in Sources */,
+				9BF860021AE700010069CC5F /* JSONLoader.m in Sources */,
 				9BEDA9FD1A2E66AD0095EF2C /* TFHppleElement.m in Sources */,
 				9BC369991A040F9A00B63FF8 /* YPAthleticsViewController.m in Sources */,
 				ABB117C01A64A87C009743E2 /* NSCalendar+RSDFAdditions.m in Sources */,
