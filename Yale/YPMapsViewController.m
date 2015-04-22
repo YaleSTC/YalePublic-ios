@@ -147,6 +147,9 @@
   name = [name stringByReplacingOccurrencesOfString:@"SHEFFD" withString:@"SHEFFIELD"];
   name = [name stringByReplacingOccurrencesOfString:@"STERL-" withString:@"STERLING-"];
   name = [name stringByReplacingOccurrencesOfString:@"STRATHC" withString:@"Strathcona"];
+  if ([name hasPrefix:@"WC "]) {
+    name = [name stringByReplacingOccurrencesOfString:@"WC " withString:@"West Campus "];
+  }
   while ([name rangeOfString:@"  "].length == 2) {
     name = [name stringByReplacingOccurrencesOfString:@"  " withString:@" "];
   }
