@@ -165,7 +165,7 @@
     id longitude = building[@"LONGITUDE"];
     id latitude = building[@"LATITUDE"];
     if (longitude && latitude) {
-      NSArray *address = [NSArray arrayWithObjects:building[@"ADDRESS_1"], building[@"ADDRESS_2"], building[@"ADDRESS_3"], nil];
+      NSArray *address = [NSArray arrayWithObjects:building[@"ADDR1_ALIAS"]?building[@"ADDR1_ALIAS"]:building[@"ADDRESS_1"], building[@"ADDRESS_2"], building[@"ADDRESS_3"], nil];
       [buildings setObject:@{@"Longitude": longitude, @"Latitude":latitude, @"Address": address} forKey:[self fixName:buildingName]];
     }
   }
