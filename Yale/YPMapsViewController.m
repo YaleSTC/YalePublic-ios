@@ -35,7 +35,10 @@
 
 - (void)jsonLoaderNamed:(NSString *)name updatedPlist:(NSDictionary *)plist
 {
-  
+  self.buildings = [self.class parseJSON:plist];
+  self.buildingsArray = [[self.buildings allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+  NSLog(@"%@", self.buildingsArray);
+  [self.tableView reloadData];
 }
 
 #define BUILDINGS_URL @"https://gw.its.yale.edu/soa-gateway/buildings/feed?type=json&apikey=l7xxe29bf8a290714cb1a5d05460001965f6"
@@ -95,6 +98,63 @@
   self.tableView.tableHeaderView = self.searchController.searchBar;
 }
 
++ (NSString *)fixName:(NSString *)name
+{
+  
+  name = [name stringByReplacingOccurrencesOfString:@"HLH" withString:@"Hillhouse "];
+  name = [name stringByReplacingOccurrencesOfString:@"BLDG" withString:@"Building"];
+  name = [name stringByReplacingOccurrencesOfString:@" CTR" withString:@" Center "];
+  name = [name stringByReplacingOccurrencesOfString:@"ENVIRONMTL" withString:@"Environmental"];
+  name = [name stringByReplacingOccurrencesOfString:@"CEN " withString:@"Central "];
+  name = [name stringByReplacingOccurrencesOfString:@"," withString:@", "];
+  name = [name stringByReplacingOccurrencesOfString:@" ST," withString:@" Street,"];
+  name = [name stringByReplacingOccurrencesOfString:@" AVE," withString:@" Avenue,"];
+  name = [name stringByReplacingOccurrencesOfString:@" ST " withString:@" Street "];
+  name = [name stringByReplacingOccurrencesOfString:@"(DIV)" withString:@"(Divinity School)"];
+  name = [name stringByReplacingOccurrencesOfString:@"AMITY AN " withString:@"Amity Animal "];
+  name = [name stringByReplacingOccurrencesOfString:@"/" withString:@" / "];
+  name = [name stringByReplacingOccurrencesOfString:@"ACCEL." withString:@"Accelerator"];
+  name = [name stringByReplacingOccurrencesOfString:@"APTS" withString:@"Appartments"];
+  name = [name stringByReplacingOccurrencesOfString:@" LIB " withString:@" Library "];
+  name = [name stringByReplacingOccurrencesOfString:@" MEM." withString:@" MEMORIAL"];
+  name = [name stringByReplacingOccurrencesOfString:@" PAV." withString:@" PAVILION"];
+  name = [name stringByReplacingOccurrencesOfString:@" AUD." withString:@" AUDITORIUM"];
+  name = [name stringByReplacingOccurrencesOfString:@"PLT" withString:@"Plant"];
+  name = [name stringByReplacingOccurrencesOfString:@"MOLEC " withString:@"MOLECULAR "];
+  if ([name hasSuffix:@" MED"]) name = [name stringByReplacingOccurrencesOfString:@" MED" withString:@" MEDICINE"];
+  name = [name stringByReplacingOccurrencesOfString:@"COMPLX" withString:@"COMPLEX"];
+  name = [name stringByReplacingOccurrencesOfString:@"GOLF C " withString:@"GOLF COURSE "];
+  name = [name stringByReplacingOccurrencesOfString:@" HSE" withString:@" House"];
+  name = [name stringByReplacingOccurrencesOfString:@" STOR " withString:@" Storage "];
+  name = [name stringByReplacingOccurrencesOfString:@" RES " withString:@" research "];
+  name = [name stringByReplacingOccurrencesOfString:@" RES" withString:@" research"];
+  name = [name stringByReplacingOccurrencesOfString:@"GOVT." withString:@"GOVERNMENT"];
+  name = [name stringByReplacingOccurrencesOfString:@"BIO " withString:@"Biology "];
+  name = [name stringByReplacingOccurrencesOfString:@"FLD" withString:@"Field"];
+  name = [name stringByReplacingOccurrencesOfString:@"GRAD " withString:@"GRADUATE "];
+  if ([name hasSuffix:@" COL"]) name = [name stringByReplacingOccurrencesOfString:@" COL" withString:@" College"];
+  name = [name stringByReplacingOccurrencesOfString:@"DXWL" withString:@" Dixwell "];
+  name = [name stringByReplacingOccurrencesOfString:@"UNIV " withString:@" UNIVERSITY "];
+  //name = [name stringByReplacingOccurrencesOfString:@"GRAD-" withString:@"Graduate-"];
+  name = [name stringByReplacingOccurrencesOfString:@"-PRO" withString:@"-Professional"];
+  //name = [name stringByReplacingOccurrencesOfString:@" STA" withString:@" STADIUM"];
+  if ([name hasSuffix:@"PEDIAT"]) name = [name stringByReplacingOccurrencesOfString:@"PEDIAT" withString:@"Pediatrics"];
+  if ([name hasSuffix:@" FAC"]) name = [name stringByReplacingOccurrencesOfString:@" FAC" withString:@" FACTORY"];
+  name = [name stringByReplacingOccurrencesOfString:@"CONF " withString:@" CONFERENCE "];
+  name = [name stringByReplacingOccurrencesOfString:@"MAINT " withString:@" MAINTENANCE "];
+  name = [name stringByReplacingOccurrencesOfString:@"MBG " withString:@"Marsh Botanical Garden "];
+  if ([name hasSuffix:@" GAR"])name = [name stringByReplacingOccurrencesOfString:@" GAR" withString:@" GARAGE"];
+  name = [name stringByReplacingOccurrencesOfString:@"SHEFFD" withString:@"SHEFFIELD"];
+  name = [name stringByReplacingOccurrencesOfString:@"STERL-" withString:@"STERLING-"];
+  name = [name stringByReplacingOccurrencesOfString:@"STRATHC" withString:@"Strathcona"];
+  while ([name rangeOfString:@"  "].length == 2) {
+    name = [name stringByReplacingOccurrencesOfString:@"  " withString:@" "];
+  }
+  
+  name = [name capitalizedString];
+  return name;
+}
+
 // takes a JSON in the API-format and turns it into a format like
 // {"nice building name": {"Longitude": number, "Latitude": number, "Address": [address lines]}}
 + (NSDictionary *)parseJSON:(NSDictionary *)json
@@ -106,7 +166,7 @@
     id latitude = building[@"LATITUDE"];
     if (longitude && latitude) {
       NSArray *address = [NSArray arrayWithObjects:building[@"ADDRESS_1"], building[@"ADDRESS_2"], building[@"ADDRESS_3"], nil];
-      [buildings setObject:@{@"Longitude": longitude, @"Latitude":latitude, @"Address": address} forKey:buildingName];
+      [buildings setObject:@{@"Longitude": longitude, @"Latitude":latitude, @"Address": address} forKey:[self fixName:buildingName]];
     }
   }
   return [buildings copy];
@@ -239,7 +299,10 @@
   self.currentAnnotation = [[MKPointAnnotation alloc] init];
   self.currentAnnotation.coordinate = location;
   self.currentAnnotation.title = selectedBuilding;
-  
+  if ([locationDict[@"Address"] count])
+  {
+    self.currentAnnotation.subtitle = [locationDict[@"Address"][0] capitalizedString];
+  }
   
   [self.mapView addAnnotation:self.currentAnnotation];
   [self.mapView selectAnnotation:self.currentAnnotation animated:YES];
