@@ -159,7 +159,7 @@
 }
 
 // takes a JSON in the API-format and turns it into a format like
-// {"nice building name": {"Longitude": number, "Latitude": number, "Address": [address lines]}}
+// {"nice building name": {"Longitude": number, "Latitude": number, "Address": address}}
 + (NSDictionary *)parseJSON:(NSDictionary *)json
 {
   NSMutableDictionary *buildings = [NSMutableDictionary dictionary];
@@ -167,9 +167,14 @@
     NSString *buildingName = building[@"DESCRIPTION"];
     id longitude = building[@"LONGITUDE"];
     id latitude = building[@"LATITUDE"];
+    NSString *niceBuildingName = [self fixName:buildingName];
     if (longitude && latitude) {
-      NSArray *address = [NSArray arrayWithObjects:building[@"ADDR1_ALIAS"]?building[@"ADDR1_ALIAS"]:building[@"ADDRESS_1"], building[@"ADDRESS_2"], building[@"ADDRESS_3"], nil];
-      [buildings setObject:@{@"Longitude": longitude, @"Latitude":latitude, @"Address": address} forKey:[self fixName:buildingName]];
+      NSString *address = [building[@"ADDR1_ALIAS"]?building[@"ADDR1_ALIAS"]:building[@"ADDRESS_1"] capitalizedString];
+      if ([niceBuildingName isEqualToString:[self fixName:building[@"ADDRESS_1"]]]) {
+        address = nil;
+      }
+      NSDictionary *info = address ? @{@"Longitude": longitude, @"Latitude":latitude, @"Address": address} : @{@"Longitude": longitude, @"Latitude":latitude};
+      [buildings setObject:info forKey:[self fixName:buildingName]];
     }
   }
   return [buildings copy];
@@ -302,9 +307,9 @@
   self.currentAnnotation = [[MKPointAnnotation alloc] init];
   self.currentAnnotation.coordinate = location;
   self.currentAnnotation.title = selectedBuilding;
-  if ([locationDict[@"Address"] count])
+  if (locationDict[@"Address"])
   {
-    self.currentAnnotation.subtitle = [locationDict[@"Address"][0] capitalizedString];
+    self.currentAnnotation.subtitle = locationDict[@"Address"];
   }
   
   [self.mapView addAnnotation:self.currentAnnotation];
