@@ -99,9 +99,12 @@ typedef enum {
   } else {
     backgroundImage = [UIImage imageNamed:@"background5"];
   }
-  
+  UIImageView *imageView = [[UIImageView alloc] initWithImage:backgroundImage];
+  self.backgroundImageView = imageView;
+  [self.view addSubview:imageView];
   self.backgroundImageView.image = backgroundImage;
   self.backgroundImageView.layer.zPosition -= 1;
+  self.backgroundImageView.contentMode = UIViewContentModeScaleToFill;
 }
 
 - (void)setupButtonViews
@@ -188,6 +191,10 @@ typedef enum {
   if (!self.loaded) {
     [self setupButtonViews];
     self.loaded = YES;
+    CGRect frame = [[UIScreen mainScreen] bounds];
+    frame.origin.y -= self.navigationController.navigationBar.bounds.size.height;
+    frame.origin.y -= [[UIApplication sharedApplication] statusBarFrame].size.height;
+    self.backgroundImageView.frame = frame;
   }
   //[[UIApplication sharedApplication].delegate window].rootViewController = self.navigationController;
   [super viewWillAppear:animated];
