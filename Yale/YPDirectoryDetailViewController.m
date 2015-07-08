@@ -10,13 +10,21 @@
 #import "CoreMacro.h"
 #import "YPGlobalHelper.h"
 #import "YPTheme.h"
+#import <AddressBookUI/AddressBookUI.h>
 
-
-@interface YPDirectoryDetailViewController ()
+@interface YPDirectoryDetailViewController () <ABUnknownPersonViewControllerDelegate>
 
 @end
 
 @implementation YPDirectoryDetailViewController
+
+- (void)unknownPersonViewController:(ABUnknownPersonViewController *)unknownCardViewController didResolveToPerson:(ABRecordRef)person {
+  [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (BOOL)unknownPersonViewController:(ABUnknownPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier {
+  return YES;
+}
 
 - (void)viewDidLoad
 {
@@ -27,6 +35,11 @@
     [self loadData];
     NSLog(@"have data");
   }
+  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed:)];
+}
+
+- (void)actionButtonPressed:(UIBarButtonItem *)button {
+  [self createNewContact];
 }
 
 - (void)loadData {
@@ -158,12 +171,76 @@
   actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
   [actionSheet showInView:self.view];
 }
-
+/*
 - (void)createActionSheetWithString:(NSString *)string
 {
   UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Copy to Clipboard", nil];
   actionSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
   [actionSheet showInView:self.view];
+}
+*/
+
+#define COLLEGE_ADDRESSES @{@"Silliman College":@"505 College Street", @"Timothy Dwight College":@"345 Temple Street", @"Morse College":@"304 York Street", @"Ezra Stiles College":@"302 York Street", @"Pierson College":@"261 Park Street", @"Davenport College":@"248 York Street", @"Calhoun College":@"189 Elm Street", @"Berkeley College":@"205 Elm Street", @"Trumbull College":@"241 Elm Street", @"Saybrook College":@"242 Elm Street", @"Jonathan Edwards College":@"68 High Street", @"Branford College":@"74 High Street"}
+
+- (ABRecordRef)currentPersonReference {
+  ABRecordRef contact = ABPersonCreate();
+  NSString *name = self.title;
+  NSMutableArray *words = [[name componentsSeparatedByString:@" "] mutableCopy];
+  NSString *firstName;
+  NSString *middleName;
+  NSString *lastName;
+  if (words.count == 1) {
+    lastName = words[0];
+  } else if (words.count == 2 || words.count > 3) {
+    lastName = [words lastObject];
+    [words removeLastObject];
+    firstName = [words componentsJoinedByString:@" "];
+  } else {
+    firstName = words[0];
+    middleName = words[1];
+    lastName = words[2];
+  }
+  NSString *phoneNumber = self.data[@"Phone"];
+  if (phoneNumber) phoneNumber = [@"203" stringByAppendingString:phoneNumber];
+  NSString *email = self.data[@"Email"];
+  if (firstName) ABRecordSetValue(contact, kABPersonFirstNameProperty, (__bridge CFStringRef)firstName, nil);
+  if (middleName) ABRecordSetValue(contact, kABPersonMiddleNameProperty, (__bridge CFStringRef)middleName, nil);
+  if (lastName) ABRecordSetValue(contact, kABPersonLastNameProperty, (__bridge CFStringRef)lastName, nil);
+  NSString *college = self.data[@"College"];
+  NSString *collegeAddress;
+  if (college && (collegeAddress = COLLEGE_ADDRESSES[college])) {
+    ABMutableMultiValueRef addressMultipleValue = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
+    NSMutableDictionary *addressDictionary = [[NSMutableDictionary alloc] init];
+    [addressDictionary setObject:collegeAddress forKey:(NSString *)kABPersonAddressStreetKey];
+    [addressDictionary setObject:@"New Haven" forKey:(NSString *)kABPersonAddressCityKey];
+    [addressDictionary setObject:@"Connecticut" forKey:(NSString *)kABPersonAddressStateKey];
+    [addressDictionary setObject:@"06511" forKey:(NSString *)kABPersonAddressZIPKey];
+    [addressDictionary setObject:@"United States" forKey:(NSString *)kABPersonAddressCountryKey];
+    [addressDictionary setObject:@"us" forKey:(NSString *)kABPersonAddressCountryCodeKey];
+    ABMultiValueAddValueAndLabel(addressMultipleValue, (__bridge CFTypeRef)(addressDictionary), (__bridge CFTypeRef)@"college", NULL);
+    // [addressDictionary release];
+    ABRecordSetValue(contact, kABPersonAddressProperty, addressMultipleValue, nil);
+  }
+  
+  ABMutableMultiValueRef phoneNumbers = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+  
+  if (phoneNumber) ABMultiValueAddValueAndLabel(phoneNumbers, (__bridge CFStringRef)phoneNumber, kABPersonPhoneMainLabel, NULL);
+  ABRecordSetValue(contact, kABPersonPhoneProperty, phoneNumbers, nil);
+  
+  ABMutableMultiValueRef emails = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+  if (email) ABMultiValueAddValueAndLabel(emails, (__bridge CFStringRef)email, (__bridge CFStringRef)@"school", NULL);
+  ABRecordSetValue(contact, kABPersonEmailProperty, emails, nil);
+  
+  return contact;
+}
+
+- (void)createNewContact {
+  ABUnknownPersonViewController *unknownPersonVC = [[ABUnknownPersonViewController alloc] init];
+  unknownPersonVC.allowsAddingToAddressBook = YES;
+  unknownPersonVC.allowsActions = YES;
+  unknownPersonVC.unknownPersonViewDelegate = self;
+  unknownPersonVC.displayedPerson = [self currentPersonReference];
+  [self.navigationController pushViewController:unknownPersonVC animated:YES];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex

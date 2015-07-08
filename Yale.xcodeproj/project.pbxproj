@@ -16,6 +16,7 @@
 		9B1F41651A6D63030049FBB0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B1F41641A6D63030049FBB0 /* Foundation.framework */; };
 		9B1F41671A6D630A0049FBB0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B1F41661A6D630A0049FBB0 /* CoreGraphics.framework */; };
 		9B1F41691A6D63100049FBB0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B1F41681A6D63100049FBB0 /* UIKit.framework */; };
+		9B8501F01B4D9AC10014516B /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B8501EF1B4D9AC10014516B /* AddressBookUI.framework */; };
 		9B8BE29A19DE153D00CFE39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B8BE29919DE153D00CFE39A /* main.m */; };
 		9B8BE2A519DE153D00CFE39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B8BE2A419DE153D00CFE39A /* Images.xcassets */; };
 		9B8BE2B419DE153D00CFE39A /* YaleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B8BE2B319DE153D00CFE39A /* YaleTests.m */; };
@@ -105,6 +106,7 @@
 		9B1F41641A6D63030049FBB0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9B1F41661A6D630A0049FBB0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		9B1F41681A6D63100049FBB0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		9B8501EF1B4D9AC10014516B /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		9B8BE29419DE153D00CFE39A /* Yale.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yale.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B8BE29819DE153D00CFE39A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B8BE29919DE153D00CFE39A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B8501F01B4D9AC10014516B /* AddressBookUI.framework in Frameworks */,
 				9B1F41691A6D63100049FBB0 /* UIKit.framework in Frameworks */,
 				9B1F41671A6D630A0049FBB0 /* CoreGraphics.framework in Frameworks */,
 				9B1F41651A6D63030049FBB0 /* Foundation.framework in Frameworks */,
@@ -255,6 +258,7 @@
 		2395C5850E374676A9D38AFB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9B8501EF1B4D9AC10014516B /* AddressBookUI.framework */,
 				9B1F41681A6D63100049FBB0 /* UIKit.framework */,
 				9B1F41661A6D630A0049FBB0 /* CoreGraphics.framework */,
 				9B1F41641A6D63030049FBB0 /* Foundation.framework */,
