@@ -8,13 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
+@import AddressBookUI;
 
+@interface YPDirectoryDetailViewController : UIViewController
 
-@interface YPDirectoryDetailViewController : UIViewController<MFMailComposeViewControllerDelegate, UIActionSheetDelegate>
-- (void)loadData;
++ (ABUnknownPersonViewController *)unknownPersonVCForData:(NSDictionary *)data;
 
-@property (nonatomic, strong) NSMutableDictionary *data;
-@property (nonatomic, strong) NSString *phoneURL;
-@property (strong, nonatomic) IBOutlet UILabel *nameLabel;
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
 @end

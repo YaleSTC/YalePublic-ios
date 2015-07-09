@@ -25,7 +25,6 @@
 {
   [super viewDidLoad];
   self.title = @"Directory";
-  
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -45,48 +44,41 @@
 {
   if (!_sectionedPeople) {
     _sectionedPeople = [[NSMutableDictionary alloc] init];
-//    for (char a = 'A'; a <= 'Z'; a++)
-//    {
-//      _sectionedPeople[[NSString stringWithFormat:@"%c", a]] = @[];
-//    }
   }
-
   return _sectionedPeople;
 }
 
+// take raw input from self.people
+// populate self.sectionedPeople and self.firstLetters
 - (void)sectionPeople
 {
-  [self.sectionedPeople removeAllObjects];
-  bool start = YES;
-  NSString *lastLetter;
-  NSMutableArray *letterArray = [[NSMutableArray alloc] init];
+  self.sectionedPeople = nil; // start over
   for (NSDictionary *person in self.people) {
-    
-    NSString *fullName = [person objectForKey:@"name"];
-    __block NSString *lastName = nil;
-    [fullName enumerateSubstringsInRange:NSMakeRange(0, [fullName length])
-                                 options:NSStringEnumerationByWords| NSStringEnumerationReverse
-                              usingBlock:^(NSString *substring, NSRange subrange, NSRange enclosingRange, BOOL *stop) {
-      lastName = substring;
-      *stop = YES;
-    }];
-    if ([[lastName substringToIndex:1] isEqualToString:lastLetter]) {
-      [letterArray addObject:@{ @"name": fullName, @"link": [person objectForKey:@"link"] }];
-    } else {
-      if (!start) {
-        [self.sectionedPeople setObject:[letterArray copy] forKey:lastLetter];
-        [letterArray removeAllObjects];
-      }
-      
-      lastLetter = [lastName substringToIndex:1];
-       [letterArray addObject:@{ @"name": fullName, @"link": [person objectForKey:@"link"] }];
+    NSString *firstLetterOfLastName = [[person[@"name"] componentsSeparatedByString:@" "].lastObject substringToIndex:1];
+    NSMutableArray *peopleWithThisLetter = self.sectionedPeople[firstLetterOfLastName];
+    if (!peopleWithThisLetter) {
+      peopleWithThisLetter = [NSMutableArray array];
+      self.sectionedPeople[firstLetterOfLastName] = peopleWithThisLetter;
     }
-    start = NO;
+    [peopleWithThisLetter addObject:@{@"name":person[@"name"], @"link":person[@"link"]}];
   }
-  [self.sectionedPeople setObject:[letterArray copy] forKey:lastLetter];
   self.firstLetters = [[self.sectionedPeople allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-
   
+  // now make sure they're sorted
+  for (NSString *firstLetter in self.firstLetters) {
+    NSMutableArray *people = self.sectionedPeople[firstLetter];
+    [people sortUsingComparator:^NSComparisonResult(NSDictionary * p1, NSDictionary *p2) {
+      // sort is base solely on name. sort by last name, then if last names are equal sort by whole name
+      NSString *name1 = p1[@"name"];
+      NSString *name2 = p2[@"name"];
+      NSComparisonResult result;
+      if ((result = [[name1 componentsSeparatedByString:@" "].lastObject compare:[name2 componentsSeparatedByString:@" "].lastObject]) != NSOrderedSame) {
+        return result;
+      }
+      return [name1 compare:name2];
+    }];
+    self.sectionedPeople[firstLetter] = [people copy];
+  }
 }
 
 
@@ -130,7 +122,8 @@
     [YPGlobalHelper hideNotificationView];
     if ([responseString rangeOfString:@"Your search results:"].location != NSNotFound) {
       self.individualData = [YPGlobalHelper getInformationForPerson:responseString];
-      [self performSegueWithIdentifier:@"People Detail Segue" sender:self];
+      [self.navigationController pushViewController:[YPDirectoryDetailViewController unknownPersonVCForData:self.individualData] animated:YES];
+      //[self performSegueWithIdentifier:@"People Detail Segue" sender:self];
     } else if ([responseString rangeOfString:@"No results found."].location != NSNotFound) {
       UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Results Found"
                                                       message:@"Your search returned no results. You may expand your search by adding the '*' wildcard."
@@ -210,63 +203,40 @@
   return @[@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z"];
 }
 
-
-#pragma mark Navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  NSLog(@"%@",self.people);
-  if ([sender isKindOfClass:[YPDirectoryTableViewController class]]) {
-    YPDirectoryDetailViewController *pdvc = (YPDirectoryDetailViewController *)[segue destinationViewController];
-    pdvc.data = self.individualData;
-  } else if ([sender isKindOfClass:[UITableViewCell class]]) {
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-    self.selectedIndexPath = indexPath;
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+  [YPGlobalHelper showNotificationInViewController:self
+                                           message:@"Loading..."
+                                             style:JGProgressHUDStyleDark];
+  
+  self.selectedIndexPath = indexPath;
+  
+  UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+  NSString *fullName = cell.textLabel.text;
+  NSString *lastName = [[fullName componentsSeparatedByString:@" "] lastObject];
+  
+  NSString *urlString = [[[self.sectionedPeople objectForKey:[lastName substringToIndex:1]] objectAtIndex:indexPath.row] objectForKey:@"link"];
+  NSURL *url = [NSURL URLWithString:urlString];
+  NSURLRequest *request = [NSURLRequest requestWithURL:url];
+  AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+  
+  [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
     
-    UITableViewCell *cell = sender;
-    NSString *fullName = cell.textLabel.text;
-    __block NSString *lastName = nil;
-    [fullName enumerateSubstringsInRange:NSMakeRange(0, [fullName length])
-                                 options:NSStringEnumerationByWords| NSStringEnumerationReverse
-                              usingBlock:^(NSString *substring, NSRange subrange, NSRange enclosingRange, BOOL *stop) {
-                                lastName = substring;
-                                *stop = YES;
-                              }];
-    YPDirectoryDetailViewController *pdvc = (YPDirectoryDetailViewController *)[segue destinationViewController];
+    NSString *responseString = operation.responseString;
+    self.individualData = [YPGlobalHelper getInformationForPerson:responseString];
     
-    pdvc.title = fullName;    
-    NSString *urlString = [[[self.sectionedPeople objectForKey:[lastName substringToIndex:1]] objectAtIndex:indexPath.row] objectForKey:@"link"];
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    [YPGlobalHelper hideNotificationView];
     
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-      
-      [YPGlobalHelper hideNotificationView];
-      
-      NSString *responseString = operation.responseString;
-      self.individualData = [YPGlobalHelper getInformationForPerson:responseString];
-     
-      pdvc.data = self.individualData;
-      [pdvc loadData];
-      
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Error"
-                                                      message:@"YaleMobile is unable to reach Yale Phonebook server. Please check your Internet connection and try again."
-                                                     delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-      [alert show];
-    }];
+    [self.navigationController pushViewController:[YPDirectoryDetailViewController unknownPersonVCForData:self.individualData] animated:YES];
     
-    [YPGlobalHelper showNotificationInViewController:self
-                                             message:@"Loading..."
-                                               style:JGProgressHUDStyleDark];
-    
-    [operation start];
-  }
+  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Error"
+                                                    message:@"YaleMobile is unable to reach Yale Phonebook server. Please check your Internet connection and try again."
+                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+  }];
+  
+  [operation start];
 }
-
-
-
 
 @end
