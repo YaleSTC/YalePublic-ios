@@ -11,8 +11,7 @@
 #import "Config.h"
 #import "YPTheme.h"
 
-#warning NEED_YALE_EDU_EMAIL
-#define FEEDBACK_EMAIL @"yalepublic@gmail.com"
+#define FEEDBACK_EMAIL @"sdmp-ios-developers@elilists.yale.edu"
 
 @interface YPInfoViewViewController () <UITextViewDelegate>
 @property UITextView *textView;

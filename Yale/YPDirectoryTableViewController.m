@@ -25,7 +25,6 @@
 {
   [super viewDidLoad];
   self.title = @"Directory";
-  
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -46,7 +45,6 @@
   if (!_sectionedPeople) {
     _sectionedPeople = [[NSMutableDictionary alloc] init];
   }
-
   return _sectionedPeople;
 }
 
@@ -65,9 +63,12 @@
     [peopleWithThisLetter addObject:@{@"name":person[@"name"], @"link":person[@"link"]}];
   }
   self.firstLetters = [[self.sectionedPeople allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+  
+  // now make sure they're sorted
   for (NSString *firstLetter in self.firstLetters) {
     NSMutableArray *people = self.sectionedPeople[firstLetter];
     [people sortUsingComparator:^NSComparisonResult(NSDictionary * p1, NSDictionary *p2) {
+      // sort is base solely on name. sort by last name, then if last names are equal sort by whole name
       NSString *name1 = p1[@"name"];
       NSString *name2 = p2[@"name"];
       NSComparisonResult result;
@@ -237,29 +238,5 @@
   
   [operation start];
 }
-
-#pragma mark Navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-  NSLog(@"%@",self.people);
-  if ([sender isKindOfClass:[YPDirectoryTableViewController class]]) {
-    YPDirectoryDetailViewController *pdvc = (YPDirectoryDetailViewController *)[segue destinationViewController];
-    pdvc.data = self.individualData;
-  } else if ([sender isKindOfClass:[UITableViewCell class]]) {
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-    self.selectedIndexPath = indexPath;
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    UITableViewCell *cell = sender;
-    NSString *fullName = cell.textLabel.text;
-    YPDirectoryDetailViewController *pdvc = (YPDirectoryDetailViewController *)[segue destinationViewController];
-    pdvc.data = self.individualData;
-    pdvc.title = fullName;
-  }
-}
-
-
-
 
 @end
