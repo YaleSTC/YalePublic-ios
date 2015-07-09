@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C81f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Directory Table View Controller-->
@@ -26,9 +27,6 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KhL-hm-WRN" id="Ks7-Rf-pQU">
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="3co-HD-tEm" kind="show" identifier="People Detail Segue" id="mkv-52-l8h"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -38,6 +36,7 @@
                     </tableView>
                     <connections>
                         <outlet property="searchBar" destination="SuE-EA-IWV" id="l4D-yG-nv5"/>
+                        <segue destination="3co-HD-tEm" kind="show" identifier="People Detail Segue" id="DnH-jr-NPo"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o9R-Uq-H2D" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -59,7 +58,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Gah-A3-mpV">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="bgl-eC-GpC">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="bgl-eC-GpC">
                                 <rect key="frame" x="0.0" y="58" width="600" height="542"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -78,7 +77,7 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="W5o-CR-sJf">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -90,14 +89,26 @@
                                     <outlet property="delegate" destination="3co-HD-tEm" id="5Dh-9q-4v3"/>
                                 </connections>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tDZ-vf-eFR">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tDZ-vf-eFR">
                                 <rect key="frame" x="16" y="20" width="568" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Z93-4P-taa"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="bgl-eC-GpC" firstAttribute="leading" secondItem="3mI-rI-e6j" secondAttribute="leadingMargin" constant="-16" id="0MW-MJ-YW2"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="bgl-eC-GpC" secondAttribute="trailing" constant="-16" id="68f-4o-P7Q"/>
+                            <constraint firstItem="tDZ-vf-eFR" firstAttribute="trailing" secondItem="3mI-rI-e6j" secondAttribute="trailingMargin" id="7UI-c4-rgv"/>
+                            <constraint firstItem="bgl-eC-GpC" firstAttribute="top" secondItem="tDZ-vf-eFR" secondAttribute="bottom" constant="8" id="awN-ne-fRG"/>
+                            <constraint firstItem="tDZ-vf-eFR" firstAttribute="top" secondItem="XCX-rt-bff" secondAttribute="bottom" id="cuF-Sr-D0u"/>
+                            <constraint firstItem="uLR-yH-zk0" firstAttribute="top" secondItem="bgl-eC-GpC" secondAttribute="bottom" id="eC2-zq-TAa"/>
+                            <constraint firstItem="tDZ-vf-eFR" firstAttribute="leading" secondItem="3mI-rI-e6j" secondAttribute="leadingMargin" id="h9Z-Yf-zax"/>
+                        </constraints>
                     </view>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
