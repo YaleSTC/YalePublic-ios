@@ -29,6 +29,8 @@
 #define IMAGE_TEXT_MARGIN 10
 #define UNDER_TEXT_HEIGHT 20
 
+#define COMMENCEMENT_URL @"http://commencement.yale.edu/"
+
 typedef enum {
   YaleEventOrientation,
   YaleEventCommencement
@@ -283,7 +285,7 @@ typedef enum {
     UINavigationController *orientationVC = [storyboard instantiateViewControllerWithIdentifier:@"OrientationVC"];
     [self.navigationController pushViewController:orientationVC animated:YES];
   } else if ([underText isEqualToString:@"Commencement"]) {
-    [self.navigationController pushViewController:[[YPWebViewController alloc] initWithTitle:@"Commencement" initialURL:@"http://commencement.yale.edu/"] animated:YES];
+    [self.navigationController pushViewController:[[YPWebViewController alloc] initWithTitle:@"Commencement" initialURL:COMMENCEMENT_URL] animated:YES];
   } else if ([underText isEqualToString:@"Transit"]) {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPTransitViewController"
                                                          bundle:[NSBundle mainBundle]];
