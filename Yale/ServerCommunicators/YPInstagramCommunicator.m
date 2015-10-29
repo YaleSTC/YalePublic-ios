@@ -50,7 +50,7 @@ typedef void(^ByteCallback)(NSUInteger);
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-  self.expectedBytes = response.expectedContentLength;
+  self.expectedBytes = (NSUInteger)response.expectedContentLength;
   self.dataLoading = [NSMutableData dataWithCapacity:self.expectedBytes];
   if (self.totalBytes) self.totalBytes(self.expectedBytes);
 }

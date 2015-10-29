@@ -31,6 +31,17 @@
 
 #define COMMENCEMENT_URL @"http://commencement.yale.edu/"
 
+// these really should be constants and not inline magic numbers
+#define IPHONE_5_HEIGHT 568
+#define IPHONE_6_HEIGHT 667 // same size as iPhone 6S
+#define IPHONE_6PLUS_HEIGHT 736 // same size as iPhone 6S+
+
+// different icon sizes for different phones
+#define IPHONE_SMALL_ICON 57
+#define IPHONE_MEDIUM_ICON 66
+#define IPHONE_LARGE_ICON 73
+#define IPAD_ICON 80
+
 typedef enum {
   YaleEventOrientation,
   YaleEventCommencement
@@ -90,13 +101,17 @@ typedef enum {
   
   UIImage *backgroundImage;
   
-  if (screenHeight < 568) {
+  if (screenHeight < IPHONE_5_HEIGHT) {
     backgroundImage = [UIImage imageNamed:@"background4"];
-  } else if (screenHeight == 568) {
+  } else if (screenHeight == IPHONE_5_HEIGHT) {
     backgroundImage = [UIImage imageNamed:@"background5"];
-  } else if (screenHeight == 667) {
+  } else if (screenHeight == IPHONE_6_HEIGHT) {
     backgroundImage = [UIImage imageNamed:@"background6"];
+  } else if (screenHeight <= IPHONE_6PLUS_HEIGHT) {
+    backgroundImage = [UIImage imageNamed:@"background6+"];
   } else if (screenHeight) {
+    // must be ipad
+#warning IPAD_BACKGROUND_IMAGE_HERE
     backgroundImage = [UIImage imageNamed:@"background6+"];
   } else {
     backgroundImage = [UIImage imageNamed:@"background5"];
@@ -117,7 +132,7 @@ typedef enum {
   CGSize statusBarSize = [UIApplication sharedApplication].statusBarFrame.size;
   CGSize navigationBarSize = self.navigationController.navigationBar.frame.size;
   // buttons contain icons
-  CGFloat horizontalMarginToIcons = (iconSize.height == 57) ? 20 : 30; //this is the horizontal margin to the icons (not the buttons)
+  CGFloat horizontalMarginToIcons = (iconSize.height == IPHONE_SMALL_ICON) ? 20 : (iconSize.height == IPAD_ICON) ? 90 : 30; //this is the horizontal margin to the icons (not the buttons)
   CGFloat buttonWidth = MIN(iconSize.width*3, viewSize.width/3); //make it big enough to fit the text below the button, even if the text is long like this text is long.
   CGFloat leftMargin = horizontalMarginToIcons-(buttonWidth-iconSize.width)/2;
   CGFloat buttonHeight = iconSize.height + IMAGE_TEXT_MARGIN + UNDER_TEXT_HEIGHT;
@@ -125,8 +140,8 @@ typedef enum {
   CGFloat horizontalSpacingBetweenIcons = (viewSize.width - iconSize.width*3 - horizontalMarginToIcons*2) / 2; //to keep vertical spacing stable
   CGFloat verticalSpacing = horizontalSpacingBetweenIcons - 20; //what is this? Well, it looks good
   
-  //iPhone 4s
-  if (screenSize.height <= 568)
+  //iPhone 4s. also, apparently iPhone 5 (since the numbers work out that way)
+  if (screenSize.height <= IPHONE_5_HEIGHT)
     verticalSpacing -= 10;
   
   // height of all stuff including buttons and text (this is just the bottom of the lowest text, without a top margin)
@@ -171,12 +186,16 @@ typedef enum {
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  if (self.view.frame.size.height <= 568) {
-    self.iconSize = CGSizeMake(57, 57);
-  } else if (self.view.frame.size.height <= 667) {
-    self.iconSize = CGSizeMake(66, 66);
+  CGFloat screenHeight = [[UIScreen mainScreen] bounds].size.height;
+  if (screenHeight <= IPHONE_5_HEIGHT) {
+    self.iconSize = CGSizeMake(IPHONE_SMALL_ICON, IPHONE_SMALL_ICON);
+  } else if (screenHeight <= IPHONE_6_HEIGHT) {
+    self.iconSize = CGSizeMake(IPHONE_MEDIUM_ICON, IPHONE_MEDIUM_ICON);
+  } else if (screenHeight <= IPHONE_6PLUS_HEIGHT) {
+    self.iconSize = CGSizeMake(IPHONE_LARGE_ICON, IPHONE_LARGE_ICON);
   } else {
-    self.iconSize = CGSizeMake(73, 73);
+#warning IPAD_ICON_SIZE
+    self.iconSize = CGSizeMake(IPAD_ICON, IPAD_ICON);
   }
   self.screenName = @"Main View";
   
@@ -200,18 +219,23 @@ typedef enum {
     CGFloat navBarHeight = self.navigationController.navigationBar.bounds.size.height;
     CGFloat statusBarHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
     // depending on the type of phone, different things are included in the background photo (whose idea was that?)
-    if (screenHeight < 568) {
+    if (screenHeight < IPHONE_5_HEIGHT) {
       // for iPhone 4, only the main view is in the image
-    } else if (screenHeight == 568) {
+    } else if (screenHeight <= IPHONE_5_HEIGHT) {
       // for iPhone 5, the main view, the status bar, and the nav bar are all in the image
       frame.size.height += navBarHeight + statusBarHeight;
       frame.origin.y -= navBarHeight + statusBarHeight;
-    } else if (screenHeight == 667) {
+    } else if (screenHeight <= IPHONE_6_HEIGHT) {
       // iPhone 6, status bar and nav bar are in image again
       frame.size.height += navBarHeight + statusBarHeight;
       frame.origin.y -= navBarHeight + statusBarHeight;
-    } else if (screenHeight) {
+    } else if (screenHeight <= IPHONE_6PLUS_HEIGHT) {
       // for iPhone 6+, image contains main view and nav bar (not status bar)
+      frame.size.height += navBarHeight;
+      frame.origin.y -= navBarHeight;
+    } else if (screenHeight) {
+#warning IPAD_SIZE_OF_BACKGROUND
+      // what is contained in the background image?
       frame.size.height += navBarHeight;
       frame.origin.y -= navBarHeight;
     }

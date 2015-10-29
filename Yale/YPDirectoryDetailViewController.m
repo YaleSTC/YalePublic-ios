@@ -21,14 +21,18 @@
   for (NSString *raw in keys) {
     NSString *index = [raw stringByReplacingOccurrencesOfString:@":" withString:@""];
     index = [index stringByReplacingOccurrencesOfString:@"Student Phone" withString:@"Phone"];
-    index = [index stringByReplacingOccurrencesOfString:@"Residential College Name" withString:@"College"];
+    index = [index stringByReplacingOccurrencesOfString:@"ResidentialCollegeName" withString:@"College"];
+    index = [index stringByReplacingOccurrencesOfString:@"DirectoryTitle" withString:@"Title"];
     index = [index stringByReplacingOccurrencesOfString:@"Email Address" withString:@"Email"];
-    index = [index stringByReplacingOccurrencesOfString:@"Office Phone" withString:@"Phone"];
+    index = [index stringByReplacingOccurrencesOfString:@"PhoneNumber" withString:@"Phone"];
     index = [index stringByReplacingOccurrencesOfString:@"Organization" withString:@"Org"];
     index = [index stringByReplacingOccurrencesOfString:@"Home Org ID" withString:@"Org ID"];
     index = [index stringByReplacingOccurrencesOfString:@"US Mailing Address" withString:@"Address"];
     index = [index stringByReplacingOccurrencesOfString:@"Campus Location" withString:@"Location"];
-    if (![index isEqualToString:@"Residential College"] && ![index isEqualToString:@"Curriculum Code"]) [result setObject:[data objectForKey:raw] forKey:index];
+    index = [index stringByReplacingOccurrencesOfString:@"KnownAs" withString:@"Known As"];
+    index = [index stringByReplacingOccurrencesOfString:@"StudentExpectedGraduationYear" withString:@"Graduation"];
+    index = [index stringByReplacingOccurrencesOfString:@"PrimaryOrgName" withString:@"Org"];
+    if (![index isEqualToString:@"Residential College"] && ![index isEqualToString:@"Curriculum Code"] && ![index isEqualToString:@"DisplayName"] && ![index isEqualToString:@"PrimarySchoolCode"]) [result setObject:[data objectForKey:raw] forKey:index];
   }
   return [result copy];
 }
@@ -65,38 +69,32 @@
 + (ABRecordRef)personReferenceForData:(NSDictionary *)data
 {
   ABRecordRef contact = ABPersonCreate();
-  NSString *name = data[@"Name"];
-  NSMutableArray *words = [[name componentsSeparatedByString:@" "] mutableCopy];
-  NSString *firstName;
-  NSString *middleName;
-  NSString *lastName;
+  //NSString *name = data[@"DisplayName"];
+  NSString *firstName = data[@"FirstName"];
+  NSString *lastName = data[@"LastName"];
   NSString *nickname = data[@"Known As"];
-  if (words.count == 1) {
-    lastName = words[0];
-  } else if (words.count == 2 || words.count > 3) {
-    lastName = [words lastObject];
-    [words removeLastObject];
-    firstName = [words componentsJoinedByString:@" "];
-  } else {
-    firstName = words[0];
-    middleName = words[1];
-    lastName = words[2];
-  }
   NSMutableArray *otherData = [[data.allKeys sortedArrayUsingSelector:@selector(compare:)] mutableCopy];
-  NSString *phoneNumber = data[@"Phone"];
-  if (phoneNumber && phoneNumber.length < 11) phoneNumber = [@"203" stringByAppendingString:phoneNumber];
+  id phoneNumber = data[@"Phone"];
+  [otherData removeObject:@"Phone"];
+  [otherData removeObject:@"Known As"];
+  if (phoneNumber && [phoneNumber description].length < 11 && [phoneNumber description].length > 0) phoneNumber = [@"203" stringByAppendingFormat:@"%@", phoneNumber];
   NSString *email = data[@"Email"];
-  if (firstName) ABRecordSetValue(contact, kABPersonFirstNameProperty, (__bridge CFStringRef)firstName, nil);
-  if (middleName) ABRecordSetValue(contact, kABPersonMiddleNameProperty, (__bridge CFStringRef)middleName, nil);
-  if (lastName) ABRecordSetValue(contact, kABPersonLastNameProperty, (__bridge CFStringRef)lastName, nil);
-  if (nickname) ABRecordSetValue(contact, kABPersonNicknameProperty, (__bridge CFStringRef)nickname, nil);
+  if (firstName.length) ABRecordSetValue(contact, kABPersonFirstNameProperty, (__bridge CFStringRef)firstName, nil);
+  [otherData removeObject:@"FirstName"];
+  //if (middleName) ABRecordSetValue(contact, kABPersonMiddleNameProperty, (__bridge CFStringRef)middleName, nil);
+  if (lastName.length) ABRecordSetValue(contact, kABPersonLastNameProperty, (__bridge CFStringRef)lastName, nil);
+  [otherData removeObject:@"LastName"];
+  if (nickname.length) ABRecordSetValue(contact, kABPersonNicknameProperty, (__bridge CFStringRef)nickname, nil);
   NSString *title = data[@"Title"];
-  if (title) ABRecordSetValue(contact, kABPersonJobTitleProperty, (__bridge CFStringRef)title, nil);
+  if (title.length) ABRecordSetValue(contact, kABPersonJobTitleProperty, (__bridge CFStringRef)title, nil);
+  [otherData removeObject:@"Title"];
+  [otherData removeObject:@"Matched"];
+  [otherData removeObject:@"College"];
   NSString *college = data[@"College"];
   NSString *collegeAddress;
   ABMutableMultiValueRef addressMultipleValue = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
   
-  if (college && (collegeAddress = COLLEGE_ADDRESSES[college])) {
+  if (college.length && (collegeAddress = COLLEGE_ADDRESSES[college])) {
     [otherData removeObject:@"College"];
     
     NSMutableDictionary *addressDictionary = [[NSMutableDictionary alloc] init];
@@ -109,13 +107,13 @@
     ABMultiValueAddValueAndLabel(addressMultipleValue, (__bridge CFTypeRef)(addressDictionary), (__bridge CFTypeRef)@"college", NULL);
   }
   NSString *address = data[@"Address"];
-  if (address) {
+  if (address.length) {
     [otherData removeObject:@"Address"];
     NSDictionary *addressDictionary = [self parseAddress:address];
     if (addressDictionary) ABMultiValueAddValueAndLabel(addressMultipleValue, (__bridge CFTypeRef)(addressDictionary), (__bridge CFTypeRef)@"work", NULL);
   }
   NSString *officeAddress = data[@"Office Address"];
-  if (officeAddress) {
+  if (officeAddress.length) {
     [otherData removeObject:@"Office Address"];
     NSString *location = data[@"Location"];
     if (location) {
@@ -129,19 +127,24 @@
   ABRecordSetValue(contact, kABPersonAddressProperty, addressMultipleValue, nil);
   
   NSString *division = data[@"Division"];
-  if (division) {
+  NSString *schoolName = data[@"PrimarySchoolName"];
+  if (division.length) {
     [otherData removeObject:@"Division"];
     ABRecordSetValue(contact, kABPersonDepartmentProperty, (__bridge CFStringRef)division, nil);
+  } else if (schoolName.length)
+  {
+    [otherData removeObject:@"PrimarySchoolName"];
+    ABRecordSetValue(contact, kABPersonDepartmentProperty, (__bridge CFStringRef)schoolName, nil);
   }
   ABRecordSetValue(contact, kABPersonOrganizationProperty, (__bridge CFStringRef)@"Yale University", nil);
   
   ABMutableMultiValueRef phoneNumbers = ABMultiValueCreateMutable(kABMultiStringPropertyType);
   
-  if (phoneNumber) ABMultiValueAddValueAndLabel(phoneNumbers, (__bridge CFStringRef)phoneNumber, kABPersonPhoneMainLabel, NULL);
+  if ([phoneNumber isKindOfClass:[NSNumber class]] || ([phoneNumber respondsToSelector:@selector(length)] && [phoneNumber length] > 0)) ABMultiValueAddValueAndLabel(phoneNumbers, (__bridge CFStringRef)[phoneNumber description], kABPersonPhoneMainLabel, NULL);
   ABRecordSetValue(contact, kABPersonPhoneProperty, phoneNumbers, nil);
   
   ABMutableMultiValueRef emails = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-  if (email) ABMultiValueAddValueAndLabel(emails, (__bridge CFStringRef)email, (__bridge CFStringRef)@"school", NULL);
+  if (email.length) ABMultiValueAddValueAndLabel(emails, (__bridge CFStringRef)email, (__bridge CFStringRef)@"school", NULL);
   ABRecordSetValue(contact, kABPersonEmailProperty, emails, nil);
   
   [otherData removeObject:@"Address"];
@@ -153,7 +156,9 @@
   
   NSString *notes = [NSString string];
   for (NSString *key in otherData) {
-    notes = [notes stringByAppendingFormat:@"%@: %@\n", key, data[key]];
+    id val = data[key];
+    if ([val respondsToSelector:@selector(length)] && [val length] == 0) continue;
+    notes = [notes stringByAppendingFormat:@"%@: %@\n", key, val];
   }
   ABRecordSetValue(contact, kABPersonNoteProperty, (__bridge CFStringRef)notes, nil);
   
