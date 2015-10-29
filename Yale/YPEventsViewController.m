@@ -46,13 +46,13 @@ typedef void(^SuccessHandler)(NSArray *events);
   if (self.toExcecuteOnLoad) {
     self.toExcecuteOnLoad(self.events);
   }
+  [self layout];
 }
 
 //this was 260. after frames changed so Detail table view scrolls all the way to the bottom, the size left for the calendar was noticeably smaller.
 #define DETAIL_HEIGHT 220
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)layout {
   //put this code here so the bounds are set AFTER self.view's bounds are set
   CGFloat calendarHeight = self.view.bounds.size.height - DETAIL_HEIGHT;
   
@@ -61,8 +61,18 @@ typedef void(^SuccessHandler)(NSArray *events);
   
   CGRect detailFrame = CGRectMake(0, calendarHeight, self.view.bounds.size.width, DETAIL_HEIGHT);
   self.detailTableView.frame = detailFrame;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
   [super viewWillAppear:animated];
   
+}
+
+- (void)viewWillLayoutSubviews
+{
+  [super viewWillLayoutSubviews];
+  [self layout];
 }
 
 - (void)viewDidLoad

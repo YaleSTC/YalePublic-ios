@@ -429,6 +429,15 @@
   [downloadSheet addAction:downloadingAction];
   [downloadSheet addAction:openInInstagram];
   [downloadSheet addAction:cancelAction];
+  
+  if (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad)
+  {
+    UIPopoverPresentationController *popPresenter = [downloadSheet
+                                                     popoverPresentationController];
+    UIView* presentingView = self.navigationController.navigationBar;
+    popPresenter.sourceView = presentingView;
+    popPresenter.sourceRect = presentingView.bounds;
+  }
   [self presentViewController:downloadSheet animated:YES completion:nil];
 }
 

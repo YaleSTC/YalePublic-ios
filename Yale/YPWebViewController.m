@@ -82,6 +82,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
+  
+}
+
+- (void)viewWillLayoutSubviews
+{
   if (!self.loaded) { //this shouldn't be called more than once, but it might be if a mail editor is loaded and then dismissed.
     [self addWebview]; //this can't go in viewDidLoad because then the bounds are messed up and the toolbar isn't visible.
     self.loaded = YES;

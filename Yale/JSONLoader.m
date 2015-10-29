@@ -26,7 +26,15 @@
   if (!results) return;
   _results = results;
   NSError *error = nil;
-  self.dict = [NSJSONSerialization JSONObjectWithData:results options:NSJSONReadingMutableContainers error:&error];
+  NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:results options:NSJSONReadingMutableContainers error:&error];
+  if (dict) {
+    self.dict = dict;
+  }
+  else
+  {
+    NSLog(@"error %@", error);
+    [self clearCache];
+  }
 }
 
 @synthesize dict=_dict;
@@ -36,6 +44,14 @@
   [[NSOperationQueue mainQueue] addOperationWithBlock:^{
     [self.delegate jsonLoaderNamed:self.name updatedPlist:dict];
   }];
+}
+
+- (void)clearCache
+{
+  NSString *resultsUpdateKey = [NSString stringWithFormat:@"key for expiration date of %@", self.name];
+  NSDate *expirationDate = [NSDate dateWithTimeIntervalSinceNow:-10];
+  [[NSUserDefaults standardUserDefaults] setObject:expirationDate forKey:resultsUpdateKey];
+  [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (id)initWithName:(NSString *)name defaultName:(NSString *)projectName url:(NSString *)url delegate:(id<JSONLoaderDelegate>)delegate
