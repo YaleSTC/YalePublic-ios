@@ -14,7 +14,8 @@
 #import "YPPhotoDetailViewController.h"
 #import "YPOrientationViewController.h"
 #import "YPDirectoryTableViewController.h"
-#import "YPMapsViewController.h"
+//#import "YPMapsViewController.h"
+#import "YPMapsLinkViewController.h"
 #import "YPEventsViewController.h"
 #import "YPTheme.h"
 #import <PureLayout/PureLayout.h>
@@ -321,10 +322,11 @@ typedef enum {
     UINavigationController *directoryVC = [storyboard instantiateViewControllerWithIdentifier:@"DirectoryVC"];
     [self.navigationController pushViewController:directoryVC animated:YES];
   } else if ([underText isEqualToString:@"Maps"]) {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPMapsViewController"
-                                                         bundle:[NSBundle mainBundle]];
-    UINavigationController *mapsVC = [storyboard instantiateViewControllerWithIdentifier:@"MapsVC"];
-    [self.navigationController pushViewController:mapsVC animated:YES];
+    //UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPMapsViewController"
+                                                         //bundle:[NSBundle mainBundle]];
+    //UINavigationController *mapsVC = [storyboard instantiateViewControllerWithIdentifier:@"MapsVC"];
+    //[self.navigationController pushViewController:mapsVC animated:YES];
+    [self.navigationController pushViewController:[[YPMapsLinkViewController alloc] init] animated:YES];
   } else if ([underText isEqualToString:@"Events"]) {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPEventsViewController"
                                                          bundle:[NSBundle mainBundle]];
