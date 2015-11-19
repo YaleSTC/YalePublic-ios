@@ -22,6 +22,7 @@
 		9B8BE2B419DE153D00CFE39A /* YaleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B8BE2B319DE153D00CFE39A /* YaleTests.m */; };
 		9B8EE5F81A92A789005ED167 /* YPCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B8EE5F71A92A789005ED167 /* YPCircleView.m */; };
 		9B9171BB1AE708F800F34276 /* buildingdata.json in Resources */ = {isa = PBXBuildFile; fileRef = 9B9171BA1AE708F800F34276 /* buildingdata.json */; };
+		9BA58CB01BFE5348007C9C2E /* YPDirectoryLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA58CAF1BFE5348007C9C2E /* YPDirectoryLinkViewController.m */; };
 		9BA5EB611BE9125F00AD2D24 /* YPMapsLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA5EB601BE9125F00AD2D24 /* YPMapsLinkViewController.m */; };
 		9BC369991A040F9A00B63FF8 /* YPAthleticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC369981A040F9A00B63FF8 /* YPAthleticsViewController.m */; };
 		9BC369D31A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC369D21A09C15E00B63FF8 /* YPCalendarEventsServerCommunicator.m */; };
@@ -118,6 +119,8 @@
 		9B8EE5F61A92A789005ED167 /* YPCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPCircleView.h; sourceTree = "<group>"; };
 		9B8EE5F71A92A789005ED167 /* YPCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPCircleView.m; sourceTree = "<group>"; };
 		9B9171BA1AE708F800F34276 /* buildingdata.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = buildingdata.json; sourceTree = "<group>"; };
+		9BA58CAE1BFE5348007C9C2E /* YPDirectoryLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPDirectoryLinkViewController.h; sourceTree = "<group>"; };
+		9BA58CAF1BFE5348007C9C2E /* YPDirectoryLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPDirectoryLinkViewController.m; sourceTree = "<group>"; };
 		9BA5EB5F1BE9125F00AD2D24 /* YPMapsLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPMapsLinkViewController.h; sourceTree = "<group>"; };
 		9BA5EB601BE9125F00AD2D24 /* YPMapsLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPMapsLinkViewController.m; sourceTree = "<group>"; };
 		9BC369971A040F9A00B63FF8 /* YPAthleticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YPAthleticsViewController.h; path = "View Controllers/YPAthleticsViewController.h"; sourceTree = "<group>"; };
@@ -436,6 +439,8 @@
 			children = (
 				AB39E7821A2D8BA90071C684 /* YPDirectoryTableViewController.h */,
 				AB39E7831A2D8BA90071C684 /* YPDirectoryTableViewController.m */,
+				9BA58CAE1BFE5348007C9C2E /* YPDirectoryLinkViewController.h */,
+				9BA58CAF1BFE5348007C9C2E /* YPDirectoryLinkViewController.m */,
 				AB39E7861A2D8EA70071C684 /* YPDirectoryDetailViewController.h */,
 				AB39E7871A2D8EA70071C684 /* YPDirectoryDetailViewController.m */,
 			);
@@ -778,6 +783,7 @@
 				EA4456691A7D7DC300473D5E /* YPInstagramCommunicator.m in Sources */,
 				AB39E78B1A2D94F60071C684 /* YPGlobalHelper.m in Sources */,
 				AB99B3481A16AE890003F752 /* YPOrientationViewController.m in Sources */,
+				9BA58CB01BFE5348007C9C2E /* YPDirectoryLinkViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,6 +14,7 @@
 #import "YPPhotoDetailViewController.h"
 #import "YPOrientationViewController.h"
 #import "YPDirectoryTableViewController.h"
+#import "YPDirectoryLinkViewController.h"
 //#import "YPMapsViewController.h"
 #import "YPMapsLinkViewController.h"
 #import "YPEventsViewController.h"
@@ -208,7 +209,7 @@ typedef enum {
   [self setupBackgroundImage];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewWillLayoutSubviews
 {
   if (!self.loaded) {
     [self setupButtonViews];
@@ -216,11 +217,16 @@ typedef enum {
     
     
     CGRect frame = self.view.bounds;
-    CGFloat screenHeight = [[UIScreen mainScreen] bounds].size.height;
+    //CGFloat screenHeight = [[UIScreen mainScreen] bounds].size.height;
     CGFloat navBarHeight = self.navigationController.navigationBar.bounds.size.height;
     CGFloat statusBarHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
     // depending on the type of phone, different things are included in the background photo (whose idea was that?)
+    frame.origin.y -= navBarHeight + statusBarHeight;
+    frame.size.height += navBarHeight + statusBarHeight;
+    /*
     if (screenHeight < IPHONE_5_HEIGHT) {
+        frame.size.height += navBarHeight + statusBarHeight;
+        frame.origin.y -= navBarHeight + statusBarHeight;
       // for iPhone 4, only the main view is in the image
     } else if (screenHeight <= IPHONE_5_HEIGHT) {
       // for iPhone 5, the main view, the status bar, and the nav bar are all in the image
@@ -240,11 +246,12 @@ typedef enum {
       frame.size.height += navBarHeight;
       frame.origin.y -= navBarHeight;
     }
+    */
     
     self.backgroundImageView.frame = frame;
   }
   //[[UIApplication sharedApplication].delegate window].rootViewController = self.navigationController;
-  [super viewWillAppear:animated];
+  [super viewWillLayoutSubviews];
 }
 
 //commencement is 1 january till 1 june
@@ -317,10 +324,11 @@ typedef enum {
     UINavigationController *transitVC = [storyboard instantiateViewControllerWithIdentifier:@"TransitVC"];
     [self.navigationController pushViewController:transitVC animated:YES];
   } else if ([underText isEqualToString:@"Directory"]) {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPDirectoryViewController"
-                                                         bundle:[NSBundle mainBundle]];
-    UINavigationController *directoryVC = [storyboard instantiateViewControllerWithIdentifier:@"DirectoryVC"];
-    [self.navigationController pushViewController:directoryVC animated:YES];
+    [self.navigationController pushViewController:[[YPDirectoryLinkViewController alloc] init] animated:YES];
+    //UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPDirectoryViewController"
+                                                         //bundle:[NSBundle mainBundle]];
+    //UINavigationController *directoryVC = [storyboard instantiateViewControllerWithIdentifier:@"DirectoryVC"];
+    //[self.navigationController pushViewController:directoryVC animated:YES];
   } else if ([underText isEqualToString:@"Maps"]) {
     //UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPMapsViewController"
                                                          //bundle:[NSBundle mainBundle]];
