@@ -113,8 +113,7 @@ typedef enum {
     backgroundImage = [UIImage imageNamed:@"background6+"];
   } else if (screenHeight) {
     // must be ipad
-#warning IPAD_BACKGROUND_IMAGE_HERE
-    backgroundImage = [UIImage imageNamed:@"background6+"];
+    backgroundImage = [UIImage imageNamed:@"backgroundiPadPro"];
   } else {
     backgroundImage = [UIImage imageNamed:@"background5"];
   }
@@ -196,7 +195,6 @@ typedef enum {
   } else if (screenHeight <= IPHONE_6PLUS_HEIGHT) {
     self.iconSize = CGSizeMake(IPHONE_LARGE_ICON, IPHONE_LARGE_ICON);
   } else {
-#warning IPAD_ICON_SIZE
     self.iconSize = CGSizeMake(IPAD_ICON, IPAD_ICON);
   }
   self.screenName = @"Main View";
