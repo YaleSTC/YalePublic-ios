@@ -624,6 +624,12 @@ static NSString * const RSDFDatePickerViewDayCellIdentifier = @"RSDFDatePickerVi
     cell.date = cellPickerDate;
     cell.dateLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)(cellPickerDate.day)];
     
+    // For accessibility
+    if ([self.dataSource respondsToSelector:@selector(datePickerView:numberOfEventsForDate:)]) {
+        cell.numberOfEvents = [self.dataSource datePickerView:self numberOfEventsForDate:cellDate];
+    }
+    
+    
     cell.notThisMonth = !((firstDayPickerDate.year == cellPickerDate.year) && (firstDayPickerDate.month == cellPickerDate.month));
     if (!cell.isNotThisMonth) {
         weekday = [self.calendar components:NSCalendarUnitWeekday fromDate:cellDate].weekday;

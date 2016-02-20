@@ -216,6 +216,16 @@
 @optional
 
 /**
+ Asks the data source for number of events on date
+ 
+ @param view The date picker view object that is asking whether the date should mark.
+ @param date date to check events for
+ 
+ @return number of events on date in view
+ */
+- (BOOL)datePickerView:(RSDFDatePickerView *)view numberOfEventsForDate:(NSDate *)date;
+
+/**
  Asks the data source if the date should be marked.
  
  @param view The date picker view object that is asking whether the date should mark.
