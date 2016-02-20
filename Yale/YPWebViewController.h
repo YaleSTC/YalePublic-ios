@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 @import WebKit;
 
+// TODO: Update to SafariViewController
 @interface YPWebViewController : UIViewController <WKNavigationDelegate>
 
 + (NSString *)loadedTitle; //override this method to provide a loaded title, like ATHLETICS_TITLE, unless title is set externally

@@ -170,9 +170,7 @@ typedef enum {
       underText.textColor = [UIColor whiteColor];
       
       // Accessibility:
-      button.isAccessibilityElement = YES;
       button.accessibilityLabel = self.buttonUnderTexts[index];
-      button.accessibilityTraits = UIAccessibilityTraitButton;
       
       [button addSubview:underText];
       [self.view addSubview:button];
