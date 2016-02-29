@@ -150,6 +150,7 @@ typedef enum {
   // center in screen, vertically
   CGFloat topMargin = (screenSize.height - totalHeight)/2 - navigationBarSize.height - statusBarSize.height;
   
+  // TODO: Move implementation to subclass
   for (int row=0; row<3; row++) {
     for (int col=0; col<3; col++) {
       int index = row*3+col;
@@ -167,6 +168,10 @@ typedef enum {
       underText.font = UNDER_TEXT_FONT;
       underText.textAlignment = NSTextAlignmentCenter;
       underText.textColor = [UIColor whiteColor];
+      
+      // Accessibility:
+      button.accessibilityLabel = self.buttonUnderTexts[index];
+      
       [button addSubview:underText];
       [self.view addSubview:button];
     }

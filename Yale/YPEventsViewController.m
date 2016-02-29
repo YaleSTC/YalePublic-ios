@@ -266,11 +266,17 @@ typedef void(^SuccessHandler)(NSArray *events);
 }
 #pragma mark - Data Source
 
-// Returns YES if the date should be marked or NO if it should not.
-- (BOOL)datePickerView:(RSDFDatePickerView *)view shouldMarkDate:(NSDate *)date
+// Returns number of events on date
+- (BOOL)datePickerView:(RSDFDatePickerView *)view numberOfEventsForDate:(NSDate *)date
 {
   NSString *dateString = [self getDateString:date];
   return [self eventsForDateString:dateString].count;
+}
+
+// Returns YES if the date should be marked or NO if it should not.
+- (BOOL)datePickerView:(RSDFDatePickerView *)view shouldMarkDate:(NSDate *)date
+{
+  return [self datePickerView:view numberOfEventsForDate:date] > 0;
 }
   
 

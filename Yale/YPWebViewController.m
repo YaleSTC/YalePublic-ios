@@ -212,8 +212,10 @@ didFinishNavigation: (WKNavigation *)navigation
     //rewind, flex space, fastfwd, flex space, refresh, flex space, action
     self.back = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(touchBack:)];
     self.back.enabled = NO;
+    self.back.accessibilityLabel = @"Back";
     self.forward = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward target:self action:@selector(touchForward:)];
     self.forward.enabled = NO;
+    self.forward.accessibilityLabel = @"Forward";
     self.refresh = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(touchRefresh:)];
     self.stopButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:self action:@selector(touchRefresh:)];
     self.openSafari = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(openSafari:)];

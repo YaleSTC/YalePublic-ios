@@ -69,7 +69,8 @@
 - (void)commonInitializer
 {
     self.backgroundColor = [self selfBackgroundColor];
-    
+    self.numberOfEvents = 0;
+  
     [self addSubview:self.selectedDayImageView];
     [self addSubview:self.overlayImageView];
     [self addSubview:self.markImageView];
@@ -454,6 +455,32 @@
         dividerImage = [self rectImageWithKey:dividerImageKey frame:self.dividerImageView.frame color:dividerImageColor];
     }
     return dividerImage;
+}
+
+#pragma mark - Accessibility
+
+
+- (BOOL)isAccessibilityElement
+{
+    return YES;
+}
+
+- (NSString *)accessibilityLabel
+{
+    // TODO: Change cell's implementation to accept an NSDate instance for configuration, instead of being configured via setting label's values.
+    NSString *dateString = [NSString stringWithFormat:@"%lu-%lu-%lu", self.date.year, self.date.month, self.date.day];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *date = [dateFormatter dateFromString:dateString];
+    
+    NSString *localizedDateString = [NSDateFormatter localizedStringFromDate:date
+                                                                   dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterNoStyle];
+
+    
+    return [NSString stringWithFormat:@"%@, %lu %@",
+            localizedDateString,
+            self.numberOfEvents,
+            self.numberOfEvents == 1 ? @"event" : @"events"];
 }
 
 @end
