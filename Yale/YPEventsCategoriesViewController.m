@@ -36,14 +36,15 @@
 @implementation YPEventsCategoriesViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
+  [super viewDidLoad];
   self.title = @"Calendars";
-    // Do any additional setup after loading the view.
+  [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"categoryCell"];
+  // Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+  [super didReceiveMemoryWarning];
+  // Dispose of any resources that can be recreated.
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -61,11 +62,25 @@
   [self.navigationController pushViewController:eventsVC animated:YES];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  return 45;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"categoryCell"];
   cell.textLabel.text = CATEGORY_DATA[indexPath.row][0];
   cell.textLabel.textColor = [YPTheme textColor];
-  YPCircleView *circle = (YPCircleView *)[cell.contentView viewWithTag:1];
+  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+  YPCircleView *circle;
+  if (!(circle = [cell.contentView viewWithTag:10])) {
+    CGFloat height = [self tableView:tableView heightForRowAtIndexPath:indexPath];
+    CGFloat size = 40;
+    CGFloat width = self.tableView.bounds.size.width;
+    circle = [[YPCircleView alloc] initWithFrame:CGRectMake(width-size/2-45, height/2 - size/2, size, size)];
+    [cell.contentView addSubview:circle];
+    circle.tag = 10;
+    circle.backgroundColor = [UIColor clearColor];
+  }
   circle.color = CATEGORY_DATA[indexPath.row][2];
   [circle setNeedsDisplay];
   return cell;
@@ -91,13 +106,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

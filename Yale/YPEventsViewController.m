@@ -339,11 +339,11 @@ typedef void(^SuccessHandler)(NSArray *events);
   
   //add circle of color to tableviewcell
   YPCircleView *circle;
-  if (!(circle = (YPCircleView *)[cell.contentView viewWithTag:1])) {
+  if (!(circle = (YPCircleView *)[cell.contentView viewWithTag:10])) {
     CGFloat height = [self tableView:tableView heightForRowAtIndexPath:indexPath];
     CGFloat size = 20;
     circle = [[YPCircleView alloc] initWithFrame:CGRectMake(-3, height/2-size/2, size, size)];
-    circle.tag = 1;
+    circle.tag = 10;
     circle.backgroundColor = [UIColor clearColor];
     [cell.contentView addSubview:circle];
   }
