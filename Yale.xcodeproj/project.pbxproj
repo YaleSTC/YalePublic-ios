@@ -43,7 +43,6 @@
 		AB39E78B1A2D94F60071C684 /* YPGlobalHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AB39E78A1A2D94F60071C684 /* YPGlobalHelper.m */; };
 		AB39E7991A2DAB5D0071C684 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB39E7981A2DAB5D0071C684 /* libxml2.dylib */; };
 		AB3EB6681A5E911C0029EEFF /* YPEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3EB6671A5E911C0029EEFF /* YPEventsViewController.m */; };
-		AB5931B61A7D666000ED5A41 /* YPEventsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB5931B51A7D666000ED5A41 /* YPEventsViewController.storyboard */; };
 		AB5931B91A7D671B00ED5A41 /* YPEventsCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB5931B81A7D671B00ED5A41 /* YPEventsCategoriesViewController.m */; };
 		AB6F832E1A04081700F3FBD7 /* YPInfoViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB6F832D1A04081700F3FBD7 /* YPInfoViewViewController.m */; };
 		AB6F83301A0408A500F3FBD7 /* YPInfoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB6F832F1A0408A500F3FBD7 /* YPInfoViewController.storyboard */; };
@@ -158,7 +157,6 @@
 		AB39E7981A2DAB5D0071C684 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		AB3EB6661A5E911C0029EEFF /* YPEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPEventsViewController.h; sourceTree = "<group>"; };
 		AB3EB6671A5E911C0029EEFF /* YPEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPEventsViewController.m; sourceTree = "<group>"; };
-		AB5931B51A7D666000ED5A41 /* YPEventsViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = YPEventsViewController.storyboard; sourceTree = "<group>"; };
 		AB5931B71A7D671B00ED5A41 /* YPEventsCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPEventsCategoriesViewController.h; sourceTree = "<group>"; };
 		AB5931B81A7D671B00ED5A41 /* YPEventsCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPEventsCategoriesViewController.m; sourceTree = "<group>"; };
 		AB6F832C1A04081700F3FBD7 /* YPInfoViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPInfoViewViewController.h; sourceTree = "<group>"; };
@@ -333,7 +331,6 @@
 			isa = PBXGroup;
 			children = (
 				AB8AB5C51A5D354300149B4B /* YPMapsViewController.storyboard */,
-				AB5931B51A7D666000ED5A41 /* YPEventsViewController.storyboard */,
 				AB99B3441A16AE480003F752 /* YPOrientationViewController.storyboard */,
 				AB99B34E1A16B0ED0003F752 /* YPTransitViewController.storyboard */,
 				AB0071DC19E4D14B00ABF52D /* YPNewsViewController.storyboard */,
@@ -682,7 +679,6 @@
 				AB8AB5C61A5D354300149B4B /* YPMapsViewController.storyboard in Resources */,
 				AB1A5A751A802831000484ED /* buildings.json in Resources */,
 				9B8BE2A519DE153D00CFE39A /* Images.xcassets in Resources */,
-				AB5931B61A7D666000ED5A41 /* YPEventsViewController.storyboard in Resources */,
 				EA54231919E4CEE000E75859 /* (null) in Resources */,
 				AB39E7811A2D8B840071C684 /* YPDirectoryViewController.storyboard in Resources */,
 				EAB6861619DF34690006C06F /* YPPhotoViewController.storyboard in Resources */,
@@ -889,6 +885,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"\"${PODS_ROOT}/Headers/Public\"",
 					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
@@ -906,7 +903,7 @@
 				INFOPLIST_FILE = Yale/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "edu.yale.hengchu.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = edu.yale.icampus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -918,6 +915,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"\"${PODS_ROOT}/Headers/Public\"",
 					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
@@ -935,7 +933,7 @@
 				INFOPLIST_FILE = Yale/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "edu.yale.hengchu.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = edu.yale.icampus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

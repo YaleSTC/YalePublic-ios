@@ -14,6 +14,7 @@
 #import "YPPhotoDetailViewController.h"
 #import "YPOrientationViewController.h"
 #import "YPDirectoryTableViewController.h"
+#import "YPEventsCategoriesViewController.h"
 #import "YPDirectoryLinkViewController.h"
 //#import "YPMapsViewController.h"
 #import "YPMapsLinkViewController.h"
@@ -24,6 +25,7 @@
 #import <GAI.h>
 #import <GAIFields.h>
 #import <GAIDictionaryBuilder.h>
+@import QuartzCore;
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
 
@@ -31,7 +33,13 @@
 #define IMAGE_TEXT_MARGIN 10
 #define UNDER_TEXT_HEIGHT 20
 
+// location and size of date overlay on commencement icon.
+#define IMAGE_OVERTEXT_MARGIN (-35)
+#define IMAGE_OVERTEXT_HORIZ_OFFSET (1)
+#define OVER_TEXT_HEIGHT 40
+
 #define COMMENCEMENT_URL @"http://commencement.yale.edu/"
+#define ARTS_EVENTS_URL @"http://artscalendar.yale.edu/"
 
 // these really should be constants and not inline magic numbers
 #define IPHONE_5_HEIGHT 568
@@ -44,10 +52,19 @@
 #define IPHONE_LARGE_ICON 73
 #define IPAD_ICON 80
 
+#define EVENT_COUNT (3)
 typedef enum {
+  YaleEventArts = 0,
+  YaleEventCommencement,
   YaleEventOrientation,
-  YaleEventCommencement
 } YaleEvent;
+
+// dates stored in month, day format
+int eventStartEndDates[EVENT_COUNT][4] = {
+  {8, 31, 4, 15}, // arts events is 31 august till 15 april
+  {4, 16, 6, 1}, // commencement is 16 april till 1 june
+  {6, 2, 8, 30}, // orientation is 2 june till 30 august
+};
 
 @interface YPMainViewController ()
 
@@ -163,6 +180,24 @@ typedef enum {
       UIImageView *iconView = [[UIImageView alloc] initWithFrame:CGRectMake(buttonWidth/2-self.iconSize.width/2, 0, self.iconSize.width, self.iconSize.height)];
       iconView.image = [YPMainViewController imageWithImage:[UIImage imageNamed:self.buttonImageTitles[index]] scaledToSize:self.iconSize];
       [button addSubview:iconView];
+      
+      if ([self.buttonImageTitles[index] isEqualToString: @"Generic-Commencement-Icon.png"]) {
+        UILabel *dynamicText = [[UILabel alloc] initWithFrame:CGRectMake(IMAGE_OVERTEXT_HORIZ_OFFSET, self.iconSize.height+IMAGE_OVERTEXT_MARGIN, buttonWidth, OVER_TEXT_HEIGHT)];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy"];
+        NSString *yearString = [formatter stringFromDate:[NSDate date]];
+        int yearInt = [yearString intValue];
+        dynamicText.text = [NSString stringWithFormat:@"%d", yearInt];
+        dynamicText.textAlignment = NSTextAlignmentCenter;
+        dynamicText.textColor = [UIColor whiteColor];
+        dynamicText.layer.shadowColor = [UIColor blackColor].CGColor;
+        dynamicText.layer.shadowOffset = CGSizeMake(-2, 2);
+        dynamicText.layer.shadowOpacity = 0.6;
+        dynamicText.font = [UIFont systemFontOfSize: 20 weight: UIFontWeightBlack];
+        dynamicText.layer.shadowRadius = 0.1;
+        [button addSubview:dynamicText];
+      }
+      
       UILabel *underText = [[UILabel alloc] initWithFrame:CGRectMake(0, self.iconSize.height+IMAGE_TEXT_MARGIN, buttonWidth, UNDER_TEXT_HEIGHT)];
       underText.text = self.buttonUnderTexts[index];
       underText.font = UNDER_TEXT_FONT;
@@ -205,8 +240,8 @@ typedef enum {
   self.screenName = @"Main View";
   
   self.buttonUnderTexts = @[@"News", @"Directory", @"Maps", @"Videos", @"Photos",
-                            @"Events", @"Transit", [self currentEvent]==YaleEventOrientation ? @"Orientation" : @"Commencement", @"Athletics"];
-  self.buttonImageTitles = @[@"NewsIcon", @"DirectoryIcon", @"MapsIcon", @"VideosIcon", @"PhotosIcon", @"EventsIcon", @"TransitIcon", [self currentEvent]==YaleEventOrientation ? @"OrientationIcon2019" : @"CommencementIcon2015", @"AthleticsIcon"];
+                            @"Events", @"Transit", [self currentEvent]==YaleEventOrientation ? @"Orientation" : [self currentEvent]==YaleEventCommencement ? @"Commencement" : @"Arts Events", @"Athletics"];
+  self.buttonImageTitles = @[@"NewsIcon", @"DirectoryIcon", @"MapsIcon", @"VideosIcon", @"PhotosIcon", @"EventsIcon", @"TransitIcon", [self currentEvent]==YaleEventOrientation ? @"OrientationIcon2019" : self.currentEvent == YaleEventArts ? @"ArtsEventsIcon" : @"Generic-Commencement-Icon.png", @"AthleticsIcon"];
 
   [self setupNavigationBar];
   [self setupBackgroundImage];
@@ -257,29 +292,44 @@ typedef enum {
   [super viewWillLayoutSubviews];
 }
 
-//commencement is 1 january till 1 june
-//dates stored in month + day/monthlength format. Uniform distribution isn't necessary, just strict monotonicity
-#define ORIENTATION_START_DATE (6+2/30.)
-#define COMMENCEMENT_START_DATE (1+1/31.)
-
 //uses the current date to find the icon name for the event, like Orientation or Commencement
 - (YaleEvent)currentEvent
 {
   //get current month+day/monthlength of date.
   NSCalendar *calendar = [NSCalendar currentCalendar];
   NSDateComponents *dateComponents = [calendar components:NSCalendarUnitDay | NSCalendarUnitMonth fromDate:[NSDate date]];
-  double month = [dateComponents month];
-  double day = [dateComponents day];
-  NSRange rangeInMonth = [calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:[NSDate date]];
-  double currentDate = month + day / rangeInMonth.length;
+  int month = (int)[dateComponents month];
+  int day = (int)[dateComponents day];
+  
+  // determines whether one date (in format {month, day}) comes before another
+  BOOL(^before)(int*, int*) = ^BOOL(int* first, int* second) {
+    return first[0] < second[0] || (first[0] == second[0] && first[1] < second[1]);
+  };
+  BOOL(^equal)(int*, int*) = ^BOOL(int* first, int* second) {
+    return first[0] == second[0] && first[1] == second[1];
+  };
+  // determines whether one date (in format {month, day}) comes between two others
+  BOOL(^between)(int*, int*, int*) = ^BOOL(int* middle, int* start, int* end) {
+    if (equal(middle, start) || equal(middle, end)) {
+      return YES;
+    }
+    if (before(end, start)) {
+      // event spans the new year
+      return before(start, middle) || before(middle, end);
+    }
+    return before(start, middle) && before(middle, end);
+  };
+  
+  int currentDate[2] = {month, day};
+  
   //don't make any assumptions about the dates, like which comes first in the year.
-  if (ORIENTATION_START_DATE < COMMENCEMENT_START_DATE) {
-    //in the year, orientation comes first
-    return ORIENTATION_START_DATE <= currentDate && currentDate < COMMENCEMENT_START_DATE ? YaleEventOrientation : YaleEventCommencement;
-  } else {
-    //in year, commencement comes first
-    return ORIENTATION_START_DATE <= currentDate || currentDate < COMMENCEMENT_START_DATE ? YaleEventOrientation : YaleEventCommencement;
+  for (YaleEvent event = 0; event < EVENT_COUNT; event++) {
+    int* startEndDates = eventStartEndDates[event];
+    if (between(currentDate, startEndDates, startEndDates+2)) {
+      return event;
+    }
   }
+  return YaleEventArts;
 }
 
 - (void)didReceiveMemoryWarning
@@ -321,6 +371,8 @@ typedef enum {
     [self.navigationController pushViewController:orientationVC animated:YES];
   } else if ([underText isEqualToString:@"Commencement"]) {
     [self.navigationController pushViewController:[[YPWebViewController alloc] initWithTitle:@"Commencement" initialURL:COMMENCEMENT_URL] animated:YES];
+  } else if ([underText isEqualToString:@"Arts Events"]) {
+    [self.navigationController pushViewController:[[YPWebViewController alloc] initWithTitle:@"Arts Events" initialURL:ARTS_EVENTS_URL] animated:YES];
   } else if ([underText isEqualToString:@"Transit"]) {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPTransitViewController"
                                                          bundle:[NSBundle mainBundle]];
@@ -339,10 +391,7 @@ typedef enum {
     //[self.navigationController pushViewController:mapsVC animated:YES];
     [self.navigationController pushViewController:[[YPMapsLinkViewController alloc] init] animated:YES];
   } else if ([underText isEqualToString:@"Events"]) {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPEventsViewController"
-                                                         bundle:[NSBundle mainBundle]];
-    UINavigationController *eventsVC = [storyboard instantiateViewControllerWithIdentifier:@"EventsVC"];
-    [self.navigationController pushViewController:eventsVC animated:YES];
+    [self.navigationController pushViewController:[[YPEventsCategoriesViewController alloc] init] animated:YES];
   }
 }
 
