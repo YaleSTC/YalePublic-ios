@@ -25,12 +25,17 @@
 #import <GAI.h>
 #import <GAIFields.h>
 #import <GAIDictionaryBuilder.h>
+@import QuartzCore;
 
 #define COLLECTIONVIEW_REUSE_IDENTIFIER @"MainViewButtonCell"
 
 #define UNDER_TEXT_FONT [UIFont systemFontOfSize:14] //was size 10, then 12. now bigger text fits
 #define IMAGE_TEXT_MARGIN 10
 #define UNDER_TEXT_HEIGHT 20
+
+// location and size of date overlay on commencement icon.
+#define IMAGE_OVERTEXT_MARGIN (-25)
+#define OVER_TEXT_HEIGHT 40
 
 #define COMMENCEMENT_URL @"http://commencement.yale.edu/"
 #define ARTS_EVENTS_URL @"http://artscalendar.yale.edu/"
@@ -173,6 +178,22 @@ int eventStartEndDates[EVENT_COUNT][4] = {
       button.tag = index;
       UIImageView *iconView = [[UIImageView alloc] initWithFrame:CGRectMake(buttonWidth/2-self.iconSize.width/2, 0, self.iconSize.width, self.iconSize.height)];
       iconView.image = [YPMainViewController imageWithImage:[UIImage imageNamed:self.buttonImageTitles[index]] scaledToSize:self.iconSize];
+      if ([self.buttonImageTitles[index] isEqualToString: @"Generic-Commencement-Icon.png"]) {
+        UILabel *dynamicText = [[UILabel alloc] initWithFrame:CGRectMake(0, self.iconSize.height+IMAGE_OVERTEXT_MARGIN, buttonWidth, OVER_TEXT_HEIGHT)];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy"];
+        NSString *yearString = [formatter stringFromDate:[NSDate date]];
+        int yearInt = [yearString intValue];
+        dynamicText.text = [NSString stringWithFormat:@"%d", yearInt];
+        dynamicText.textAlignment = NSTextAlignmentCenter;
+        dynamicText.textColor = [UIColor whiteColor];
+        dynamicText.layer.shadowColor = [UIColor blackColor].CGColor;
+        dynamicText.layer.shadowOffset = CGSizeMake(-2, 2);
+        dynamicText.layer.shadowOpacity = 0.8;
+        dynamicText.font = [UIFont systemFontOfSize: 20 weight: UIFontWeightBlack];
+        dynamicText.layer.shadowRadius = 0.1;
+        [button addSubview:dynamicText];
+      }
       [button addSubview:iconView];
       UILabel *underText = [[UILabel alloc] initWithFrame:CGRectMake(0, self.iconSize.height+IMAGE_TEXT_MARGIN, buttonWidth, UNDER_TEXT_HEIGHT)];
       underText.text = self.buttonUnderTexts[index];
@@ -217,7 +238,7 @@ int eventStartEndDates[EVENT_COUNT][4] = {
   
   self.buttonUnderTexts = @[@"News", @"Directory", @"Maps", @"Videos", @"Photos",
                             @"Events", @"Transit", [self currentEvent]==YaleEventOrientation ? @"Orientation" : [self currentEvent]==YaleEventCommencement ? @"Commencement" : @"Arts Events", @"Athletics"];
-  self.buttonImageTitles = @[@"NewsIcon", @"DirectoryIcon", @"MapsIcon", @"VideosIcon", @"PhotosIcon", @"EventsIcon", @"TransitIcon", [self currentEvent]==YaleEventOrientation ? @"OrientationIcon2019" : self.currentEvent == YaleEventArts ? @"ArtsEventsIcon" : @"CommencementIcon2015", @"AthleticsIcon"];
+  self.buttonImageTitles = @[@"NewsIcon", @"DirectoryIcon", @"MapsIcon", @"VideosIcon", @"PhotosIcon", @"EventsIcon", @"TransitIcon", [self currentEvent]==YaleEventOrientation ? @"OrientationIcon2019" : self.currentEvent == YaleEventArts ? @"ArtsEventsIcon" : @"Generic-Commencement-Icon.png", @"AthleticsIcon"];
 
   [self setupNavigationBar];
   [self setupBackgroundImage];
