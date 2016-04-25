@@ -34,8 +34,8 @@
 #define UNDER_TEXT_HEIGHT 20
 
 // location and size of date overlay on commencement icon.
-#define IMAGE_OVERTEXT_MARGIN (-35)
-#define IMAGE_OVERTEXT_HORIZ_OFFSET (1)
+#define IMAGE_OVERTEXT_MARGIN (-44)
+#define IMAGE_OVERTEXT_HORIZ_OFFSET (9)
 #define OVER_TEXT_HEIGHT 40
 
 #define COMMENCEMENT_URL @"http://commencement.yale.edu/"
@@ -190,9 +190,9 @@ int eventStartEndDates[EVENT_COUNT][4] = {
         dynamicText.text = [NSString stringWithFormat:@"%d", yearInt];
         dynamicText.textAlignment = NSTextAlignmentCenter;
         dynamicText.textColor = [UIColor whiteColor];
-        dynamicText.layer.shadowColor = [UIColor blackColor].CGColor;
+        dynamicText.layer.shadowColor = [UIColor colorWithRed:22.0/255.0 green:40.0/255.0 blue:81.0/255.0 alpha:1].CGColor;
         dynamicText.layer.shadowOffset = CGSizeMake(-2, 2);
-        dynamicText.layer.shadowOpacity = 0.6;
+        dynamicText.layer.shadowOpacity = 0.9;
         dynamicText.font = [UIFont systemFontOfSize: 20 weight: UIFontWeightBlack];
         dynamicText.layer.shadowRadius = 0.1;
         [button addSubview:dynamicText];
