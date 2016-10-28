@@ -15,7 +15,7 @@
 
 //call getPhotos: multiple times on the same instance to get successive pages of photos.
 //calling getPhotos: again before the completing block is handled will have no effect. (But it could actually be called from within completion block if necessary)
--(void)getPhotos:(void (^)(NSDictionary *))completionBlock progressBlock:(void (^)(double))progressBlock;
+-(void)getPhotos:(void (^)(NSDictionary *))completionBlock progressBlock:(void (^)(double))progressBlock errorHandler:(void (^)(NSError *))errorHandler;
 
 -(void)downloadImageForURL:(NSURL *)url completionBlock:(void (^)(UIImage *, NSUInteger))completionBlock progressBlocks:(void (^)(NSUInteger))bytesLoaded :(void (^)(NSUInteger))bytesTotal;
 

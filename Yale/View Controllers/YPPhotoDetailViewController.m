@@ -129,8 +129,8 @@
     //from http://instagram.com/developer/endpoints/
     //handle errors. this may be necessary if there have been >5000 requests per hour (over all users).
     if ([response[@"meta"][@"code"] intValue] != 200) { //200 is "no error" I think.
-      UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Instagram error %d: %@", [response[@"meta"][@"code"] intValue], response[@"meta"][@"error_type"]] message:response[@"meta"][@"error_message"] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-      [alert show];
+      [self showErrorWithCode:[response[@"meta"][@"code"] intValue] message:response[@"meta"][@"error_message"]];
+      return;
     }
     
     // Get a list of URLs
@@ -219,7 +219,17 @@
     
   } progressBlock:^(double progress) {
     [self showProgress:progress];
+  } errorHandler:^(NSError *error) {
+    [self showErrorWithCode:(int)error.code message:error.localizedDescription];
   }];
+}
+
+- (void)showErrorWithCode:(int)errCode message:(NSString *)errMessage {
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [YPGlobalHelper hideNotificationView];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Instagram error %d", errCode] message:errMessage delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    [alert show];
+  });
 }
 
 - (void)showImageLoadingProgress

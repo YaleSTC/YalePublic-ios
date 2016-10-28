@@ -67,7 +67,7 @@ typedef void(^ByteCallback)(NSUInteger);
 @implementation YPInstagramCommunicator
 
 //this completion block is given an NSDictionary representation of the JSON file given by the Instagram API.
--(void)getPhotos:(void (^)(NSDictionary *))completionBlock progressBlock:(void (^)(double))progressHandler
+-(void)getPhotos:(void (^)(NSDictionary *))completionBlock progressBlock:(void (^)(double))progressHandler errorHandler:(void (^)(NSError *))errorHandler
 {
   if (self.gettingPhotos) return; //the request is already being handled, and hasn't yet completed. Loading again will load the same group of photos twice.
   NSString *url = [NSString stringWithFormat:self.nextPageURL ? self.nextPageURL : @"https://api.instagram.com/v1/users/%@/media/recent/?client_id=%@", INSTAGRAM_YALE_USERID, INSTAGRAM_CLIENT_ID];
@@ -88,13 +88,12 @@ typedef void(^ByteCallback)(NSUInteger);
       if (!self.nextPageURL) { //not sure if this is the correct case, but hopefully it is.
         self.lastPageLoaded = YES;
       }
-      
+
       self.gettingPhotos = NO;
       completionBlock(photosObject);
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-      
-      NSLog(@"Error: %@", error);
+      errorHandler(error);
     }];
     [request setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
       double percentDone = 0;
