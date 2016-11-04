@@ -202,28 +202,29 @@ didFinishNavigation: (WKNavigation *)navigation
 
 - (void)addWebview
 {
-  if (!self.toolbar) {
-    //for the transit and others, there is no toolbar in the storyboard, and there shouldn't be unless it's possible to create a single storyboard for YPWebViewController
-    //according to the storyboard, toolbars must have height 44
-    CGFloat toolbarHeight = 44;
-    self.toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-toolbarHeight, self.view.bounds.size.width, toolbarHeight)];
-    
-    //as in the athletics toolbar, do in order:
-    //rewind, flex space, fastfwd, flex space, refresh, flex space, action
-    self.back = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(touchBack:)];
-    self.back.enabled = NO;
-    self.back.accessibilityLabel = @"Back";
-    self.forward = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward target:self action:@selector(touchForward:)];
-    self.forward.enabled = NO;
-    self.forward.accessibilityLabel = @"Forward";
-    self.refresh = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(touchRefresh:)];
-    self.stopButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:self action:@selector(touchRefresh:)];
-    self.openSafari = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(openSafari:)];
-    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    NSArray *items = @[self.back, flexibleSpace, self.forward, flexibleSpace, self.stopButton, flexibleSpace, self.openSafari];
-    [self.toolbar setItems:items animated:NO];
-    [self.view addSubview:self.toolbar];
-  }
+    if (!self.toolbar) {
+        //for the transit and others, there is no toolbar in the storyboard, and there shouldn't be unless it's possible to create a single storyboard for YPWebViewController
+        //according to the storyboard, toolbars must have height 44
+        CGFloat toolbarHeight = 44;
+        self.toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-toolbarHeight, self.view.bounds.size.width, toolbarHeight)];
+        
+        //as in the athletics toolbar, do in order:
+        //rewind, flex space, fastfwd, flex space, refresh, flex space, action
+        self.back = [[UIBarButtonItem alloc] initWithTitle:@"❮" style:UIBarButtonItemStylePlain target:self action:@selector(touchBack:)];
+        self.back.enabled = NO;
+        self.back.accessibilityLabel = @"Back";
+        self.forward = [[UIBarButtonItem alloc] initWithTitle:@"❯" style:UIBarButtonItemStylePlain target:self action:@selector(touchForward:)];
+        //self.forward = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Back_Button.png"] style:UIBarButtonItemStylePlain target:self action:@selector(touchBack:)];
+        self.forward.enabled = NO;
+        self.forward.accessibilityLabel = @"Forward";
+        self.refresh = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(touchRefresh:)];
+        self.stopButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop target:self action:@selector(touchRefresh:)];
+        self.openSafari = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(openSafari:)];
+        UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        NSArray *items = @[self.back, flexibleSpace, self.forward, flexibleSpace, self.stopButton, flexibleSpace, self.openSafari];
+        [self.toolbar setItems:items animated:NO];
+        [self.view addSubview:self.toolbar];
+    }
   // create a progress bar for webpage loading progress.
   self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
   //no matter what, the progress view height is always 2 (even if you set it something else)
