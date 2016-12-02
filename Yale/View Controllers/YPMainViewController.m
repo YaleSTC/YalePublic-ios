@@ -40,6 +40,7 @@
 
 #define COMMENCEMENT_URL @"http://commencement.yale.edu/"
 #define ARTS_EVENTS_URL @"http://artscalendar.yale.edu/"
+#define FLICKR_URL @"https://www.flickr.com/photos/yaleuniversity/"
 
 // these really should be constants and not inline magic numbers
 #define IPHONE_5_HEIGHT 568
@@ -354,7 +355,8 @@ int eventStartEndDates[EVENT_COUNT][4] = {
     UINavigationController *videosVC = [storyboard instantiateViewControllerWithIdentifier:@"VideosVC"];
     [self.navigationController pushViewController:videosVC animated:YES];
   } else if ([underText isEqualToString:@"Photos"]) {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPPhotoViewController"
+    /*
+      UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"YPPhotoViewController"
                                                          bundle:[NSBundle mainBundle]];
     YPPhotoDetailViewController *detailViewController = [storyboard instantiateViewControllerWithIdentifier:@"PhotoDetailVC"];
     
@@ -362,6 +364,8 @@ int eventStartEndDates[EVENT_COUNT][4] = {
     detailViewController.albumTitle = @"Instagram Photos";
     detailViewController.photoSetId = @"INSTAGRAM";
     [self.navigationController pushViewController:detailViewController animated:YES];
+     */
+      [self.navigationController pushViewController:[[YPWebViewController alloc] initWithTitle:@"Photos" initialURL:FLICKR_URL] animated:YES];
   } else if ([underText isEqualToString:@"Athletics"]) {
     [self.navigationController pushViewController:[[YPAthleticsViewController alloc] init] animated:YES];
   } else if ([underText isEqualToString:@"Orientation"]) {
